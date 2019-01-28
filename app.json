@@ -22,8 +22,19 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "packagerOpts": {
+      "assetExts": [
+        "ttf",
+        "mp4",
+        "otf",
+        "xml"
+      ]
+    },
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "package": "cs3301p1_UberApp"
     }
   }
 }
