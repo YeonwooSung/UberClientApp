@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native'
 
-export default class Login extends React.Component {
+export default class LoginScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
