@@ -3,7 +3,7 @@
     "name": "UberClient",
     "slug": "UberClient",
     "privacy": "public",
-    "sdkVersion": "32.0.0",
+    "sdkVersion": "31.0.0",
     "platforms": [
       "ios",
       "android"
@@ -34,7 +34,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "cs3301p1_UberApp"
+      "package": "cs3301p1_uberapp"
     }
   }
 }
