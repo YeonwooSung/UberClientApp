@@ -2,6 +2,45 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native'
 
 export default class LoginScreen extends React.Component {
+    static navigationOptions = {
+        title: 'Uber',
+        headerStyle: {
+            backgroundColor: '#1a3f95',
+        },
+        headerTintColor: '#fff',
+    };
+
+    state = {
+        id: undefined,
+        pw: undefined
+    }
+
+    componentDidMount = () => {
+        this.checkIfLoggedIn();
+    }
+
+    checkIfLoggedIn = async () => {
+        const id = await AsyncStorage.getItem('cs3301Uber@id', undefined);
+        const pw = await AsyncStorage.getItem('cs3301Uber@pw', undefined);
+
+        this.setState({ id: id, pw: pw });
+    }
+
+    storeID = async () => {
+        try {
+            const { id, pw } = this.state;
+
+            await AsyncStorage.setItem('cs3301Uber@id', id);
+
+            await AsyncStorage.setItem('cs3301Uber@pw', pw);
+
+            this.props.navigation.navigate('Monitor', { id: id, pw: pw }); //TODO navigate part
+
+        } catch {
+            alert('failed to store id');
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
