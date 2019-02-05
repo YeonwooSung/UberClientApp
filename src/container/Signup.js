@@ -8,6 +8,7 @@ import {
     Image,
     TextInput
 } from 'react-native';
+import PropTypes from 'prop-types';
 
 //import { Card } from 'react-native-paper';
 
@@ -22,8 +23,12 @@ export default class SignupScreen extends React.Component {
         headerTintColor: '#fff',
     };
 
+    static propTypes = {
+        navigateTo: PropTypes.func.isRequired
+    }
+
     render() {
-        const { navigate } = this.props.navigation;
+        const { navigate } = this.props.navigateTo;
         return (
             <View style={styles.container}>
                 <StatusBar
@@ -46,12 +51,11 @@ export default class SignupScreen extends React.Component {
                     ref={(input) => this.password = input}
                 />
                 <TouchableOpacity style={styles.buttonBox}>
-                    <Text style={styles.buttonText}>"Login"</Text>
+                    <Text style={styles.buttonText}>"Signup"</Text>
                 </TouchableOpacity>
                 <View style={styles.signupTextContainer}>
-                    <Text style={styles.signupText}> Go back to log in page </Text>
                     <TouchableOpacity onPress={() => navigate('Login')}>
-                        <Text style={styles.signupButton}> 로그인 </Text>
+                        <Text style={styles.signupButton}> Go back to log in page </Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -72,10 +76,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         paddingVertical: 16,
         flexDirection: 'row'
-    },
-    signupText: {
-        color: 'rgba(255,255,255,0.7)',
-        fontSize: 16
     },
     signupButton: {
         color: "#ffffff",

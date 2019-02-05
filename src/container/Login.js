@@ -9,6 +9,8 @@ import {
     Dimensions,
     AsyncStorage
 } from 'react-native';
+import PropTypes from 'prop-types';
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -26,6 +28,10 @@ export default class LoginScreen extends React.Component {
         pw: undefined
     }
 
+    static propTypes = {
+        navigateTo: PropTypes.func.isRequired
+    }
+
     storeID = async () => {
         try {
             const { id, pw } = this.state;
@@ -34,7 +40,7 @@ export default class LoginScreen extends React.Component {
 
             await AsyncStorage.setItem('cs3301Uber@pw', pw);
 
-            this.props.navigation.navigate('Monitor', { id: id, pw: pw }); //TODO navigate part
+            this.props.navigateTo('Main');
 
         } catch {
             alert('failed to store id');
@@ -65,6 +71,7 @@ export default class LoginScreen extends React.Component {
                 <TouchableOpacity style={styles.loginButtonBox} onPress={() => this.storeID()}>
                     <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
+                {/* TODO need to make a button to navigate to the sign up page */}
             </View>
         );
     }

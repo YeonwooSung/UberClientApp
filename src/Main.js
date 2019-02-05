@@ -21,6 +21,7 @@ export default class Main extends React.Component {
     render() {
         let { screenName } = this.state;
 
+        /* check the screen name to load the suitable screen */
         if (screenName == 'Login') {
             return (<LoginScreen></LoginScreen>);
         } else if (screenName == 'Signup') {
