@@ -11,7 +11,7 @@ import {
 
 //import { Card } from 'react-native-paper';
 
-export default class Signup extends React.Component {
+export default class SignupScreen extends React.Component {
     static navigationOptions = {
         title: 'Uber',
         headerStyle: {
