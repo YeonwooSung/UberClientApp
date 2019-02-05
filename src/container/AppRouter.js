@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Router, Scene } from 'react-native-router-flux'
 
-import MainContainer from './MainContainer'
+import MainScreen from './MainScreen'
 
 
 export default class AppRouter extends Component {
@@ -9,7 +9,7 @@ export default class AppRouter extends Component {
         return (
             <Router>
                 <Scene key={'root'}>
-                    <Scene initial key={'main'} component={MainContainer} title={'MainContainer'} hideNavBar />
+                    <Scene initial key={'main'} component={MainScreen} title={'MainScreen'} hideNavBar />
                 </Scene>
             </Router>
         )
