@@ -54,9 +54,9 @@ export default class SignupScreen extends React.Component {
                 <TouchableOpacity style={styles.buttonBox}>
                     <Text style={styles.buttonText}>"Signup"</Text>
                 </TouchableOpacity>
-                <View style={styles.signupTextContainer}>
+                <View style={styles.textContainer}>
                     <TouchableOpacity onPress={() => navigate('Login')}>
-                        <Text style={styles.signupButton}> Go back to log in page </Text>
+                        <Text style={styles.toLoginPageButton}> Go back to log in page </Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -71,14 +71,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    signupTextContainer: {
+    textContainer: {
         flexGrow: 1,
         alignItems: 'center',
         justifyContent: 'flex-end',
         paddingVertical: 16,
         flexDirection: 'row'
     },
-    signupButton: {
+    toLoginPageButton: {
         color: "#ffffff",
         fontSize: 16,
         fontWeight: '500'
