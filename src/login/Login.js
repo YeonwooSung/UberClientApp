@@ -26,17 +26,6 @@ export default class LoginScreen extends React.Component {
         pw: undefined
     }
 
-    componentDidMount = () => {
-        this.checkIfLoggedIn();
-    }
-
-    checkIfLoggedIn = async () => {
-        const id = await AsyncStorage.getItem('cs3301Uber@id', undefined);
-        const pw = await AsyncStorage.getItem('cs3301Uber@pw', undefined);
-
-        this.setState({ id: id, pw: pw });
-    }
-
     storeID = async () => {
         try {
             const { id, pw } = this.state;
