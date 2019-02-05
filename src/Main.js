@@ -23,13 +23,13 @@ export default class Main extends React.Component {
 
         /* check the screen name to load the suitable screen */
         if (screenName == 'Login') {
-            return (<LoginScreen></LoginScreen>);
+            return (<LoginScreen navigateTo={this.changeScreen}></LoginScreen>);
         } else if (screenName == 'Signup') {
-            return (<SignupScreen></SignupScreen>);
+            return (<SignupScreen navigateTo={this.changeScreen}></SignupScreen>);
         }
 
         return (
-            <MainScreen></MainScreen>
+            <MainScreen navigateTo={this.changeScreen}></MainScreen>
         );
     }
 
