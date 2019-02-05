@@ -1,4 +1,5 @@
 import React from 'react';
+import { AsyncStorage } from 'react-native';
 
 import MainScreen from './container/MainScreen';
 import LoginScreen from './container/Login';
@@ -11,6 +12,20 @@ export default class Main extends React.Component {
         this.state = {
             screenName: 'Login'
         }
+    }
+
+    /* check if the user is logged in already */
+    checkIfLoggedIn = async () => {
+        const id = await AsyncStorage.getItem('cs3301Uber@id', undefined);
+        const pw = await AsyncStorage.getItem('cs3301Uber@pw', undefined);
+
+        if (id && pw) {
+            this.setState({ screenName: 'Main' });
+        }
+    }
+
+    componentDidMount = () => {
+        checkIfLoggedIn();
     }
 
     /* change the screen (log in screen, sign up screen, or main screen) */
