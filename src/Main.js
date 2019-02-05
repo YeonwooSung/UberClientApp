@@ -1,7 +1,7 @@
 import React from 'react';
 import { AsyncStorage } from 'react-native';
 
-import MainScreen from './container/MainScreen';
+import MainScreen from './container/Main';
 import LoginScreen from './container/Login';
 import SignupScreen from './container/Signup';
 

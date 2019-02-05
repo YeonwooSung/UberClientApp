@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Router, Scene } from 'react-native-router-flux'
 
-import MainScreen from './MainScreen'
+import MainScreen from './Main'
 
 
 export default class AppRouter extends Component {
