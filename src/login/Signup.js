@@ -28,7 +28,7 @@ export default class SignupScreen extends React.Component {
                     BackgroundColor="1a3f95"
                     barStyle="light-content"
                 />
-                <Image style={{ width: 200, height: 200 }}
+                <Image style={styles.logoImage}
                     source={require('../../assets/logo.png')} />
                 <Text style={styles.logoText}>Uber</Text>
                 <TextInput style={styles.inputBox}
@@ -108,5 +108,9 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: "#ffffff",
         textAlign: 'center'
+    },
+    logoImage: {
+        width: 200,
+        height: 200
     }
 });
