@@ -1,5 +1,16 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native'
+import {
+    Text,
+    View,
+    StyleSheet,
+    TouchableOpacity,
+    TextInput,
+    Image,
+    Dimensions,
+    AsyncStorage
+} from 'react-native';
+
+const { width, height } = Dimensions.get('window');
 
 export default class LoginScreen extends React.Component {
     static navigationOptions = {
