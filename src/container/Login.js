@@ -79,7 +79,9 @@ export default class LoginScreen extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: '#1a3f95',
+        alignItems: 'center'
     },
     logoImage: {
         width: height / 6,

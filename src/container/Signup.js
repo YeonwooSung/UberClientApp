@@ -6,7 +6,8 @@ import {
     StatusBar,
     TouchableOpacity,
     Image,
-    TextInput
+    TextInput,
+    Dimensions
 } from 'react-native';
 import PropTypes from 'prop-types';
 
