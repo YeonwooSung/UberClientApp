@@ -11,6 +11,8 @@ import {
 
 //import { Card } from 'react-native-paper';
 
+const { width, height } = Dimensions.get('window');
+
 export default class SignupScreen extends React.Component {
     static navigationOptions = {
         title: 'Uber',
@@ -30,7 +32,6 @@ export default class SignupScreen extends React.Component {
                 />
                 <Image style={styles.logoImage}
                     source={require('../../assets/logo.png')} />
-                <Text style={styles.logoText}>Uber</Text>
                 <TextInput style={styles.inputBox}
                     placeholder="Email"
                     placeholderTextColor="#1a3f95"
@@ -47,8 +48,8 @@ export default class SignupScreen extends React.Component {
                 <TouchableOpacity style={styles.buttonBox}>
                     <Text style={styles.buttonText}>"Login"</Text>
                 </TouchableOpacity>
-                <View style={styles.signupTextCont}>
-                    <Text style={styles.signupText}> 등록했으니 이제 로긴하러가요. </Text>
+                <View style={styles.signupTextContainer}>
+                    <Text style={styles.signupText}> Go back to log in page </Text>
                     <TouchableOpacity onPress={() => navigate('Login')}>
                         <Text style={styles.signupButton}> 로그인 </Text>
                     </TouchableOpacity>
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    signupTextCont: {
+    signupTextContainer: {
         flexGrow: 1,
         alignItems: 'center',
         justifyContent: 'flex-end',
@@ -81,36 +82,35 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '500'
     },
-    logoText: {
-        marginVertical: 15,
-        fontSize: 18,
-        color: '#a8a9ad'
-    },
     inputBox: {
-        width: 300,
+        width: width * 4 / 5,
+        height: height / 15,
         backgroundColor: 'rgba(255,255,255,0.3)',
         borderRadius: 25,
         paddingHorizontal: 16,
-        paddingVertical: 10,
-        fontSize: 16,
+        fontSize: width / 25,
         color: '#ffffff',
-        marginVertical: 10
+        marginVertical: 5
     },
     buttonBox: {
-        width: 300,
+        width: width * 4 / 5,
+        height: height / 15,
         backgroundColor: '#a8a9ad',
         borderRadius: 25,
         marginVertical: 10,
-        paddingVertical: 12
+        paddingVertical: 5,
+        justifyContent: 'center'
     },
     buttonText: {
-        fontSize: 16,
+        fontSize: width / 25,
         fontWeight: '500',
         color: "#ffffff",
         textAlign: 'center'
     },
     logoImage: {
-        width: 200,
-        height: 200
+        width: height / 6,
+        height: height / 6,
+        marginBottom: height / 10,
+        marginTop: height / 20
     }
 });
