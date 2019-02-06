@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from 'react'
-import { StyleSheet, View } from 'react-native'
+import React, { Component, PropTypes } from 'react';
+import { StyleSheet, View } from 'react-native';
+import PropTypes from 'prop-types';
 
 export default class MainScreen extends Component {
     constructor(props) {
@@ -7,6 +8,11 @@ export default class MainScreen extends Component {
 
         this.state = {
         }
+    }
+
+    static propTypes = {
+        /* the navigateTo() function will be used for implementing the log out function */
+        navigateTo: PropTypes.func.isRequired
     }
 
     render() {
