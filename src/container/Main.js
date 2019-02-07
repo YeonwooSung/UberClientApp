@@ -21,6 +21,7 @@ export default class MainScreen extends Component {
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
             },
+            drivers: []
         }
     }
 
