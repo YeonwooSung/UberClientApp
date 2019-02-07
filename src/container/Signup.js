@@ -31,6 +31,13 @@ export default class SignupScreen extends React.Component {
                 <Image style={styles.logoImage}
                     source={require('../../assets/logo.png')} />
                 <TextInput style={styles.inputBox}
+                    placeholder="Name"
+                    placeholderTextColor="#1a3f95"
+                    selectionColor="#fff"
+                    keyboardType="name-phone-pad" /* TODO need to test this */
+                    /*onSubmitEditing={() => this.password.focus()}*/
+                />
+                <TextInput style={styles.inputBox}
                     placeholder="Email"
                     placeholderTextColor="#1a3f95"
                     selectionColor="#fff"
