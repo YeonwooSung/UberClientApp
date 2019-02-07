@@ -14,6 +14,11 @@ export default class Main extends React.Component {
         }
     }
 
+    /* Make the navigation header invisible. */
+    static navigationOptions = {
+        header: null
+    };
+
     /* check if the user is logged in already */
     checkIfLoggedIn = async () => {
         const id = await AsyncStorage.getItem('cs3301Uber@id', undefined);
@@ -25,7 +30,7 @@ export default class Main extends React.Component {
     }
 
     componentDidMount = () => {
-        checkIfLoggedIn();
+        this.checkIfLoggedIn();
     }
 
     /* change the screen (log in screen, sign up screen, or main screen) */

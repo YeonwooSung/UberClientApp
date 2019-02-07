@@ -15,14 +15,6 @@ import PropTypes from 'prop-types';
 const { width, height } = Dimensions.get('window');
 
 export default class LoginScreen extends React.Component {
-    static navigationOptions = {
-        title: 'Uber',
-        headerStyle: {
-            backgroundColor: '#1a3f95',
-        },
-        headerTintColor: '#fff',
-    };
-
     state = {
         id: undefined,
         pw: undefined
