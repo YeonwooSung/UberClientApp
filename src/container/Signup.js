@@ -21,17 +21,34 @@ export default class SignupScreen extends React.Component {
 
         this.state = {
             surname: '',
-            forename: '',
-            email: '',
-            password: ''
+            forename: ''
         }
     }
     static propTypes = {
         navigateTo: PropTypes.func.isRequired
     }
 
-    render() {
+    //TODO need to test this
+    checkIfTheUserFilledAllTextInput = () => {
         const { navigate } = this.props.navigateTo;
+
+        const {surname, forename} = this.state;
+
+        console.log(this.password);
+
+        if (surname !== '') {
+            if (forename != '') {
+                navigate('Login');
+            } else {
+                alert('Please input your forename');
+            }
+        } else {
+            alert('Please input your surname');
+        }
+    }
+
+    render() {
+        const navigate = this.checkIfTheUserFilledAllTextInput;
         return (
             <View style={styles.container}>
                 <StatusBar
@@ -71,7 +88,7 @@ export default class SignupScreen extends React.Component {
                     <Text style={styles.buttonText}>"Signup"</Text>
                 </TouchableOpacity>
                 <View style={styles.textContainer}>
-                    <TouchableOpacity onPress={() => navigate('Login')}>
+                    <TouchableOpacity onPress={() => navigate()}>
                         <Text style={styles.toLoginPageButton}> Go back to log in page </Text>
                     </TouchableOpacity>
                 </View>
