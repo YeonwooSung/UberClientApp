@@ -16,6 +16,16 @@ import PropTypes from 'prop-types';
 const { width, height } = Dimensions.get('window');
 
 export default class SignupScreen extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            surname: '',
+            forename: '',
+            email: '',
+            password: ''
+        }
+    }
     static propTypes = {
         navigateTo: PropTypes.func.isRequired
     }
@@ -31,11 +41,18 @@ export default class SignupScreen extends React.Component {
                 <Image style={styles.logoImage}
                     source={require('../../assets/logo.png')} />
                 <TextInput style={styles.inputBox}
-                    placeholder="Name"
+                    placeholder="Surname"
                     placeholderTextColor="#1a3f95"
                     selectionColor="#fff"
                     keyboardType="name-phone-pad" /* TODO need to test this */
-                    /*onSubmitEditing={() => this.password.focus()}*/
+                    onSubmitEditing={(input) => this.setState({surname: input})}
+                />
+                <TextInput style={styles.inputBox}
+                    placeholder="Forename"
+                    placeholderTextColor="#1a3f95"
+                    selectionColor="#fff"
+                    keyboardType="name-phone-pad" /* TODO need to test this */
+                    onSubmitEditing={(input) => this.setState({ forename: input })}
                 />
                 <TextInput style={styles.inputBox}
                     placeholder="Email"
