@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "expo": "^31.0.0",
+    "expo-firebase-app": "^2.0.0",
+    "expo-firebase-database": "^2.0.0",
     "firebase": "^5.8.2",
     "prop-types": "^15.6.2",
     "react": "16.5.0",
