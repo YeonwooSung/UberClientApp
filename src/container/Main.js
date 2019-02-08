@@ -25,6 +25,36 @@ export default class MainScreen extends Component {
         }
     }
 
+    componentDidMount() {
+        // get the current geolocation position
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                this.setState({
+                    region: {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        latitudeDelta: LATITUDE_DELTA,
+                        longitudeDelta: LONGITUDE_DELTA,
+                    }
+                });
+            },
+            (error) => console.log(error.message),
+            //TODO { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }, //need to test this..
+        );
+        this.watchID = navigator.geolocation.watchPosition(
+            position => {
+                this.setState({
+                    region: {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        latitudeDelta: LATITUDE_DELTA,
+                        longitudeDelta: LONGITUDE_DELTA,
+                    }
+                });
+            }
+        );
+    }
+
     static propTypes = {
         /* the navigateTo() function will be used for implementing the log out function */
         navigateTo: PropTypes.func.isRequired
