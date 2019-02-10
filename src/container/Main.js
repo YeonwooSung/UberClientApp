@@ -10,6 +10,9 @@ import MapView from 'react-native-maps';
 
 const { width, height } = Dimensions.get('window');
 
+const LATITUDE_DELTA = 0.0922;
+const LONGITUDE_DELTA = 0.0421;
+
 export default class MainScreen extends Component {
     constructor(props) {
         super(props);
@@ -18,8 +21,8 @@ export default class MainScreen extends Component {
             region: {
                 latitude: 56.335054,
                 longitude: -2.8063431,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
+                latitudeDelta: LATITUDE_DELTA,
+                longitudeDelta: LONGITUDE_DELTA,
             },
             drivers: []
         }
