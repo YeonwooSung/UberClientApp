@@ -34,7 +34,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "uberapp"
+      "package": "standrews.cs3301.p1.uberapp"
     }
   }
 }
