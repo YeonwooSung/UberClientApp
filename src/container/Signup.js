@@ -18,7 +18,7 @@ export default class SignupScreen extends React.Component {
         super(props);
 
         this.state = {
-            email: '',
+            id: '',
             password: '',
             surname: '',
             forename: '',
@@ -32,7 +32,7 @@ export default class SignupScreen extends React.Component {
 
     storeUserInfo = async () => {
         try {
-            const { email, password, surname, forename, phoneNumber } = this.state;
+            const { id, password, surname, forename, phoneNumber } = this.state;
 
             //await AsyncStorage.setItem('cs3301Uber@id', id);
             //TODO store the list of user info in the local storage
@@ -46,19 +46,19 @@ export default class SignupScreen extends React.Component {
     checkIfTheUserFilledAllTextInput = () => {
         const navigate = this.props.navigateTo;
 
-        const {email, password, surname, forename, phoneNumber} = this.state;
+        const {id, password, surname, forename, phoneNumber} = this.state;
 
         if (surname !== '') {
             if (forename != '') {
                 if (phoneNumber !== '') {
-                    if (email !== '') {
+                    if (id !== '') {
                         if (password !== '') {
                             naviagate('Login');
                         } else {
                             alert('Please input password');
                         }
                     } else {
-                        alert('Please input your email address');
+                        alert('Please input your ID');
                     }
                 } else {
                     alert('Please input your phone number!');
@@ -104,14 +104,14 @@ export default class SignupScreen extends React.Component {
                     onSubmitEditing={(input) => this.setState({ phoneNumber: input })}
                 />
                 <TextInput style={styles.inputBox}
-                    placeholder="Email"
+                    placeholder="ID"
                     placeholderTextColor="#1a3f95"
                     selectionColor="#fff"
                     keyboardType="email-address"
                     onSubmitEditing={
                         (input) => {
                             this.password.focus();
-                            this.setSate({email: input});
+                            this.setSate({id: input});
                         }
                     }
                 />
