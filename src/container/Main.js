@@ -2,7 +2,8 @@ import React from 'react';
 import { 
     StyleSheet, 
     View, 
-    Dimensions 
+    Dimensions,
+    AsyncStorage
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -13,7 +14,7 @@ const { width, height } = Dimensions.get('window');
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = 0.0421;
 
-export default class MainScreen extends Component {
+export default class MainScreen extends React.Component {
     constructor(props) {
         super(props);
 
@@ -28,7 +29,13 @@ export default class MainScreen extends Component {
         }
     }
 
+    removeInfo = async () => {
+        await AsyncStorage.removeItem('cs3301Uber@id', () => {console.log('error while remove id!')});
+        await AsyncStorage.removeItem('cs3301Uber@pw', () => { console.log('error while remove pw!') });
+    }
+
     componentDidMount() {
+        this.removeInfo();
         // get the current geolocation position
         navigator.geolocation.getCurrentPosition(
             position => {
