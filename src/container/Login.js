@@ -40,6 +40,7 @@ export default class LoginScreen extends React.Component {
     }
 
     render() {
+        let navigate = this.props.navigateTo;
         return (
             <View style={styles.container}>
                 <Image style={styles.logoImage} source={require('../../assets/logo.png')} />
@@ -65,7 +66,7 @@ export default class LoginScreen extends React.Component {
                 </TouchableOpacity>
                 <View style={styles.signupTextContainer}>
                     <TouchableOpacity onPress={() => navigate('Signup')}>
-                        <Text style={styles.signupButton}> Go back to log in page </Text>
+                        <Text style={styles.signupButton}> Register </Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
         width: height / 6,
         height: height / 6,
         marginBottom: height / 10,
-        marginTop: height / 20
+        marginTop: height / 5
     },
     inputBox: {
         width: width * 4 / 5,
