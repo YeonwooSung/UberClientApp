@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-//import { Card } from 'react-native-paper';
+const firebase = require('../component/firebase');
 
 const { width, height } = Dimensions.get('window');
 
@@ -38,6 +38,8 @@ export default class SignupScreen extends React.Component {
 
         if (surname !== '') {
             if (forename != '') {
+                //TODO firebase.storeUserInformation(email, password, forename, surname);
+                
                 navigate('Login');
             } else {
                 alert('Please input your forename');
