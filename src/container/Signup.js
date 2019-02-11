@@ -7,7 +7,8 @@ import {
     TouchableOpacity,
     Image,
     TextInput,
-    Dimensions
+    Dimensions,
+    AsyncStorage
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -34,16 +35,42 @@ export default class SignupScreen extends React.Component {
         try {
             const { id, password, surname, forename, phoneNumber } = this.state;
 
-            //await AsyncStorage.setItem('cs3301Uber@id', id);
-            //TODO store the list of user info in the local storage
+            const newUserObj = {
+                id: id,
+                pw: password,
+                surname: surname,
+                forename: forename,
+                phoneNum: phoneNumber
+            };
 
-        } catch {
+            try {
+                let userList = await AsyncStorage.getItem('cs3301Uber@users');
+
+                console.log('fml');
+
+                userList = JSON.parse(userList);
+
+                userList.push(newUserObj);
+
+                await AsyncStorage.setItem('cs3301Uber@users', JSON.stringify(userList));
+            } catch {
+                try {
+                    let userList = [newUserObj];
+
+                    await AsyncStorage.setItem('cs3301Uber@users', JSON.stringify(userList));
+                } catch {
+                    alert('error!');
+                }
+            }
+
+        } catch (err) {
+            console.log(err);
             alert('failed to sign up');
         }
     }
 
     /* This method checks if the user filled all text inputs */
-    checkIfTheUserFilledAllTextInput = () => {
+    checkIfTheUserFilledAllTextInput = async () => {
         const navigate = this.props.navigateTo;
 
         const {id, password, surname, forename, phoneNumber} = this.state;
@@ -53,7 +80,11 @@ export default class SignupScreen extends React.Component {
                 if (phoneNumber !== '') {
                     if (id !== '') {
                         if (password !== '') {
-                            naviagate('Login');
+                            //store the user information in the local storage
+                            await this.storeUserInfo();
+
+                            //navigate to the log in screen
+                            navigate('Login');
                         } else {
                             alert('Please input password');
                         }
@@ -111,7 +142,7 @@ export default class SignupScreen extends React.Component {
                     onSubmitEditing={
                         (input) => {
                             this.password.focus();
-                            this.setSate({id: input});
+                            this.setState({id: input});
                         }
                     }
                 />
@@ -119,12 +150,8 @@ export default class SignupScreen extends React.Component {
                     placeholder="Password"
                     secureTextEntry={true}
                     placeholderTextColor="#1a3f95"
-                    ref={
-                        (input) => {
-                            this.password = input;
-                            this.setState({password: input});
-                        }
-                    }
+                    onSubmitEditing={(input) => {this.setState({ password: input })}}
+                    ref={(input) => this.password = input}
                 />
                 <TouchableOpacity style={styles.buttonBox} onPress={() => navigate()}>
                     <Text style={styles.buttonText}>Signup</Text>
