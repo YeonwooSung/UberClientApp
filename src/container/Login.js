@@ -115,12 +115,12 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         alignItems: 'center',
         justifyContent: 'flex-end',
-        paddingVertical: 16,
+        paddingVertical: width / 20,
         flexDirection: 'row'
     },
     signupButton: {
         color: "#ffffff",
-        fontSize: 16,
+        fontSize: width / 20,
         fontWeight: '500'
     }
 });
