@@ -39,6 +39,7 @@ export default class MainScreen extends React.Component {
         this.removeInfo();
 
         // get the current geolocation position
+        //TODO need to test this..
         Geolocation.getCurrentPosition(
             (position) => {
                 console.log(position);
