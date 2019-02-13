@@ -46,6 +46,8 @@ export default class MainScreen extends React.Component {
         //TODO maybe need to use other library...
         let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: false });
 
+        //TODO Location.watchPositionAsync.bind(null, {}))
+
         console.log('test2')
 
         console.log(JSON.stringify(location));
