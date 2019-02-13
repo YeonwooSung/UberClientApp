@@ -5,6 +5,7 @@ import {
     Dimensions,
     AsyncStorage
 } from 'react-native';
+import { Location, Permissions } from 'expo';
 import PropTypes from 'prop-types';
 
 import MapView from 'react-native-maps';
@@ -26,55 +27,50 @@ export default class MainScreen extends React.Component {
                 latitudeDelta: LATITUDE_DELTA,
                 longitudeDelta: LONGITUDE_DELTA,
             },
-            drivers: []
+            drivers: [{
+                latitude: 56.335054,
+                longitude: -2.8063431
+            }],
+            location: undefined
         }
     }
 
     removeInfo = async () => {
-        await AsyncStorage.removeItem('cs3301Uber@id', () => {console.log('error while remove id!')});
-        await AsyncStorage.removeItem('cs3301Uber@pw', () => { console.log('error while remove pw!') });
+        await AsyncStorage.removeItem('cs3301Uber@id', (err) => { if (err) console.log(err); });
+        await AsyncStorage.removeItem('cs3301Uber@pw', (err) => { if (err) console.log(err); });
+    }
+
+    getCurrentLocationAsync = async () => {
+        console.log('test1')
+        //TODO Location.getCurrentPositionAsync not working...
+        //TODO maybe need to use other library...
+        let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: false });
+
+        console.log('test2')
+
+        console.log(JSON.stringify(location));
+        console.log('test3')
+    }
+
+    getPermissionForLocationAsync = async () => {
+        const isEnabled = (await Location.getProviderStatusAsync()).locationServicesEnabled;
+
+        if (!isEnabled) {
+            let { status } = await Permissions.askAsync(Permissions.LOCATION);
+
+            if (status !== 'granted') {
+                console.log('Permission to access location was denied');
+            } else {
+                let location = await this.getCurrentLocationAsync();
+            }
+        } else {
+            let location = await this.getCurrentLocationAsync();
+        }
     }
 
     componentDidMount() {
-        this.removeInfo();
-
-        // get the current geolocation position
-        //TODO need to test this..
-        Geolocation.getCurrentPosition(
-            (position) => {
-                console.log(position);
-
-                this.setState({
-                    region: {
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                        latitudeDelta: LATITUDE_DELTA,
-                        longitudeDelta: LONGITUDE_DELTA,
-                    }
-                });
-            },
-            (error) => {
-                // See error code charts below.
-                console.log(error.code, error.message);
-            },
-            { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
-        );
-        /*
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                this.setState({
-                    region: {
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                        latitudeDelta: LATITUDE_DELTA,
-                        longitudeDelta: LONGITUDE_DELTA,
-                    }
-                });
-            },
-            (error) => console.log(error.message),
-            //TODO { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }, //need to test this..
-        );
-        */
+        //TODO this.removeInfo();
+        this.getPermissionForLocationAsync();
     }
 
     static propTypes = {
@@ -87,7 +83,7 @@ export default class MainScreen extends React.Component {
     }
 
     render() {
-        let { region } = this.state;
+        let { region, drivers, location } = this.state;
         
         return (
             <View style={styles.container}>
