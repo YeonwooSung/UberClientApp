@@ -28,13 +28,29 @@ export default class LoginScreen extends React.Component {
         try {
             const { id, pw } = this.state;
 
-            //TODO need to check if the user is registered
+            //TODO
+            /* need to test this part!!! */
+            const userList = await AsyncStorage.getItem('cs3301Uber@users', (err, res) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log(res);
+                }
+            });
 
-            await AsyncStorage.setItem('cs3301Uber@id', id);
+            let i;
+            for (i = 0; i < userList.length; i++) {
+                if (userList[i]['id'] === id) {
+                    if (userList[i]['pw'] === pw) {
+                        await AsyncStorage.setItem('cs3301Uber@id', id);
 
-            await AsyncStorage.setItem('cs3301Uber@pw', pw);
+                        await AsyncStorage.setItem('cs3301Uber@pw', pw);
 
-            this.props.navigateTo('Main');
+                        this.props.navigateTo('Main');
+                    }
+                }
+            }
+            /* need to test this part!!! */
 
         } catch {
             alert('failed to store id');
