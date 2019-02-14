@@ -24,9 +24,11 @@ export default class LoginScreen extends React.Component {
         navigateTo: PropTypes.func.isRequired
     }
 
-    storeID = async () => {
+    storeID_Async = async () => {
         try {
             const { id, pw } = this.state;
+
+            //TODO need to check if the user is registered
 
             await AsyncStorage.setItem('cs3301Uber@id', id);
 
@@ -61,7 +63,7 @@ export default class LoginScreen extends React.Component {
                     value={this.state.pw}
                     ref={(input) => this.password = input}
                 />
-                <TouchableOpacity style={styles.loginButtonBox} onPress={() => this.storeID()}>
+                <TouchableOpacity style={styles.loginButtonBox} onPress={() => this.storeID_Async()}>
                     <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
                 <View style={styles.signupTextContainer}>

@@ -31,7 +31,7 @@ export default class SignupScreen extends React.Component {
         navigateTo: PropTypes.func.isRequired
     }
 
-    storeUserInfo = async () => {
+    storeUserInfo_Async = async () => {
         try {
             const { id, password, surname, forename, phoneNumber } = this.state;
 
@@ -70,7 +70,7 @@ export default class SignupScreen extends React.Component {
     }
 
     /* This method checks if the user filled all text inputs */
-    checkIfTheUserFilledAllTextInput = async () => {
+    checkIfTheUserFilledAllTextInput_Async = async () => {
         const navigate = this.props.navigateTo;
 
         const {id, password, surname, forename, phoneNumber} = this.state;
@@ -81,7 +81,7 @@ export default class SignupScreen extends React.Component {
                     if (id !== '') {
                         if (password !== '') {
                             //store the user information in the local storage
-                            await this.storeUserInfo();
+                            await this.storeUserInfo_Async();
 
                             //navigate to the log in screen
                             navigate('Login');
@@ -103,7 +103,7 @@ export default class SignupScreen extends React.Component {
     }
 
     render() {
-        const navigate = this.checkIfTheUserFilledAllTextInput;
+        const navigate = this.checkIfTheUserFilledAllTextInput_Async;
         const {navigateTo} = this.props;
         return (
             <View style={styles.container}>
