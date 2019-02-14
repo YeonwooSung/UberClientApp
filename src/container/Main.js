@@ -4,12 +4,13 @@ import {
     View, 
     Dimensions,
     AsyncStorage,
-    Image
+    Image,
+    TextInput
 } from 'react-native';
 import { Location, Permissions } from 'expo';
 import PropTypes from 'prop-types';
-
 import MapView, { Marker } from 'react-native-maps';
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -98,6 +99,13 @@ export default class MainScreen extends React.Component {
                     style={styles.mapContainer}
                     onRegionChange={() => {this.onRegionChange()}}
                 >
+                    <View style={styles.searchBar}>
+                        <TextInput 
+                            placeholder=" Search here" //TODO need to test this
+                            selectionColor={'black'} //TODO need to test this
+                            fontSize={(window.width) * 0.05}
+                        ></TextInput>
+                    </View>
                     {drivers.map(driver => (
                         <Marker
                             coordinate={driver.latlng}
@@ -122,7 +130,7 @@ export default class MainScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     mapContainer: {
         flex: 1,
@@ -132,5 +140,11 @@ const styles = StyleSheet.create({
     carImage: {
         width: width / 15,
         height: width / 15
+    },
+    searchBar: {
+        position: 'absolute',
+        top: width / 10, //TODO need to test this
+        width: width / 5 * 4,
+        height: 40, //TODO should avoid hard coding..
     }
 });
