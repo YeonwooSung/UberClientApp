@@ -105,7 +105,11 @@ export default class MainScreen extends React.Component {
                             key={driver.name}
                         >
                             <View>
-                                <Image source={TAXI_IMG} style={styles.carImage}></Image>
+                                <Image 
+                                    source={TAXI_IMG} 
+                                    style={styles.carImage} 
+                                    onLoad={() => this.forceUpdate()} 
+                                />
                             </View>
                         </Marker>
                     ))}
