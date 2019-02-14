@@ -46,8 +46,6 @@ export default class SignupScreen extends React.Component {
             try {
                 let userList = await AsyncStorage.getItem('cs3301Uber@users');
 
-                console.log('fml');
-
                 userList = JSON.parse(userList);
 
                 userList.push(newUserObj);
