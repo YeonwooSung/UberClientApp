@@ -3,17 +3,20 @@ import {
     StyleSheet, 
     View, 
     Dimensions,
-    AsyncStorage
+    AsyncStorage,
+    Image
 } from 'react-native';
 import { Location, Permissions } from 'expo';
 import PropTypes from 'prop-types';
 
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 
 const { width, height } = Dimensions.get('window');
 
-const LATITUDE_DELTA = 0.0922;
-const LONGITUDE_DELTA = 0.0421;
+const LATITUDE_DELTA = 0.0112; //0.0922;
+const LONGITUDE_DELTA = 0.0031;
+
+const TAXI_IMG = require('../../assets/taxi.png');
 
 export default class MainScreen extends React.Component {
     constructor(props) {
@@ -21,14 +24,17 @@ export default class MainScreen extends React.Component {
 
         this.state = {
             region: {
-                latitude: 56.335054,
-                longitude: -2.8063431,
+                latitude: 56.34026,
+                longitude: -2.808796,
                 latitudeDelta: LATITUDE_DELTA,
                 longitudeDelta: LONGITUDE_DELTA,
             },
             drivers: [{
-                latitude: 56.335054,
-                longitude: -2.8063431
+                latlng: {
+                    latitude: 56.335054,
+                    longitude: -2.8063431,
+                },
+                name: "James"
             }]
         }
     }
@@ -91,7 +97,19 @@ export default class MainScreen extends React.Component {
                     region={region}
                     style={styles.mapContainer}
                     onRegionChange={() => {this.onRegionChange()}}
-                />
+                >
+                    {drivers.map(driver => (
+                        <Marker
+                            coordinate={driver.latlng}
+                            title={driver.name}
+                            key={driver.name}
+                        >
+                            <View>
+                                <Image source={TAXI_IMG} style={styles.carImage}></Image>
+                            </View>
+                        </Marker>
+                    ))}
+                </MapView>
             </View>
         );
     }
@@ -106,5 +124,9 @@ const styles = StyleSheet.create({
         flex: 1,
         width: width,
         height: height,
+    },
+    carImage: {
+        width: width / 15,
+        height: width / 15
     }
 });
