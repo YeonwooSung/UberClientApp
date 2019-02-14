@@ -9,7 +9,6 @@ import { Location, Permissions } from 'expo';
 import PropTypes from 'prop-types';
 
 import MapView from 'react-native-maps';
-import Geolocation from 'react-native-geolocation-service';
 
 const { width, height } = Dimensions.get('window');
 
@@ -30,8 +29,7 @@ export default class MainScreen extends React.Component {
             drivers: [{
                 latitude: 56.335054,
                 longitude: -2.8063431
-            }],
-            location: undefined
+            }]
         }
     }
 
@@ -40,17 +38,17 @@ export default class MainScreen extends React.Component {
         await AsyncStorage.removeItem('cs3301Uber@pw', (err) => { if (err) console.log(err); });
     }
 
-    getCurrentLocationAsync = async () => {
+    getCurrentLocationAsync = () => {
         console.log('test1')
-        //TODO Location.getCurrentPositionAsync not working...
-        //TODO maybe need to use other library...
-        let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: false });
 
-        //TODO Location.watchPositionAsync.bind(null, {}))
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                console.log(position); //TODO set the current position
+            },
+            (error) => console.log(error),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+        );
 
-        console.log('test2')
-
-        console.log(JSON.stringify(location));
         console.log('test3')
     }
 
@@ -63,10 +61,10 @@ export default class MainScreen extends React.Component {
             if (status !== 'granted') {
                 console.log('Permission to access location was denied');
             } else {
-                let location = await this.getCurrentLocationAsync();
+                this.getCurrentLocationAsync();
             }
         } else {
-            let location = await this.getCurrentLocationAsync();
+            this.getCurrentLocationAsync();
         }
     }
 
