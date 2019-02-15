@@ -11,7 +11,6 @@ import {
     AsyncStorage
 } from 'react-native';
 import PropTypes from 'prop-types';
-import uuidv1 from 'uuid/v1';
 
 const { width, height } = Dimensions.get('window');
 
@@ -32,29 +31,17 @@ export default class SignupScreen extends React.Component {
         navigateTo: PropTypes.func.isRequired
     }
 
-    /* This method checks if the user filled all text inputs */
-    checkIfTheUserFilledAllTextInput = async () => {
-        const navigate = this.props.navigateTo;
-
-        const {id, password, surname, forename, phoneNumber} = this.state;
-
-        console.log('test1');
-
+    storeUserInfo = async () => {
         try {
-            const ID = uuidv1();
-
-            console.log('test2');
+            const { id, password, surname, forename, phoneNumber } = this.state;
 
             const newUserObj = {
-                uniqueID: ID,
                 id: id,
                 pw: password,
                 surname: surname,
                 forename: forename,
                 phoneNum: phoneNumber
             };
-
-            console.log('test3');
 
             try {
                 let userList = await AsyncStorage.getItem('cs3301Uber@users');
@@ -64,17 +51,11 @@ export default class SignupScreen extends React.Component {
                 userList.push(newUserObj);
 
                 await AsyncStorage.setItem('cs3301Uber@users', JSON.stringify(userList));
-
-                //navigate to the log in screen
-                navigate('Login');
             } catch {
                 try {
                     let userList = [newUserObj];
 
                     await AsyncStorage.setItem('cs3301Uber@users', JSON.stringify(userList));
-
-                    //navigate to the log in screen
-                    navigate('Login');
                 } catch {
                     alert('failed to sign up');
                 }
@@ -84,9 +65,33 @@ export default class SignupScreen extends React.Component {
             console.log(err);
             alert('failed to sign up');
         }
+    }
 
-        //TODO first test core then test codes below..
-        /*
+    _addId = (text) => {
+        this.setState({id: text});
+    }
+
+    _addPassword = (text) => {
+        this.setState({password: text});
+    }
+
+    _addSurname = (text) => {
+        this.setState({surname: text});
+    }
+
+    _addForename = (text) => {
+        this.setState({forename: text});
+    }
+
+    _addPhoneNumber = (text) => {
+        this.setState({phoneNumber: text});
+    }
+
+    /* This method checks if the user filled all text inputs */
+    checkIfTheUserFilledAllTextInput = async () => {
+        const navigate = this.props.navigateTo;
+
+        const { id, password, surname, forename, phoneNumber } = this.state;
 
         if (surname !== '') {
             if (forename != '') {
@@ -113,13 +118,11 @@ export default class SignupScreen extends React.Component {
         } else {
             alert('Please input your surname');
         }
-
-        */
     }
 
     render() {
-        const checkBeforeNavigate = this.checkIfTheUserFilledAllTextInput;
-        const {navigateTo} = this.props;
+        const navigate = this.checkIfTheUserFilledAllTextInput;
+        const { navigateTo } = this.props;
         return (
             <View style={styles.container}>
                 <StatusBar
@@ -133,42 +136,38 @@ export default class SignupScreen extends React.Component {
                     placeholderTextColor="#1a3f95"
                     selectionColor="#fff"
                     keyboardType="name-phone-pad"
-                    onSubmitEditing={(input) => this.setState({surname: input})}
+                    onChangeText={this._addSurname}
                 />
                 <TextInput style={styles.inputBox}
                     placeholder="Forename"
                     placeholderTextColor="#1a3f95"
                     selectionColor="#fff"
                     keyboardType="name-phone-pad"
-                    onSubmitEditing={(input) => this.setState({ forename: input })}
+                    onChangeText={this._addForename}
                 />
                 <TextInput style={styles.inputBox}
                     placeholder="Phone Number"
                     placeholderTextColor="#1a3f95"
                     selectionColor="#fff"
                     keyboardType="numeric"
-                    onSubmitEditing={(input) => this.setState({ phoneNumber: input })}
+                    onChangeText={this._addPhoneNumber}
                 />
                 <TextInput style={styles.inputBox}
                     placeholder="ID"
                     placeholderTextColor="#1a3f95"
                     selectionColor="#fff"
                     keyboardType="email-address"
-                    onSubmitEditing={
-                        (input) => {
-                            this.password.focus();
-                            this.setState({id: input});
-                        }
-                    }
+                    onSubmitEditing={() => {this.password.focus()}}
+                    onChangeText={this._addId}
                 />
                 <TextInput style={styles.inputBox}
                     placeholder="Password"
                     secureTextEntry={true}
                     placeholderTextColor="#1a3f95"
-                    onSubmitEditing={(input) => {this.setState({ password: input })}}
+                    onChangeText={this._addPassword}
                     ref={(input) => this.password = input}
                 />
-                <TouchableOpacity style={styles.buttonBox} onPress={() => checkBeforeNavigate()}>
+                <TouchableOpacity style={styles.buttonBox} onPress={() => navigate()}>
                     <Text style={styles.buttonText}>Signup</Text>
                 </TouchableOpacity>
                 <View style={styles.textContainer}>
