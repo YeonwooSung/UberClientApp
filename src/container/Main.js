@@ -76,7 +76,7 @@ export default class MainScreen extends React.Component {
     }
 
     componentDidMount() {
-        //TODO this.removeInfo();
+        this.removeInfo();
         this.getPermissionForLocationAsync();
     }
 
@@ -103,7 +103,7 @@ export default class MainScreen extends React.Component {
                         <TextInput 
                             placeholder=" Search here" //TODO need to test this
                             selectionColor={'black'} //TODO need to test this
-                            fontSize={(window.width) * 0.05}
+                            fontSize={width / 20}
                         ></TextInput>
                     </View>
                     {drivers.map(driver => (

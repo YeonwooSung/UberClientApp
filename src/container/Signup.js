@@ -31,11 +31,22 @@ export default class SignupScreen extends React.Component {
         navigateTo: PropTypes.func.isRequired
     }
 
-    storeUserInfo_Async = async () => {
+    storeUserInfo = async () => {
         try {
             const { id, password, surname, forename, phoneNumber } = this.state;
 
+            console.log('hello');
+
+            console.log(id);
+            console.log(password);
+            console.log(surname);
+            console.log(forename);
+            console.log(phoneNumber);
+
+            const ID = uuidv1();
+
             const newUserObj = {
+                uniqueID: ID,
                 id: id,
                 pw: password,
                 surname: surname,
@@ -68,10 +79,19 @@ export default class SignupScreen extends React.Component {
     }
 
     /* This method checks if the user filled all text inputs */
-    checkIfTheUserFilledAllTextInput_Async = async () => {
+    checkIfTheUserFilledAllTextInput = async () => {
         const navigate = this.props.navigateTo;
 
         const {id, password, surname, forename, phoneNumber} = this.state;
+
+        //store the user information in the local storage
+        await this.storeUserInfo();
+
+        //navigate to the log in screen
+        navigate('Login');
+
+        //TODO first test core then test codes below..
+        /*
 
         if (surname !== '') {
             if (forename != '') {
@@ -79,7 +99,7 @@ export default class SignupScreen extends React.Component {
                     if (id !== '') {
                         if (password !== '') {
                             //store the user information in the local storage
-                            await this.storeUserInfo_Async();
+                            await this.storeUserInfo();
 
                             //navigate to the log in screen
                             navigate('Login');
@@ -98,10 +118,12 @@ export default class SignupScreen extends React.Component {
         } else {
             alert('Please input your surname');
         }
+
+        */
     }
 
     render() {
-        const navigate = this.checkIfTheUserFilledAllTextInput_Async;
+        const checkBeforeNavigate = this.checkIfTheUserFilledAllTextInput;
         const {navigateTo} = this.props;
         return (
             <View style={styles.container}>
@@ -151,7 +173,7 @@ export default class SignupScreen extends React.Component {
                     onSubmitEditing={(input) => {this.setState({ password: input })}}
                     ref={(input) => this.password = input}
                 />
-                <TouchableOpacity style={styles.buttonBox} onPress={() => navigate()}>
+                <TouchableOpacity style={styles.buttonBox} onPress={() => checkBeforeNavigate()}>
                     <Text style={styles.buttonText}>Signup</Text>
                 </TouchableOpacity>
                 <View style={styles.textContainer}>
