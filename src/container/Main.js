@@ -46,8 +46,6 @@ export default class MainScreen extends React.Component {
     }
 
     getCurrentLocationAsync = () => {
-        console.log('test1')
-
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 console.log(position); //TODO set the current position
@@ -55,8 +53,6 @@ export default class MainScreen extends React.Component {
             (error) => console.log(error),
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
         );
-
-        console.log('test3')
     }
 
     getPermissionForLocationAsync = async () => {
@@ -76,7 +72,7 @@ export default class MainScreen extends React.Component {
     }
 
     componentDidMount() {
-        this.removeInfo();
+        //this.removeInfo();
         this.getPermissionForLocationAsync();
     }
 
@@ -90,7 +86,7 @@ export default class MainScreen extends React.Component {
     }
 
     render() {
-        let { region, drivers, location } = this.state;
+        let { region, drivers } = this.state;
         
         return (
             <View style={styles.container}>
@@ -99,18 +95,11 @@ export default class MainScreen extends React.Component {
                     style={styles.mapContainer}
                     onRegionChange={() => {this.onRegionChange()}}
                 >
-                    <View style={styles.searchBar}>
-                        <TextInput 
-                            placeholder=" Search here" //TODO need to test this
-                            selectionColor={'black'} //TODO need to test this
-                            fontSize={width / 20}
-                        ></TextInput>
-                    </View>
-                    {drivers.map(driver => (
+                    {drivers.map(d => (
                         <Marker
-                            coordinate={driver.latlng}
-                            title={driver.name}
-                            key={driver.name}
+                            coordinate={d.latlng}
+                            title={d.name}
+                            key={d.name}
                         >
                             <View>
                                 <Image 
