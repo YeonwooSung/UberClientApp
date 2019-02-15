@@ -28,8 +28,6 @@ export default class LoginScreen extends React.Component {
         try {
             const { id, pw } = this.state;
 
-            //TODO
-            /* need to test this part!!! */
             const userListStr = await AsyncStorage.getItem('cs3301Uber@users', (err, res) => {
                 if (err) {
                     console.log('error');
@@ -42,11 +40,8 @@ export default class LoginScreen extends React.Component {
 
             let i;
             for (i = 0; i < userList.length; i++) {
-                console.log(userList[i].id);
-                console.log(userList[i].pw);
                 if (userList[i]['id'] === id) {
                     if (userList[i]['pw'] === pw) {
-                        console.log('success');
                         await AsyncStorage.setItem('cs3301Uber@id', id);
 
                         await AsyncStorage.setItem('cs3301Uber@pw', pw);
@@ -55,7 +50,6 @@ export default class LoginScreen extends React.Component {
                     }
                 }
             }
-            /* need to test this part!!! */
 
         } catch {
             alert('failed to store id');
