@@ -11,6 +11,7 @@ import {
     AsyncStorage
 } from 'react-native';
 import PropTypes from 'prop-types';
+import uuidv1 from 'uuid/v1';
 
 const { width, height } = Dimensions.get('window');
 
@@ -31,19 +32,18 @@ export default class SignupScreen extends React.Component {
         navigateTo: PropTypes.func.isRequired
     }
 
-    storeUserInfo = async () => {
+    /* This method checks if the user filled all text inputs */
+    checkIfTheUserFilledAllTextInput = async () => {
+        const navigate = this.props.navigateTo;
+
+        const {id, password, surname, forename, phoneNumber} = this.state;
+
+        console.log('test1');
+
         try {
-            const { id, password, surname, forename, phoneNumber } = this.state;
-
-            console.log('hello');
-
-            console.log(id);
-            console.log(password);
-            console.log(surname);
-            console.log(forename);
-            console.log(phoneNumber);
-
             const ID = uuidv1();
+
+            console.log('test2');
 
             const newUserObj = {
                 uniqueID: ID,
@@ -54,6 +54,8 @@ export default class SignupScreen extends React.Component {
                 phoneNum: phoneNumber
             };
 
+            console.log('test3');
+
             try {
                 let userList = await AsyncStorage.getItem('cs3301Uber@users');
 
@@ -62,13 +64,19 @@ export default class SignupScreen extends React.Component {
                 userList.push(newUserObj);
 
                 await AsyncStorage.setItem('cs3301Uber@users', JSON.stringify(userList));
+
+                //navigate to the log in screen
+                navigate('Login');
             } catch {
                 try {
                     let userList = [newUserObj];
 
                     await AsyncStorage.setItem('cs3301Uber@users', JSON.stringify(userList));
+
+                    //navigate to the log in screen
+                    navigate('Login');
                 } catch {
-                    alert('error!');
+                    alert('failed to sign up');
                 }
             }
 
@@ -76,19 +84,6 @@ export default class SignupScreen extends React.Component {
             console.log(err);
             alert('failed to sign up');
         }
-    }
-
-    /* This method checks if the user filled all text inputs */
-    checkIfTheUserFilledAllTextInput = async () => {
-        const navigate = this.props.navigateTo;
-
-        const {id, password, surname, forename, phoneNumber} = this.state;
-
-        //store the user information in the local storage
-        await this.storeUserInfo();
-
-        //navigate to the log in screen
-        navigate('Login');
 
         //TODO first test core then test codes below..
         /*
