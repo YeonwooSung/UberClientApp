@@ -32,7 +32,7 @@ export default class LoginScreen extends React.Component {
                 if (err) {
                     console.log('error');
                 } else if (res) {
-                    console.log('success');
+                    console.log('success - AsyncStorage.getItem()');
                 }
             });
 
