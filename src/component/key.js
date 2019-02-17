@@ -1,5 +1,5 @@
 module.exports.GEOLOCATION_KEYS = {
-    Google_Place_API_KEY: ''
+    Google_Place_API_KEY: 'AIzaSyBLE_7jLaxNak19r7Qm1Ka-4ICAPeeJNbQ'
 }
 
 module.exports.FIREBASE_KEYS = {
