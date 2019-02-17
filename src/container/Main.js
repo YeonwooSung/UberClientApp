@@ -36,6 +36,18 @@ export default class MainScreen extends React.Component {
                     longitude: -2.8063431,
                 },
                 name: "James"
+            }, {
+                latlng: {
+                    latitude: 56.345054,
+                    longitude: -2.808796,
+                },
+                name: "Steve"
+            }, {
+                latlng: {
+                    latitude: 56.325054,
+                    longitude: -2.8063431,
+                },
+                name: "Tomas"
             }]
         }
     }
@@ -49,6 +61,16 @@ export default class MainScreen extends React.Component {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 console.log(position); //TODO set the current position
+
+                // set the user's location to display a map of the user’s current location
+                this.setState({
+                    region: {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        latitudeDelta: LATITUDE_DELTA,
+                        longitudeDelta: LONGITUDE_DELTA,
+                    }
+                })
             },
             (error) => console.log(error),
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
@@ -73,7 +95,7 @@ export default class MainScreen extends React.Component {
 
     componentDidMount() {
         //this.removeInfo();
-        this.getPermissionForLocationAsync();
+        //TODO this.getPermissionForLocationAsync();
     }
 
     static propTypes = {
@@ -111,6 +133,12 @@ export default class MainScreen extends React.Component {
                         </Marker>
                     ))}
                 </MapView>
+                <View style={styles.searchBarContainer}>
+                    <TextInput 
+                        style={styles.searchBar}
+                        placeholder="Type Here...">
+                    </TextInput>
+                </View>
             </View>
         );
     }
@@ -130,10 +158,17 @@ const styles = StyleSheet.create({
         width: width / 15,
         height: width / 15
     },
+    searchBarContainer: {
+        position: 'absolute',
+        top: width / 10,
+        left: width / 10,
+        width: width / 5 * 4,
+        height: width / 10
+    },
     searchBar: {
         position: 'absolute',
-        top: width / 10, //TODO need to test this
         width: width / 5 * 4,
-        height: 40, //TODO should avoid hard coding..
+        height: width / 10,
+        backgroundColor: 'white'
     }
 });
