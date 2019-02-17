@@ -1,13 +1,10 @@
 import * as firebase from 'firebase';
 
-/*
-const firebaseConfig = {
-  apiKey: "<YOUR-API-KEY>",               // Your API KEY
-  authDomain: "<YOUR-AUTH-DOMAIN>",       // Your authentication domain
-  databaseURL: "<YOUR-DATABASE-URL>",     // The URL of your DB
-  storageBucket: "<YOUR-STORAGE-BUCKET>"  // The storage bucket
-};
-*/
+
+const key = require('./key');
+
+// Initialize Firebase
+const firebaseConfig = key.FIREBASE_KEYS;
 
 
 firebase.initializeApp(firebaseConfig); //initialize the firebase app
