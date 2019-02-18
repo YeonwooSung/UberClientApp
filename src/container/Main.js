@@ -73,7 +73,9 @@ export default class MainScreen extends React.Component {
 
     static propTypes = {
         /* the navigateTo() function will be used for implementing the log out function */
-        navigateTo: PropTypes.func.isRequired
+        navigateTo: PropTypes.func.isRequired,
+        /* navigate() function will be used for navigation that navigates to the request trip screen */
+        navigate: PropTypes.func.isRequired
     }
 
 
@@ -129,8 +131,9 @@ export default class MainScreen extends React.Component {
     }
 
 
-    _onPressRequestButton = () => {
-        //TODO "reqeust trip" button pressed -> get the geolocational information of destination point -> navigate to request trip screen
+    _onPressRequestButton = (regionValue) => {
+        //TODO get the geolocational information of destination point -> navigate to request trip screen
+        this.props.navigate('Request', { region: regionValue });
     }
 
     componentDidMount() {
@@ -223,7 +226,7 @@ export default class MainScreen extends React.Component {
                 {autoCompleteValue && <View style={styles.requestTripContainer}>
                     <TouchableOpacity 
                         style={styles.requestTripButton} 
-                        onPress={this._onPressRequestButton}
+                        onPress={() => this._onPressRequestButton(autoCompleteValue)} //TODO need to test this
                     >
                         <Text style={styles.requestTripText}>
                             Request Trip

@@ -53,6 +53,7 @@ export default class Main extends React.Component {
 
     render() {
         let { screenName, isLoaded } = this.state;
+        let navigate = this.props.navigation.navigate;
 
         /* check the screen name to load the suitable screen */
         if (isLoaded) {
@@ -63,7 +64,7 @@ export default class Main extends React.Component {
             }
 
             return (
-                <MainScreen navigateTo={this.changeScreen}></MainScreen>
+                <MainScreen navigateTo={this.changeScreen} navigate={navigate}></MainScreen>
             );
         } else {
             return (
