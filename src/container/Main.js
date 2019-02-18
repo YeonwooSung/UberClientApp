@@ -1,24 +1,36 @@
 import React from 'react';
-import { 
-    StyleSheet, 
-    View, 
+import {
+    StyleSheet,
+    View,
     Dimensions,
     AsyncStorage,
     Image,
-    TextInput
+    TextInput,
+    ScrollView,
+    ActivityIndicator
 } from 'react-native';
 import { Location, Permissions } from 'expo';
 import PropTypes from 'prop-types';
 import MapView, { Marker } from 'react-native-maps';
+import { GoogleAutoComplete } from 'react-native-google-autocomplete';
 
+import LocationItem from '../component/LocationItem';
 
+/* global variables for width and height of device */
 const { width, height } = Dimensions.get('window');
 
+/* global variables for geolocational position */
 const LATITUDE_DELTA = 0.0112; //0.0922;
 const LONGITUDE_DELTA = 0.0031;
 
+/* constant to load the image */
 const TAXI_IMG = require('../../assets/taxi.png');
 
+const placeAPI_key = require('../component/key').GEOLOCATION_KEYS;
+
+/**
+ * This class renders the main screen of the uber clone app.
+ */
 export default class MainScreen extends React.Component {
     constructor(props) {
         super(props);
@@ -48,9 +60,11 @@ export default class MainScreen extends React.Component {
                     longitude: -2.8063431,
                 },
                 name: "Tomas"
-            }]
+            }],
+            autoCompleteValue: undefined
         }
     }
+
 
     removeInfo = async () => {
         await AsyncStorage.removeItem('cs3301Uber@id', (err) => { if (err) console.log(err); });
@@ -107,15 +121,19 @@ export default class MainScreen extends React.Component {
         this.setState({ region: newRegion });
     }
 
+    onAutoCompleteInput = (autoCompleteValue) => {
+        this.setState({ autoCompleteValue: autoCompleteValue });
+    }
+
     render() {
-        let { region, drivers } = this.state;
-        
+        let { region, drivers, autoCompleteValue } = this.state;
+
         return (
             <View style={styles.container}>
                 <MapView
                     region={region}
                     style={styles.mapContainer}
-                    onRegionChange={() => {this.onRegionChange()}}
+                    onRegionChange={() => { this.onRegionChange() }}
                 >
                     {drivers.map(d => (
                         <Marker
@@ -124,21 +142,55 @@ export default class MainScreen extends React.Component {
                             key={d.name}
                         >
                             <View>
-                                <Image 
-                                    source={TAXI_IMG} 
-                                    style={styles.carImage} 
-                                    onLoad={() => this.forceUpdate()} 
+                                <Image
+                                    source={TAXI_IMG}
+                                    style={styles.carImage}
+                                    onLoad={() => this.forceUpdate()}
                                 />
                             </View>
                         </Marker>
                     ))}
                 </MapView>
-                <View style={styles.searchBarContainer}>
-                    <TextInput 
-                        style={styles.searchBar}
-                        placeholder="Type Here...">
-                    </TextInput>
-                </View>
+                <GoogleAutoComplete apiKey={placeAPI_key.Google_Place_API_KEY} debounce={500}>
+                    {({
+                        handleTextChange,
+                        locationResults,
+                        fetchDetails,
+                        isSearching,
+                        inputValue
+                    }) => (
+                            <React.Fragment>
+                                {console.log('locationResults: ', locationResults)}
+                                <View style={styles.searchBarContainer}>
+                                    <TextInput
+                                        style={styles.searchBar}
+                                        placeholder="Type Here..."
+                                        onChangeText={handleTextChange}
+                                        value={inputValue}
+                                    />
+                                </View>
+                                {isSearching && <ActivityIndicator size="large" color="red" />}
+                                <ScrollView 
+                                    style={{
+                                        position: 'absolute',
+                                        top: width / 5,
+                                        left: width / 10,
+                                        width: width / 5 * 4,
+                                        height: width / 10
+                                    }}
+                                >
+                                    {locationResults.map((el, i) => (
+                                        <LocationItem
+                                            {...el}
+                                            onAutoCompleteInput={this.onAutoCompleteInput}
+                                            fetchDetails={fetchDetails}
+                                            key={String(i)}
+                                        />
+                                    ))}
+                                </ScrollView>
+                            </React.Fragment>
+                        )}
+                </GoogleAutoComplete>
             </View>
         );
     }
