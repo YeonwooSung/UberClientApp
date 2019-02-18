@@ -132,8 +132,9 @@ export default class MainScreen extends React.Component {
 
 
     _onPressRequestButton = (regionValue) => {
+        let drivers = this.state.drivers;
         //TODO get the geolocational information of destination point -> navigate to request trip screen
-        this.props.navigate('Request', { region: regionValue });
+        this.props.navigate('Request', { region: regionValue, drivers: drivers });
     }
 
     componentDidMount() {
