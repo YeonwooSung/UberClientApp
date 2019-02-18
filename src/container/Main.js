@@ -7,7 +7,9 @@ import {
     Image,
     TextInput,
     ScrollView,
-    ActivityIndicator
+    ActivityIndicator,
+    TouchableOpacity,
+    Text
 } from 'react-native';
 import { Location, Permissions } from 'expo';
 import PropTypes from 'prop-types';
@@ -15,6 +17,7 @@ import MapView, { Marker } from 'react-native-maps';
 import { GoogleAutoComplete } from 'react-native-google-autocomplete';
 
 import LocationItem from '../component/LocationItem';
+
 
 /* global variables for width and height of device */
 const { width, height } = Dimensions.get('window');
@@ -26,7 +29,9 @@ const LONGITUDE_DELTA = 0.0031;
 /* constant to load the image */
 const TAXI_IMG = require('../../assets/taxi.png');
 
+/* api key for the Google Places API, which will be used for auto completion */
 const placeAPI_key = require('../component/key').GEOLOCATION_KEYS;
+
 
 /**
  * This class renders the main screen of the uber clone app.
@@ -66,11 +71,23 @@ export default class MainScreen extends React.Component {
     }
 
 
-    removeInfo = async () => {
+    static propTypes = {
+        /* the navigateTo() function will be used for implementing the log out function */
+        navigateTo: PropTypes.func.isRequired
+    }
+
+
+    /**
+     * Implemented for the log out feature.
+     */
+    removeInfo_Async = async () => {
         await AsyncStorage.removeItem('cs3301Uber@id', (err) => { if (err) console.log(err); });
         await AsyncStorage.removeItem('cs3301Uber@pw', (err) => { if (err) console.log(err); });
     }
 
+    /**
+     * The aim of this method is to get the current location of the user asynchronously.
+     */
     getCurrentLocationAsync = () => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -91,6 +108,10 @@ export default class MainScreen extends React.Component {
         );
     }
 
+
+    /**
+     * This method gets the permission for the location asynchronously.
+     */
     getPermissionForLocationAsync = async () => {
         const isEnabled = (await Location.getProviderStatusAsync()).locationServicesEnabled;
 
@@ -107,20 +128,28 @@ export default class MainScreen extends React.Component {
         }
     }
 
+
+    _onPressRequestButton = () => {
+        //TODO "reqeust trip" button pressed -> get the geolocational information of destination point -> navigate to request trip screen
+    }
+
     componentDidMount() {
-        //this.removeInfo();
+        //this.removeInfo_Async();
         //TODO this.getPermissionForLocationAsync();
     }
 
-    static propTypes = {
-        /* the navigateTo() function will be used for implementing the log out function */
-        navigateTo: PropTypes.func.isRequired
-    }
 
+    /**
+     * Change the state of the MainScreen component when the region is changed.
+     * @param {*} newRegion 
+     */
     onRegionChange(newRegion) {
         this.setState({ region: newRegion });
     }
 
+    /**
+     * Store the auto completed value.
+     */
     onAutoCompleteInput = (autoCompleteValue) => {
         this.setState({ autoCompleteValue: autoCompleteValue });
     }
@@ -191,10 +220,21 @@ export default class MainScreen extends React.Component {
                             </React.Fragment>
                         )}
                 </GoogleAutoComplete>
+                {autoCompleteValue && <View style={styles.requestTripContainer}>
+                    <TouchableOpacity 
+                        style={styles.requestTripButton} 
+                        onPress={this._onPressRequestButton}
+                    >
+                        <Text style={styles.requestTripText}>
+                            Request Trip
+                        </Text>
+                    </TouchableOpacity>
+                </View>}
             </View>
         );
     }
 }
+
 
 const styles = StyleSheet.create({
     container: {
@@ -202,6 +242,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     mapContainer: {
+        ...StyleSheet.absoluteFillObject, //TODO need to test
         flex: 1,
         width: width,
         height: height,
@@ -222,5 +263,14 @@ const styles = StyleSheet.create({
         width: width / 5 * 4,
         height: width / 10,
         backgroundColor: 'white'
+    },
+    requestTripContainer: {
+        //TODO
+    },
+    requestTripButton: {
+        //TODO
+    },
+    requestTripText: {
+        //TODO
     }
 });
