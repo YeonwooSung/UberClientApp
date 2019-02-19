@@ -266,7 +266,7 @@ export default class MainScreen extends React.Component {
                 {selected && <View style={styles.requestTripContainer}>
                     <TouchableOpacity 
                         style={styles.requestTripButton} 
-                        onPress={() => this._onPressRequestButton(autoCompleteValue)} //TODO need to test this
+                        onPress={() => this._onPressRequestButton(autoCompleteValue)}
                     >
                         <Text style={styles.requestTripText}>
                             Request Trip
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     mapContainer: {
-        ...StyleSheet.absoluteFillObject, //TODO need to test
+        ...StyleSheet.absoluteFillObject,
         flex: 1,
         width: width,
         height: height,
