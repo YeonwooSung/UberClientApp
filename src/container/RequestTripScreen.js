@@ -63,13 +63,15 @@ export default class RequestTripScreen extends React.Component {
 
         let destinationStr = "Destination: " + destination
 
+        //TODO need to calculate the "estimated time for journey"
+
         return (
             <View style={styles.container}>
                 <Image style={styles.logoImage} source={require('../../assets/logo.png')} />
                 <View style={styles.textContainer}>
                     <Text style={styles.pickUpRegionText}>Pick Up: Your current location</Text>
                     <Text style={styles.destinationText}>{destinationStr}</Text>
-                    <Text style={styles.journeyTimeText}>{'Time for journey: '}</Text>
+                    <Text style={styles.journeyTimeText}>{'Estimated time for journey: '}</Text>
                 </View>
                 <ScrollView>
                     {availableDrivers.map(d => (
