@@ -2,8 +2,7 @@ import React from 'react'
 import {
     View,
     StyleSheet,
-    Text,
-    ScrollView,
+    ActivityIndicator,
     Dimensions,
     Image
 } from 'react-native';
@@ -31,12 +30,26 @@ export default class JourneyScreen extends React.Component {
             longitudeDelta: LONGITUDE_DELTA,
         },
         coords: [],
-        isLoaded: false
+        isLoaded: false,
+        pickUpLocation: undefined,
+        destinationLocation: undefined
+    }
+
+    /* Make the navigation header invisible. */
+    static navigationOptions = {
+        header: null
+    };
+
+    // Define the type of props.
+    static propTypes = {
+        pickUpLocation: PropTypes.object.isRequired,
+        destinationLocation: PropTypes.object.isRequired
     }
 
 
     /**
      * This method gets the direction of the polyline by using the google directions API.
+     * The polyline will be drawn along the way of the journey.
      */
     getDirections = async (startLoc, destinationLoc) => {
         try {
@@ -57,7 +70,13 @@ export default class JourneyScreen extends React.Component {
     }
 
 
-    componentDidMount = (pickUp, destination) => {
+    componentDidMount = () => {
+        const { pickUpLocation, destinationLocation } = this.props;
+
+        this.setState({pickUpLocation: pickUpLocation, destinationLocation: destinationLocation});
+
+        const pickUp = pickUpLocation.latitude + ', ' + pickUpLocation.longitude;
+        const destination = destinationLocation.latitude + ', ' + destinationLocation.longitude;
 
         // The parameters should be string that contains latitude and longitude
         // i.e. "40.1884979, 29.061018"
@@ -85,12 +104,14 @@ export default class JourneyScreen extends React.Component {
                     style={styles.mapContainer}
                     onRegionChange={() => { this.onRegionChange() }}
                 >
-                    {isLoaded &&
+                    {isLoaded ? 
                     <MapView.Polyline
                         coordinates={coords}
                         strokeWidth={2}
                         strokeColor="blue" 
-                    />
+                    /> 
+                    : 
+                    <ActivityIndicator size="large" color="red" />
                     }
                 </MapView>
             </View>
