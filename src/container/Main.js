@@ -15,6 +15,7 @@ import { Location, Permissions } from 'expo';
 import PropTypes from 'prop-types';
 import MapView, { Marker } from 'react-native-maps';
 import { GoogleAutoComplete } from 'react-native-google-autocomplete';
+import uuidv1 from 'uuid/v1';
 
 import LocationItem from '../component/LocationItem';
 
@@ -66,7 +67,12 @@ export default class MainScreen extends React.Component {
                 },
                 name: "Tomas"
             }],
-            autoCompleteValue: undefined
+            autoCompleteValue: undefined,
+            selectedDestination: {
+                latitude: 56.34026,
+                longitude: -2.808796,
+            },
+            selected: false
         }
     }
 
@@ -132,10 +138,16 @@ export default class MainScreen extends React.Component {
 
 
     _onPressRequestButton = (regionValue) => {
-        let drivers = this.state.drivers;
+        let {region, drivers, selectedDestination} = this.state;
         //TODO get the geolocational information of destination point -> navigate to request trip screen
-        this.props.navigate('Request', { region: regionValue, drivers: drivers });
+        this.props.navigate('Request', {
+            pickUpLocation: region, 
+            destination: regionValue, 
+            drivers: drivers,
+            destinationGeolocation: selectedDestination
+        });
     }
+
 
     componentDidMount() {
         //this.removeInfo_Async();
@@ -151,15 +163,31 @@ export default class MainScreen extends React.Component {
         this.setState({ region: newRegion });
     }
 
+
+    /**
+     * Set the latitude and longitude of destination.
+     */
+    setDestinationLatLng = (lat, lng) => {
+        this.setState({
+            selectedDestination: {
+                latitude: lat, 
+                longitude: lng
+            }, 
+            selected: true
+        });
+    }
+
+
     /**
      * Store the auto completed value.
      */
     onAutoCompleteInput = (autoCompleteValue) => {
+        console.log('autoCompleteInput: ', autoCompleteValue);
         this.setState({ autoCompleteValue: autoCompleteValue });
     }
 
     render() {
-        let { region, drivers, autoCompleteValue } = this.state;
+        let { region, drivers, autoCompleteValue, selected } = this.state;
 
         return (
             <View style={styles.container}>
@@ -184,7 +212,11 @@ export default class MainScreen extends React.Component {
                         </Marker>
                     ))}
                 </MapView>
-                <GoogleAutoComplete apiKey={placeAPI_key.Google_Place_API_KEY} debounce={500}>
+                <GoogleAutoComplete 
+                    apiKey={placeAPI_key.Google_Place_API_KEY} 
+                    debounce={300} components="country:uk" 
+                    queryTypes='geocode' 
+                >
                     {({
                         handleTextChange,
                         locationResults,
@@ -193,7 +225,6 @@ export default class MainScreen extends React.Component {
                         inputValue
                     }) => (
                             <React.Fragment>
-                                {console.log('locationResults: ', locationResults)}
                                 <View style={styles.searchBarContainer}>
                                     <TextInput
                                         style={styles.searchBar}
@@ -203,28 +234,31 @@ export default class MainScreen extends React.Component {
                                     />
                                 </View>
                                 {isSearching && <ActivityIndicator size="large" color="red" />}
-                                <ScrollView 
-                                    style={{
+                                {!selected && <ScrollView 
+                                    style={locationResults.length != 0 ? {
                                         position: 'absolute',
                                         top: width / 5,
                                         left: width / 10,
                                         width: width / 5 * 4,
-                                        height: width / 10
-                                    }}
+                                        height: (locationResults.length > 4 ? width / 2 : (
+                                            locationResults.length > 1 ? width / 5 : width / 10
+                                        )),
+                                    } : {width: 0, height: 0}}
                                 >
-                                    {locationResults.map((el, i) => (
+                                    {locationResults.map(el => (
                                         <LocationItem
                                             {...el}
                                             onAutoCompleteInput={this.onAutoCompleteInput}
-                                            fetchDetails={fetchDetails}
-                                            key={String(i)}
+                                            fetchDetails={fetchDetails} 
+                                            setDestinationLatLng={this.setDestinationLatLng} 
+                                            key={uuidv1()}
                                         />
                                     ))}
-                                </ScrollView>
+                                </ScrollView>}
                             </React.Fragment>
                         )}
                 </GoogleAutoComplete>
-                {autoCompleteValue && <View style={styles.requestTripContainer}>
+                {selected && <View style={styles.requestTripContainer}>
                     <TouchableOpacity 
                         style={styles.requestTripButton} 
                         onPress={() => this._onPressRequestButton(autoCompleteValue)} //TODO need to test this
@@ -269,12 +303,26 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     requestTripContainer: {
-        //TODO
+        width: width / 3,
+        height: width /8,
+        position: 'absolute',
+        top: height / 10 * 8,
+        left: width / 3,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     requestTripButton: {
-        //TODO
+        position: 'absolute',
+        width: width / 3,
+        height: width / 8,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#1a3f95',
+        borderRadius: 25,
     },
     requestTripText: {
-        //TODO
+        color: 'white',
+        fontSize: width / 25,
+        textAlign: 'center'
     }
 });
