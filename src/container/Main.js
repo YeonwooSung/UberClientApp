@@ -53,19 +53,22 @@ export default class MainScreen extends React.Component {
                     latitude: 56.335054,
                     longitude: -2.8063431,
                 },
-                name: "James"
+                name: "James",
+                phoneNum: '08789393456'
             }, {
                 latlng: {
                     latitude: 56.345054,
                     longitude: -2.808796,
                 },
-                name: "Steve"
+                name: "Steve",
+                phoneNum: '08789245676'
             }, {
                 latlng: {
                     latitude: 56.325054,
                     longitude: -2.8063431,
                 },
-                name: "Tomas"
+                name: "Tomas",
+                phoneNum: '08780987654'
             }],
             autoCompleteValue: undefined,
             selectedDestination: {
@@ -138,8 +141,10 @@ export default class MainScreen extends React.Component {
 
 
     _onPressRequestButton = (regionValue) => {
+        this.setState({selected: false}); //TODO need to test this
+
         let {region, drivers, selectedDestination} = this.state;
-        //TODO get the geolocational information of destination point -> navigate to request trip screen
+
         this.props.navigate('Request', {
             pickUpLocation: region, 
             destination: regionValue, 

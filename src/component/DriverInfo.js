@@ -25,12 +25,15 @@ export default class DriverInfo extends React.PureComponent {
     };
 
     render() {
+        let {driver} = this.props;
+
+        let { latlng, name, phoneNum } = driver;
+
         return (
             <View style={styles.container}>
                 <TouchableOpacity style={styles.driverInfoButton} onPress={() => this.handlePress}>
-                    <Text>
-                        {this.props.description}
-                    </Text>
+                    <Text>{'Name: ' + name}</Text>
+                    <Text>{'Contact Num: ' + phoneNum}</Text>
                 </TouchableOpacity>
             </View>
         );

@@ -27,7 +27,8 @@ export default class RequestTripScreen extends React.Component {
         destination: undefined,
         destinationGeolocation: undefined,
         availableDrivers: [],
-        driver: undefined
+        driver: undefined,
+        selected: false
     }
 
     /* Make the navigation header invisible. */
@@ -48,27 +49,38 @@ export default class RequestTripScreen extends React.Component {
             destinationGeolocation: destinationGeolocation 
         });
 
-        console.log('destination', destination)
+        console.log('destination', destination);
+    }
+
+
+    selectDriver = (driver) => {
+        this.setState({driver: driver, selected: true});
     }
 
 
     render() {
-        let { destination, availableDrivers } = this.state;
+        let { destination, availableDrivers, driver, selected } = this.state;
 
-        let destinationStr = "Destination: "
+        let destinationStr = "Destination: " + destination
 
         return (
             <View style={styles.container}>
                 <Image style={styles.logoImage} source={require('../../assets/logo.png')} />
                 <View style={styles.textContainer}>
-                    <Text style={styles.regionText}>Pick Up: Your current location</Text>
-                    <Text style={styles.regionText}>{destinationStr}</Text>
+                    <Text style={styles.pickUpRegionText}>Pick Up: Your current location</Text>
+                    <Text style={styles.destinationText}>{destinationStr}</Text>
+                    <Text style={styles.journeyTimeText}>{'Time for journey: '}</Text>
                 </View>
                 <ScrollView>
                     {availableDrivers.map(d => (
                         <DriverInfo driver={d} key={uuidv1()} />
                     ))}
                 </ScrollView>
+                {selected &&
+                <View>
+                    <Text>{'Your driver is ' + driver.name}</Text>
+                </View>
+                }
             </View>
         )
     }
@@ -93,8 +105,20 @@ const styles = StyleSheet.create({
         width: width,
         height: height / 4
     },
-    regionText: {
+    pickUpRegionText: {
         fontSize: width / 20,
+        fontWeight: '500',
+        textAlign: 'center',
+        marginBottom: height / 20
+    },
+    destinationText: {
+        fontSize: width / 25,
+        fontWeight: '500',
+        textAlign: 'center',
+        marginBottom: height / 20
+    },
+    journeyTimeText: {
+        fontSize: width / 25,
         fontWeight: '500',
         textAlign: 'center',
         marginBottom: height / 20
