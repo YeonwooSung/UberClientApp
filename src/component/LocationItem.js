@@ -3,7 +3,8 @@ import {
     TouchableOpacity,
     Text,
     StyleSheet,
-    Dimensions
+    Dimensions,
+    Alert
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -36,12 +37,24 @@ export default class LocationItem extends React.PureComponent {
             const lat = res['geometry']['location']['lat'];
             const lng = res['geometry']['location']['lng'];
 
-            console.log('latitude', lat)
-            console.log('longitude', lng)
-
             this.props.setDestinationLatLng(lat, lng);
         } else {
-            alert('Failed to get location info');
+            Alert.alert(
+                'Error: fetch failed',
+                'Failed to get geolocation data dynamically',
+                [
+                    {
+                        text: 'retry', 
+                        onPress: async () => { 
+                            await this.handlePress() 
+                        }
+                    },
+                    {
+                        text: 'ok', 
+                        onPress: () => alert('Please try again!')
+                    }
+                ]
+            )
         }
     };
 
