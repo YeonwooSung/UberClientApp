@@ -102,8 +102,6 @@ export default class MainScreen extends React.Component {
     getCurrentLocationAsync = () => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                console.log(position); //TODO set the current position
-
                 // set the user's location to display a map of the user’s current location
                 this.setState({
                     region: {
@@ -235,11 +233,12 @@ export default class MainScreen extends React.Component {
                                         style={styles.searchBar}
                                         placeholder="Type Here..."
                                         onChangeText={handleTextChange}
-                                        value={inputValue}
+                                        value={inputValue} //TODO change the value to selected location
                                     />
                                 </View>
                                 {isSearching && <ActivityIndicator size="large" color="red" />}
-                                {!selected && <ScrollView 
+                                {!selected && 
+                                <ScrollView 
                                     style={locationResults.length != 0 ? {
                                         position: 'absolute',
                                         top: width / 5,
