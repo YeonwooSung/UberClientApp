@@ -5,9 +5,12 @@ import {
     Text,
     ScrollView,
     Dimensions,
-    Image
+    Image,
+    TouchableOpacity,
+    Alert
 } from 'react-native';
 import uuidv1 from 'uuid/v1';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 import DriverInfo from '../component/DriverInfo';
 
@@ -28,7 +31,11 @@ export default class RequestTripScreen extends React.Component {
         destinationGeolocation: undefined,
         availableDrivers: [],
         driver: undefined,
-        selected: false
+        selected: false,
+        isDatePickerVisible: false,
+        isDatePicked: false,
+        pickedTime: '',
+        timeString: ''
     }
 
     /* Make the navigation header invisible. */
@@ -48,22 +55,68 @@ export default class RequestTripScreen extends React.Component {
             availableDrivers: availableDrivers, 
             destinationGeolocation: destinationGeolocation 
         });
-
-        console.log('destination', destination);
     }
 
-
+    
+    // select the driver
     selectDriver = (driver) => {
         this.setState({driver: driver, selected: true});
     }
 
+    // Make the date time picker visible
+    showDateTimePicker = () => {
+        this.setState({ isDatePickerVisible: true });
+    }
+
+    // Make the date time picker invisible
+    hideDateTimePicker = () => {
+        this.setState({ isDatePickerVisible: false });
+    }
+
+
+    // Check if the picked time is valid,
+    handleTimePicked = (time) => {
+        let cur = new Date();
+
+        if (time > cur) {
+            let timeString = time.toString().split(' GMT')[0];
+
+            this.setState({pickedTime: time, isDatePicked: true, timeString: timeString});
+            this.hideDateTimePicker();
+        } else {
+            //alert the user to re-pick the journey time
+            Alert.alert(
+                'Error: Invalid time',
+                'Please pick the time again!',
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => {
+                            this.hideDateTimePicker();
+                        }
+                    }
+                ]
+            );
+
+        }
+    };
+
+
+    navigateToCheckRequest = () => {
+        let {pickedTime} = this.state;
+
+        this.props.navigation.navigate('CheckRequest', {
+            time: pickedTime, //TODO parameters
+        });
+    }
+
 
     render() {
-        let { destination, availableDrivers, driver, selected } = this.state;
+        let { destination, availableDrivers, driver, selected, isDatePickerVisible, isDatePicked, timeString } = this.state;
 
         let destinationStr = "Destination: " + destination
 
-        //TODO need to calculate the "estimated time for journey"
+        //Time picker for the journey time
 
         return (
             <View style={styles.container}>
@@ -71,7 +124,12 @@ export default class RequestTripScreen extends React.Component {
                 <View style={styles.textContainer}>
                     <Text style={styles.pickUpRegionText}>Pick Up: Your current location</Text>
                     <Text style={styles.destinationText}>{destinationStr}</Text>
-                    <Text style={styles.journeyTimeText}>{'Estimated time for journey: '}</Text>
+                    <TouchableOpacity 
+                        style={styles.timePickerButton}
+                        onPress={() => this.showDateTimePicker()}
+                    >
+                        <Text style={styles.journeyTimeText}>{isDatePicked ? timeString : 'Press to pick the journey time!'}</Text>
+                    </TouchableOpacity>
                 </View>
                 <ScrollView
                     contentContainerStyle={{ //TODO need to test this
@@ -79,6 +137,7 @@ export default class RequestTripScreen extends React.Component {
                         height: (availableDrivers.length > 3 ? 
                             (width / 5 * 3) : (width / 5 * availableDrivers.length)
                         ),
+                        marginTop: width / 10,
                         marginBottom: width / 10,
                         borderColor: 'black',
                         borderWidth: 1.0,
@@ -93,6 +152,13 @@ export default class RequestTripScreen extends React.Component {
                     <Text>{'Your driver is ' + driver.name}</Text>
                 </View>
                 }
+                <DateTimePicker
+                    isVisible={isDatePickerVisible}
+                    onConfirm={(res) => this.handleTimePicked(res)}
+                    onCancel={() => this.hideDateTimePicker()}
+                    datePickerModeAndroid='spinner'
+                    mode='time'
+                />
             </View>
         )
     }
@@ -132,7 +198,16 @@ const styles = StyleSheet.create({
     journeyTimeText: {
         fontSize: width / 25,
         fontWeight: '500',
-        textAlign: 'center',
-        marginBottom: width / 15
+        textAlign: 'center'
+    },
+    timePickerButton: {
+        marginBottom: width / 15,
+        width: width / 5 * 4,
+        height: width / 10,
+        marginBottom: width / 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: 'black',
+        borderWidth: 0.6
     }
 });
