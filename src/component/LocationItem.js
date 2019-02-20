@@ -28,23 +28,27 @@ export default class LocationItem extends React.PureComponent {
         changeInputValue: PropTypes.func.isRequired
     }
 
+
+    /* Gets the latitude and longitude of the selected region asynchronously by using the google places api */
     handlePress = async () => {
         this.setState({selected: true});
 
         let {fetchDetails, onAutoCompleteInput, setDestinationLatLng, description, changeInputValue} = this.props;
 
-        changeInputValue(description);
+        changeInputValue(description); //change the value of the text input
 
-        onAutoCompleteInput(description);
+        onAutoCompleteInput(description); //store the name of the selected region
 
-        const res = await fetchDetails(this.props.place_id);
+        const res = await fetchDetails(this.props.place_id); //get the region data by using the google places api
 
+        //check if the result of the google places api is undefined
         if (res) {
             const lat = res['geometry']['location']['lat'];
             const lng = res['geometry']['location']['lng'];
 
-            setDestinationLatLng(lat, lng);
+            setDestinationLatLng(lat, lng); //store the geolocational information of selected destination
         } else {
+            //alert the user when the fetchDetails() method fails to get the geolocation data
             Alert.alert(
                 'Error: fetch failed',
                 'Failed to get geolocation data dynamically',

@@ -57,7 +57,7 @@ export default class RequestTripScreen extends React.Component {
         });
     }
 
-    
+
     // select the driver
     selectDriver = (driver) => {
         this.setState({driver: driver, selected: true});
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
         width: height / 6,
         height: height / 6,
         marginBottom: width / 10,
-        marginTop: height / 30
+        marginTop: width / 15
     },
     textContainer: {
         flex: 1,
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
         fontSize: width / 20,
         fontWeight: '500',
         textAlign: 'center',
-        marginBottom: width / 15
+        marginBottom: width / 20
     },
     destinationText: {
         fontSize: width / 25,
