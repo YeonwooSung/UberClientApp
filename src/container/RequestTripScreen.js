@@ -73,7 +73,17 @@ export default class RequestTripScreen extends React.Component {
                     <Text style={styles.destinationText}>{destinationStr}</Text>
                     <Text style={styles.journeyTimeText}>{'Estimated time for journey: '}</Text>
                 </View>
-                <ScrollView>
+                <ScrollView
+                    style={{
+                        width: width * 4 / 5,
+                        height: (availableDrivers.length > 3 ? 
+                            (width / 5 * 4) : (width / 5 * availableDrivers.length)
+                        ),
+                        marginBottom: width / 10,
+                        borderColor: 'black',
+                        borderWidth: 1.0,
+                    }}
+                >
                     {availableDrivers.map(d => (
                         <DriverInfo driver={d} selectDriver={this.selectDriver} key={uuidv1()} />
                     ))}

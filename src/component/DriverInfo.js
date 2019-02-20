@@ -52,11 +52,20 @@ export default class DriverInfo extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        width: width / 5 * 4,
+        height: width / 5,
+        borderBottomWidth: 0.5,
+        borderBottomColor: 'black',
+        backgroundColor: 'lightgrey'
     },
     container_selected: {
         backgroundColor: 'lightgreen',
-        flex: 1
+        flex: 1,
+        width: width / 5 * 4,
+        height: width / 5,
+        borderBottomWidth: 0.5,
+        borderBottomColor: 'black',
     },
     driverInfoButton: {
         justifyContent: 'center',
@@ -66,8 +75,6 @@ const styles = StyleSheet.create({
         fontSize: width / 28,
         fontWeight: '200',
         textAlign: 'center',
-        marginBottom: height / 20,
-        borderBottomWidth: 0.5,
-        borderBottomColor: 'black',
+        marginBottom: width / 20,
     }
 });

@@ -83,6 +83,6 @@ const styles = StyleSheet.create({
         height: width / 10,
         borderBottomWidth: StyleSheet.hairlineWidth,
         justifyContent: 'center',
-        backgroundColor: '#0bef81'
+        backgroundColor: 'blue'
     }
 });
