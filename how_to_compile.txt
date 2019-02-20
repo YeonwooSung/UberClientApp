@@ -1,0 +1,30 @@
+I used the expo with react-native to implement this uber app.
+
+Thus, you need to install the expo-cli first.
+
+    1) npm install expo-cli -g
+
+Then, you need to install the used modules by using npm.
+
+    2) npm install
+
+After installing the node modules, you can compile the app now.
+
+To compile the react native project with expo, you need to sign up to the expo.
+
+Link to the expo site: "https://expo.io"
+
+If you don't want to sign up, then you could use this account:
+    user_name: cs3301_p1
+    password: helloworld123
+
+
+Now, use the "expo build:android" command to build the app.
+
+    3) expo build:android
+
+//TODO
+
+
+To get more information about building stand alone app with expo, please go to the link below:
+    https://docs.expo.io/versions/latest/distribution/building-standalone-apps/
