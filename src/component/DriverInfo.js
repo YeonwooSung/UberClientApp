@@ -11,29 +11,38 @@ import PropTypes from 'prop-types';
 
 const { width, height } = Dimensions.get('window');
 
-export default class DriverInfo extends React.PureComponent {
+export default class DriverInfo extends React.Component {
     constructor(props) {
         super(props);
     }
 
-    static propTypes = {
-        driver: PropTypes.object.isRequired
+    state = {
+        isSelected: false
     }
 
-    handlePress = async () => {
-        //TODO
+    static propTypes = {
+        driver: PropTypes.object.isRequired,
+        selectDriver: PropTypes.func.isRequired
+    }
+
+    handlePress = async (driver) => {
+        this.props.selectDriver(driver);
     };
 
     render() {
         let {driver} = this.props;
+        let {isSelected} = this.state;
 
-        let { latlng, name, phoneNum } = driver;
+        let { name, phoneNum } = driver;
 
         return (
-            <View style={styles.container}>
-                <TouchableOpacity style={styles.driverInfoButton} onPress={() => this.handlePress}>
-                    <Text>{'Name: ' + name}</Text>
-                    <Text>{'Contact Num: ' + phoneNum}</Text>
+            <View style={isSelected ? styles.container_selected :styles.container}>
+                <TouchableOpacity 
+                    style={styles.driverInfoButton} 
+                    onPress={() => {this.handlePress(driver)}}
+                >
+                    <Text style={styles.driverInfoText}>{'Name: ' + name}</Text>
+                    <Text style={styles.driverInfoText}>{'Contact Num: ' + phoneNum}</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -45,8 +54,20 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
+    container_selected: {
+        backgroundColor: 'lightgreen',
+        flex: 1
+    },
     driverInfoButton: {
         justifyContent: 'center',
         alignItems: 'center',
     },
+    driverInfoText: {
+        fontSize: width / 28,
+        fontWeight: '200',
+        textAlign: 'center',
+        marginBottom: height / 20,
+        borderBottomWidth: 0.5,
+        borderBottomColor: 'black',
+    }
 });

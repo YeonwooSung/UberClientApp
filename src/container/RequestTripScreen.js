@@ -75,7 +75,7 @@ export default class RequestTripScreen extends React.Component {
                 </View>
                 <ScrollView>
                     {availableDrivers.map(d => (
-                        <DriverInfo driver={d} key={uuidv1()} />
+                        <DriverInfo driver={d} selectDriver={this.selectDriver} key={uuidv1()} />
                     ))}
                 </ScrollView>
                 {selected &&
