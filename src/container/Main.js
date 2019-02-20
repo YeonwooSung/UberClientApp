@@ -193,7 +193,6 @@ export default class MainScreen extends React.Component {
      * Store the auto completed value.
      */
     onAutoCompleteInput = (autoCompleteValue) => {
-        console.log('autoCompleteInput: ', autoCompleteValue);
         this.setState({ autoCompleteValue: autoCompleteValue });
     }
 
@@ -240,7 +239,6 @@ export default class MainScreen extends React.Component {
                                         style={styles.searchBar}
                                         placeholder="Type Here..."
                                         onChangeText={(text) => {
-                                            console.log(text);
                                             handleTextChange(text);
                                             this.changeInputValue(text);
                                         }}
