@@ -24,8 +24,9 @@ import LocationItem from '../component/LocationItem';
 const { width, height } = Dimensions.get('window');
 
 /* global variables for geolocational position */
-const LATITUDE_DELTA = 0.0112; //0.0922;
-const LONGITUDE_DELTA = 0.0031;
+const ASPECT_RATIO = width / height;
+const LATITUDE_DELTA = 0.0112;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 /* constant to load the image */
 const TAXI_IMG = require('../../assets/taxi.png');
@@ -75,7 +76,8 @@ export default class MainScreen extends React.Component {
                 latitude: 56.34026,
                 longitude: -2.808796,
             },
-            selected: false
+            selected: false,
+            inputTextValue: ''
         }
     }
 
@@ -181,6 +183,12 @@ export default class MainScreen extends React.Component {
     }
 
 
+    /* change the input text */
+    changeInputValue = (text) => {
+        this.setState({inputTextValue: text});
+    }
+
+
     /**
      * Store the auto completed value.
      */
@@ -190,7 +198,7 @@ export default class MainScreen extends React.Component {
     }
 
     render() {
-        let { region, drivers, autoCompleteValue, selected } = this.state;
+        let { region, drivers, autoCompleteValue, selected, inputTextValue } = this.state;
 
         return (
             <View style={styles.container}>
@@ -224,16 +232,19 @@ export default class MainScreen extends React.Component {
                         handleTextChange,
                         locationResults,
                         fetchDetails,
-                        isSearching,
-                        inputValue
+                        isSearching
                     }) => (
                             <React.Fragment>
                                 <View style={styles.searchBarContainer}>
                                     <TextInput
                                         style={styles.searchBar}
                                         placeholder="Type Here..."
-                                        onChangeText={handleTextChange}
-                                        value={inputValue} //TODO change the value to selected location
+                                        onChangeText={(text) => {
+                                            console.log(text);
+                                            handleTextChange(text);
+                                            this.changeInputValue(text);
+                                        }}
+                                        value={inputTextValue}
                                     />
                                 </View>
                                 {isSearching && <ActivityIndicator size="large" color="red" />}
@@ -255,6 +266,7 @@ export default class MainScreen extends React.Component {
                                             onAutoCompleteInput={this.onAutoCompleteInput}
                                             fetchDetails={fetchDetails} 
                                             setDestinationLatLng={this.setDestinationLatLng} 
+                                            changeInputValue={this.changeInputValue} 
                                             key={uuidv1()}
                                         />
                                     ))}

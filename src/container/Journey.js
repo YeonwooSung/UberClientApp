@@ -94,6 +94,7 @@ export default class JourneyScreen extends React.Component {
         this.setState({ region: newRegion });
     }
 
+
     render() {
         const { region, coords, isLoaded } = this.state;
 
@@ -104,11 +105,12 @@ export default class JourneyScreen extends React.Component {
                     style={styles.mapContainer}
                     onRegionChange={() => { this.onRegionChange() }}
                 >
-                    {isLoaded ? 
+                    {isLoaded ? //check if the coordinates are loaded
                     <MapView.Polyline
-                        coordinates={coords}
-                        strokeWidth={2}
+                        coordinates={coords} 
+                        strokeWidth={2} 
                         strokeColor="blue" 
+                        fillColor="blue" 
                     /> 
                     : 
                     <ActivityIndicator size="large" color="red" />

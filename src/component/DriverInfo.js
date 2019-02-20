@@ -25,9 +25,13 @@ export default class DriverInfo extends React.Component {
         selectDriver: PropTypes.func.isRequired
     }
 
+
+    /* the event listener, which will call the selectDriver() method of RequestTripScreen class. */
     handlePress = async (driver) => {
+        this.setState({isSelected: true});
         this.props.selectDriver(driver);
     };
+
 
     render() {
         let {driver} = this.props;

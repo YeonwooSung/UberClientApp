@@ -74,10 +74,10 @@ export default class RequestTripScreen extends React.Component {
                     <Text style={styles.journeyTimeText}>{'Estimated time for journey: '}</Text>
                 </View>
                 <ScrollView
-                    style={{
+                    contentContainerStyle={{ //TODO need to test this
                         width: width * 4 / 5,
                         height: (availableDrivers.length > 3 ? 
-                            (width / 5 * 4) : (width / 5 * availableDrivers.length)
+                            (width / 5 * 3) : (width / 5 * availableDrivers.length)
                         ),
                         marginBottom: width / 10,
                         borderColor: 'black',
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     logoImage: {
         width: height / 6,
         height: height / 6,
-        marginBottom: height / 20,
+        marginBottom: width / 10,
         marginTop: height / 30
     },
     textContainer: {
@@ -121,18 +121,18 @@ const styles = StyleSheet.create({
         fontSize: width / 20,
         fontWeight: '500',
         textAlign: 'center',
-        marginBottom: height / 20
+        marginBottom: width / 15
     },
     destinationText: {
         fontSize: width / 25,
         fontWeight: '500',
         textAlign: 'center',
-        marginBottom: height / 20
+        marginBottom: width / 15
     },
     journeyTimeText: {
         fontSize: width / 25,
         fontWeight: '500',
         textAlign: 'center',
-        marginBottom: height / 20
+        marginBottom: width / 15
     }
 });

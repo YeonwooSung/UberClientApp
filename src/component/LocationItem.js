@@ -24,20 +24,26 @@ export default class LocationItem extends React.PureComponent {
         fetchDetails: PropTypes.func.isRequired,
         onAutoCompleteInput: PropTypes.func.isRequired,
         setDestinationLatLng: PropTypes.func.isRequired,
-        description: PropTypes.string
+        description: PropTypes.string,
+        changeInputValue: PropTypes.func.isRequired
     }
 
     handlePress = async () => {
         this.setState({selected: true});
 
-        this.props.onAutoCompleteInput(this.props.description);
-        const res = await this.props.fetchDetails(this.props.place_id);
+        let {fetchDetails, onAutoCompleteInput, setDestinationLatLng, description, changeInputValue} = this.props;
+
+        changeInputValue(description);
+
+        onAutoCompleteInput(description);
+
+        const res = await fetchDetails(this.props.place_id);
 
         if (res) {
             const lat = res['geometry']['location']['lat'];
             const lng = res['geometry']['location']['lng'];
 
-            this.props.setDestinationLatLng(lat, lng);
+            setDestinationLatLng(lat, lng);
         } else {
             Alert.alert(
                 'Error: fetch failed',
