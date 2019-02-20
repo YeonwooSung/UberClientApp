@@ -116,8 +116,6 @@ export default class RequestTripScreen extends React.Component {
 
         let destinationStr = "Destination: " + destination
 
-        //Time picker for the journey time
-
         return (
             <View style={styles.container}>
                 <Image style={styles.logoImage} source={require('../../assets/logo.png')} />
@@ -149,7 +147,12 @@ export default class RequestTripScreen extends React.Component {
                 </ScrollView>
                 {selected &&
                 <View>
-                    <Text>{'Your driver is ' + driver.name}</Text>
+                    <TouchableOpacity
+                        onPress={() => this.navigateToCheckRequest()}
+                        style={styles.navigateButton}
+                    >
+                        <Text>{'request journey to ' + driver.name}</Text>
+                    </TouchableOpacity>
                 </View>
                 }
                 <DateTimePicker
@@ -209,5 +212,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderColor: 'black',
         borderWidth: 0.6
+    },
+    navigateButton: {
+        width: width * 4 / 5,
+        height: height / 15,
+        backgroundColor: '#a8a9ad',
+        borderRadius: 25,
+        marginVertical: 10,
+        paddingVertical: 5,
+        justifyContent: 'center'
     }
 });
