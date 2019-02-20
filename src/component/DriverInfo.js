@@ -17,7 +17,8 @@ export default class DriverInfo extends React.Component {
     }
 
     state = {
-        isSelected: false
+        isSelected: false,
+        rating: 0
     }
 
     static propTypes = {
@@ -33,11 +34,38 @@ export default class DriverInfo extends React.Component {
     };
 
 
+    componentDidMount = () => {
+        //Calculate the average value of ratings of the given driver.
+        //---------------------------------------------------------------
+        let {ratings} = this.props.driver;
+
+        let i;
+        let totalRating = 0;
+
+        for (i = 0; i < ratings.length; i++) {
+            totalRating += ratings[i];
+        }
+
+        let avgRating = totalRating / ratings.length;
+
+        this.setState({ rating: avgRating});
+        //---------------------------------------------------------------
+    }
+
+
     render() {
         let {driver} = this.props;
-        let {isSelected} = this.state;
+        let {isSelected, rating} = this.state;
 
         let { name, phoneNum } = driver;
+
+        let ratingVal; //TODO need to test rating
+
+        if (rating > 0) {
+            ratingVal = 'Rating: '+ rating;
+        } else {
+            ratingVal = 'No ratings';
+        }
 
         return (
             <View style={isSelected ? styles.container_selected :styles.container}>
@@ -47,6 +75,7 @@ export default class DriverInfo extends React.Component {
                 >
                     <Text style={styles.driverInfoText}>{'Name: ' + name}</Text>
                     <Text style={styles.driverInfoText}>{'Contact Num: ' + phoneNum}</Text>
+                    <Text style={styles.driverInfoText}>{ratingVal}</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -79,6 +108,6 @@ const styles = StyleSheet.create({
         fontSize: width / 28,
         fontWeight: '200',
         textAlign: 'center',
-        marginBottom: width / 20,
+        marginBottom: width / 25,
     }
 });

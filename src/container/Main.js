@@ -55,21 +55,24 @@ export default class MainScreen extends React.Component {
                     longitude: -2.8063431,
                 },
                 name: "James",
-                phoneNum: '08789393456'
+                phoneNum: '08789393456',
+                ratings: [3, 4, 3]
             }, {
                 latlng: {
                     latitude: 56.345054,
                     longitude: -2.808796,
                 },
                 name: "Steve",
-                phoneNum: '08789245676'
+                phoneNum: '08789245676',
+                ratings: [5, 4]
             }, {
                 latlng: {
                     latitude: 56.325054,
                     longitude: -2.8063431,
                 },
                 name: "Tomas",
-                phoneNum: '08780987654'
+                phoneNum: '08780987654',
+                ratings: []
             }],
             autoCompleteValue: undefined,
             selectedDestination: {
