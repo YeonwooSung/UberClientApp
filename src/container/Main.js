@@ -99,7 +99,10 @@ export default class MainScreen extends React.Component {
     removeInfo_Async = async () => {
         await AsyncStorage.removeItem('cs3301Uber@id', (err) => { if (err) console.log(err); });
         await AsyncStorage.removeItem('cs3301Uber@pw', (err) => { if (err) console.log(err); });
+
+        navigateTo('Login'); //TODO log out button?
     }
+
 
     /**
      * The aim of this method is to get the current location of the user asynchronously.
