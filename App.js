@@ -7,6 +7,7 @@ import RequestTripScreen from './src/container/RequestTripScreen';
 import JourneyScreen from './src/container/Journey';
 import CheckRequestScreen from './src/container/CheckRequest';
 import LinkScreen from './src/container/LinkScreen';
+import SummaryScreen from './src/container/SummaryScreen';
 
 /* create stack navigator */
 const AppStackNavigator = createStackNavigator({
@@ -14,7 +15,8 @@ const AppStackNavigator = createStackNavigator({
   Request: { screen: RequestTripScreen },
   Journey: { screen: JourneyScreen },
   CheckRequest: { screen: CheckRequestScreen },
-  LinkScreen: { screen: LinkScreen }
+  LinkScreen: { screen: LinkScreen },
+  Summary: { screen: SummaryScreen }
 });
 
 export default class App extends React.Component {
