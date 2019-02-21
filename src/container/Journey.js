@@ -7,8 +7,6 @@ import {
     Image
 } from 'react-native';
 import MapView from 'react-native-maps';
-import uuidv1 from 'uuid/v1';
-import PropTypes from 'prop-types';
 
 import Polyline from '@mapbox/polyline';
 
@@ -42,26 +40,13 @@ export default class JourneyScreen extends React.Component {
         },
         coords: [],
         isLoaded: false,
-        pickUpLocation: {
-            latitude: 56.34026,
-            longitude: -2.808796
-        },
-        destinationLocation: {
-            latitude: 56.462017,
-            longitude: -2.970721
-        }
+        journey: undefined
     }
 
     /* Make the navigation header invisible. */
     static navigationOptions = {
         header: null
     };
-
-    // Define the type of props.
-    static propTypes = {
-        pickUpLocation: PropTypes.object,
-        destinationLocation: PropTypes.object
-    }
 
 
     /**
@@ -94,18 +79,22 @@ export default class JourneyScreen extends React.Component {
 
 
     componentDidMount = () => {
-        const { pickUpLocation, destinationLocation } = this.props;
+        // Initialise the attributes, and send a request for the google directions api to draw journey route on the map.
+        //--------------------------------------------------------------------------------------------------------------
+        const journey = this.props.navigation.getParam('journey');
 
-        this.setState({pickUpLocation: pickUpLocation, destinationLocation: destinationLocation});
+        const pickUpLocation = journey.pickUpLocation;
+        const destination = journey.destinationGeolocation;
 
         const pickUp = pickUpLocation.latitude + ', ' + pickUpLocation.longitude;
-        const destination = destinationLocation.latitude + ', ' + destinationLocation.longitude;
+        const dest = destination.latitude + ', ' + destination.longitude;
 
         // The parameters should be string that contains latitude and longitude
         //      i.e. "40.1884979, 29.061018"
-        this.getDirections(pickUp, destination);
+        this.getDirections(pickUp, dest);
 
-        this.setState({isLoaded: true});
+        this.setState({ journey: journey, isLoaded: true});
+        //--------------------------------------------------------------------------------------------------------------
     }
 
 
@@ -121,6 +110,7 @@ export default class JourneyScreen extends React.Component {
     render() {
         const { region, coords, isLoaded } = this.state;
 
+        //TODO animate google map to make the marker moves on the polyline
         return (
             <View style={styles.container}>
                 <MapView

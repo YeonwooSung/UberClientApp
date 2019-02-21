@@ -9,6 +9,7 @@ import {
     Dimensions,
     Alert
 } from 'react-native';
+import uuidv1 from 'uuid/v1';
 
 import LinkObject from '../component/LinkObject';
 
@@ -59,6 +60,14 @@ export default class LinkScreen extends React.Component {
     }
 
 
+    /**
+     * This method helps the user to cancel the requested journey.
+     */
+    cancelJourney = async (journey) => {
+        //TODO remove the given journey from the journey list, and change update the state and asyncstorage
+    }
+
+
     makeNewJourney = () => {
         // navigate to MainScreen to make a new journey request
         this.props.navigation.navigate('Main');
@@ -78,7 +87,12 @@ export default class LinkScreen extends React.Component {
         if (journeyList) {
             journeyComponent = journeyList.map(j => {
                 return (
-                    <LinkScreen journey={j}/>
+                    <LinkScreen 
+                        journey={j} 
+                        navigateTo={this.props.navigation.navigate} 
+                        cancel={this.cancelJourney} 
+                        key={uuidv1()}
+                    />
                 );
             });
         } else {
@@ -86,7 +100,7 @@ export default class LinkScreen extends React.Component {
                 <View style={styles.containerForEmptyJourneyList}>
                     <Text style={styles.textForEmptyJourney}>No journey request</Text>
                 </View>
-            )
+            );
         }
 
         return (

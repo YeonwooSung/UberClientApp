@@ -27,7 +27,7 @@ export default class LinkObject extends React.PureComponent {
 
     static propTypes = {
         journey: PropTypes.object.isRequired,
-        cancel: PropTypes.func, //TODO
+        cancel: PropTypes.func.isRequired, //TODO
         navigateTo: PropTypes.func.isRequired //TODO
     }
 
@@ -45,10 +45,18 @@ export default class LinkObject extends React.PureComponent {
         }
     }
 
+    trackJourney = () => {
+        const {journey} = this.state;
+
+        this.props.navigateTo('Journey', {
+            journey: journey
+        });
+    }
+
     // initialise the attributes of LinkObject component
     componentDidMount = () => {
         let { journey } = this.props;
-        let journeyTime;
+        let journeyTime = journey.time;
 
         this.setState({journey: journey, journeyTime: journeyTime});
     }
@@ -56,16 +64,17 @@ export default class LinkObject extends React.PureComponent {
     render() {
         let { journey, journeyTime, started, finished } = this.state;
 
-        let timeString;
-        let destinationString;
+        let timeString = journeyTime.toString().split(' GMT')[0];
+        let destinationString = journey.destination;
 
         // check if the journey is started
         if (started) {
 
             // check if the journey is finished
             if (finished) {
+                //TODO
                 return (
-                    <View style={styles.container}>
+                    <View style={styles.finishedContainer}>
                         <TouchableOpacity>
                             <Text>Finish the journey</Text>
                         </TouchableOpacity>
@@ -73,9 +82,9 @@ export default class LinkObject extends React.PureComponent {
                 );
 
             } else {
-
+                //TODO
                 return (
-                    <View style={styles.container}>
+                    <View style={styles.startedContainer}>
                         <TouchableOpacity>
                             <Text>Track the journey</Text>
                         </TouchableOpacity>
@@ -89,8 +98,8 @@ export default class LinkObject extends React.PureComponent {
             return (
                 <View style={styles.container}>
                     <View>
-                        <Text>timeString</Text>
-                        <Text>destinationString</Text>
+                        <Text>{timeString}</Text>
+                        <Text>{destinationString}</Text>
                     </View>
                     <View>
                         <TouchableOpacity>
@@ -115,5 +124,19 @@ const styles = StyleSheet.create({
         flex: 1,
         width: width / 5 * 4,
         height: width / 5 * 3 //TODO
+    },
+    startedContainer: {
+        flex: 1,
+        width: width / 5 * 4,
+        height: width / 5 * 3, //TODO
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    finishedContainer: {
+        flex: 1,
+        width: width / 5 * 4,
+        height: width / 5 * 3, //TODO
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 });
