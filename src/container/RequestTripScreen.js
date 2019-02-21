@@ -131,7 +131,7 @@ export default class RequestTripScreen extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <ScrollView
-                    contentContainerStyle={{ //TODO need to test this
+                    contentContainerStyle={{
                         width: width * 4 / 5,
                         height: (availableDrivers.length > 3 ? 
                             (width / 5 * 3) : (width / 5 * availableDrivers.length)
