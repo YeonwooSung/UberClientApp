@@ -12,7 +12,7 @@ export const callNumber = (phone) => {
     let phoneNumber = phone;
 
     if (Platform.OS !== 'android') {
-        phoneNumber = `telprompt:${phone}`;
+        phoneNumber = `telprompt:${phone}`; //TODO need to test this code..
     } else {
         phoneNumber = `tel:${phone}`;
     }
