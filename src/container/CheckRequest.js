@@ -5,7 +5,8 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
-    Image
+    Image,
+    AsyncStorage
 } from 'react-native';
 
 const {width, height} = Dimensions.get('window');
@@ -20,7 +21,9 @@ export default class CheckRequestScreen extends React.Component {
             pickUpLocation: undefined,
             destination: undefined,
             destinationGeolocation: undefined,
-            timeString: ''
+            timeString: '',
+            estimatedTime: '',
+            fare: 0
         }
     }
 
@@ -50,31 +53,74 @@ export default class CheckRequestScreen extends React.Component {
             timeString: timeString
         });
         //----------------------------------------------------------------------------
+
+
+        //TODO need to calculate the "estimated time for journey"
+        //TODO need to calculate the "fare"
     }
 
 
+    navigateTo = () => {
+        this.props.navigation.navigate('LinkScreen');
+    }
+
     // This method will start the journey when the user press the "confirm" button
-    startJourney = () => {
-        //
+    startJourney = async () => {
+        const { time, driver, pickUpLocation, destination, destinationGeolocation, estimatedTime, fare } = this.state;
+
+        // make an instance to store the information of the new journey
+        const newJourney = {
+            time: time,
+            driver: driver,
+            pickUpLocation: pickUpLocation,
+            destination: destination,
+            destinationGeolocation: destinationGeolocation,
+            estimatedTime: estimatedTime,
+            fare: fare
+        }
+
+        try {
+            // gets the journey list from the local storage
+            let journeyList = JSON.parse(await AsyncStorage.getItem('cs3301Uber@journey'));
+
+            journeyList.push(newJourney); //add new journey object to the journey list
+
+            //store the journey list in the local storage
+            await AsyncStorage.setItem('cs3301Uber@journey', JSON.stringify(journeyList));
+
+            this.navigateTo(); //navigate to LinkScreen
+        } catch {
+            try {
+                let journeyList = [newJourney];
+
+                //store the journey list in the local storage
+                await AsyncStorage.setItem('cs3301Uber@journey', JSON.stringify(journeyList));
+
+                this.navigateTo(); //navigate to LinkScreen
+            } catch {
+                alert('failed to confirm the journey!');
+            }
+        }
     }
 
 
     // This method will cancel the journey when the user press the "cancel" button
     cancelRequest = () => {
-        //
+        this.props.navigation.goBack();
     }
 
 
     render () {
-        let { driver, destination, timeString } = this.state;
+        let { driver, destination, timeString, estimatedTime, fare } = this.state;
 
         if (driver) {
             let driverString = 'The driver that you selected is ' + driver.name;
             let destinationString = 'Your destination: ' + destination;
             let timeStr = 'Journey time: ' + timeString;
 
-            //TODO need to calculate the "estimated time for journey"
-            let estimatedTime = 'Estimated time: ';
+            let estimatedTime = 'Estimated time: ' + estimatedTime;
+
+            let fareString = 'Fare: £' + fare; //TODO need to test this
 
             return (
                 <View style={styles.container}>
@@ -84,6 +130,7 @@ export default class CheckRequestScreen extends React.Component {
                     <Text style={styles.infoText}>{destinationString}</Text>
                     <Text style={styles.infoText}>{timeStr}</Text>
                     <Text style={styles.infoText}>{estimatedTime}</Text>
+                    <Text style={styles.infoText}>{fareString}</Text>
                     <TouchableOpacity onPress={this.startJourney} style={styles.buttonBox}>
                         <Text style={styles.buttonText}>Confirm</Text>
                     </TouchableOpacity>
@@ -102,6 +149,7 @@ export default class CheckRequestScreen extends React.Component {
         }
     }
 }
+
 
 const styles = StyleSheet.create({
     container: {
