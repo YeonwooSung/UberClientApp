@@ -11,6 +11,10 @@ import {
 
 const {width, height} = Dimensions.get('window');
 
+
+/**
+ * The aim of this component is to let the client check the journey request to confirm or cancel the request.
+ */
 export default class CheckRequestScreen extends React.Component {
     constructor(props) {
         super(props);

@@ -76,13 +76,16 @@ export default class JourneyScreen extends React.Component {
             let resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc}&destination=${destinationLoc}&key=${API_KEY.Google_API_KEY}`)
             let respJson = await resp.json();
             let points = Polyline.decode(respJson.routes[0].overview_polyline.points);
+
             let coords = points.map((point, index) => {
                 return {
                     latitude: point[0],
                     longitude: point[1]
                 }
-            })
-            this.setState({ coords: coords })
+            });
+
+            this.setState({ coords: coords });
+
             return coords
         } catch (error) {
             return error
@@ -99,7 +102,7 @@ export default class JourneyScreen extends React.Component {
         const destination = destinationLocation.latitude + ', ' + destinationLocation.longitude;
 
         // The parameters should be string that contains latitude and longitude
-        // i.e. "40.1884979, 29.061018"
+        //      i.e. "40.1884979, 29.061018"
         this.getDirections(pickUp, destination);
 
         this.setState({isLoaded: true});
