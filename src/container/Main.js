@@ -32,7 +32,7 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const TAXI_IMG = require('../../assets/taxi.png');
 
 /* api key for the Google Places API, which will be used for auto completion */
-const placeAPI_key = require('../component/key').GEOLOCATION_KEYS;
+const API_key = require('../component/key').GOOGLE_API_KEYS;
 
 
 /**
@@ -226,7 +226,7 @@ export default class MainScreen extends React.Component {
                     ))}
                 </MapView>
                 <GoogleAutoComplete 
-                    apiKey={placeAPI_key.Google_Place_API_KEY} 
+                    apiKey={API_key.Google_API_KEY} 
                     debounce={500} components="country:uk" 
                     queryTypes='geocode' //TODO establishment
                 >
