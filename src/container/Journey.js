@@ -86,8 +86,8 @@ export default class JourneyScreen extends React.Component {
         const pickUpLocation = journey.pickUpLocation;
         const destination = journey.destinationGeolocation;
 
-        const pickUp = pickUpLocation.latitude + ', ' + pickUpLocation.longitude;
-        const dest = destination.latitude + ', ' + destination.longitude;
+        const pickUp = pickUpLocation.latitude + ',' + pickUpLocation.longitude;
+        const dest = destination.latitude + ',' + destination.longitude;
 
         // The parameters should be string that contains latitude and longitude
         //      i.e. "40.1884979, 29.061018"
