@@ -120,7 +120,7 @@ export default class CheckRequestScreen extends React.Component {
 
             let estimatedTime = 'Estimated time: ' + estimatedTime;
 
-            let fareString = 'Fare: £' + fare; //TODO need to test this
+            let fareString = 'Fare: £' + fare;
 
             return (
                 <View style={styles.container}>
