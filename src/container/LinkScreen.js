@@ -87,7 +87,7 @@ export default class LinkScreen extends React.Component {
         if (journeyList) {
             journeyComponent = journeyList.map(j => {
                 return (
-                    <LinkScreen 
+                    <LinkObject 
                         journey={j} 
                         navigateTo={this.props.navigation.navigate} 
                         cancel={this.cancelJourney} 

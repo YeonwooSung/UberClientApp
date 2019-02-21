@@ -64,10 +64,6 @@ export default class CheckRequestScreen extends React.Component {
     }
 
 
-    navigateTo = () => {
-        this.props.navigation.navigate('LinkScreen');
-    }
-
     // This method will start the journey when the user press the "confirm" button
     startJourney = async () => {
         const { time, driver, pickUpLocation, destination, destinationGeolocation, estimatedTime, fare } = this.state;
@@ -92,7 +88,7 @@ export default class CheckRequestScreen extends React.Component {
             //store the journey list in the local storage
             await AsyncStorage.setItem('cs3301Uber@journey', JSON.stringify(journeyList));
 
-            this.navigateTo(); //navigate to LinkScreen
+            this.props.navigation.navigate('LinkScreen'); //navigate to LinkScreen
         } catch {
             try {
                 let journeyList = [newJourney];
@@ -100,7 +96,7 @@ export default class CheckRequestScreen extends React.Component {
                 //store the journey list in the local storage
                 await AsyncStorage.setItem('cs3301Uber@journey', JSON.stringify(journeyList));
 
-                this.navigateTo(); //navigate to LinkScreen
+                this.props.navigation.navigate('LinkScreen'); //navigate to LinkScreen
             } catch {
                 alert('failed to confirm the journey!');
             }
