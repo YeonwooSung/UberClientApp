@@ -59,7 +59,7 @@ export default class DriverInfo extends React.Component {
 
         let { name, phoneNum } = driver;
 
-        let ratingVal; //TODO need to test rating
+        let ratingVal;
 
         if (rating > 0) {
             ratingVal = 'Rating: '+ rating;
