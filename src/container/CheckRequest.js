@@ -19,7 +19,8 @@ export default class CheckRequestScreen extends React.Component {
             driver: undefined,
             pickUpLocation: undefined,
             destination: undefined,
-            destinationGeolocation: undefined
+            destinationGeolocation: undefined,
+            timeString: ''
         }
     }
 
@@ -38,12 +39,15 @@ export default class CheckRequestScreen extends React.Component {
         const dest = this.props.navigation.getParam('destination');
         const destGeo = this.props.navigation.getParam('destinationGeolocation');
 
+        let timeString = time.toString().split(' GMT')[0];
+
         this.setState({
             time: time, 
             driver: driver,
             pickUpLocation: pickup,
             destination: dest,
-            destinationGeolocation: destGeo
+            destinationGeolocation: destGeo,
+            timeString: timeString
         });
         //----------------------------------------------------------------------------
     }
@@ -62,40 +66,85 @@ export default class CheckRequestScreen extends React.Component {
 
 
     render () {
-        let { time, driver, destination } = this.state;
+        let { driver, destination, timeString } = this.state;
 
-        let driverString = 'The driver that you selected is ' + driver.name;
-        let destinationString = 'Your destination: ' + destination;
-        let timeString = 'Journey time: ';
+        if (driver) {
+            let driverString = 'The driver that you selected is ' + driver.name;
+            let destinationString = 'Your destination: ' + destination;
+            let timeStr = 'Journey time: ' + timeString;
 
-        //TODO need to calculate the "estimated time for journey"
-        let estimatedTime = 'Estimated time: ';
+            //TODO need to calculate the "estimated time for journey"
+            let estimatedTime = 'Estimated time: ';
 
-        return (
-            <View style={styles.container}>
-                <Image style={styles.logoImage} source={require('../../assets/logo.png')} />
-                <Text>Please confirm your journey</Text>
-                <Text>{driverString}</Text>
-                <Text>{destinationString}</Text>
-                <Text>{timeString}</Text>
-                <Text>{estimatedTime}</Text>
-                <TouchableOpacity onPress={this.startJourney}>
-                    <Text>Confirm</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={this.cancelRequest}>
-                    <Text>Cancel</Text>
-                </TouchableOpacity>
-            </View>
-        )
+            return (
+                <View style={styles.container}>
+                    <Image style={styles.logoImage} source={require('../../assets/logo.png')} />
+                    <Text style={styles.mainText}>Please confirm your journey</Text>
+                    <Text style={styles.infoText}>{driverString}</Text>
+                    <Text style={styles.infoText}>{destinationString}</Text>
+                    <Text style={styles.infoText}>{timeStr}</Text>
+                    <Text style={styles.infoText}>{estimatedTime}</Text>
+                    <TouchableOpacity onPress={this.startJourney} style={styles.buttonBox}>
+                        <Text style={styles.buttonText}>Confirm</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={this.cancelRequest} style={styles.buttonBox}>
+                        <Text style={styles.buttonText}>Cancel</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        } else {
+            return (
+                <View style={styles.container}>
+                    <Image style={styles.logoImage} source={require('../../assets/logo.png')} />
+                    <Text style={styles.mainText}>Loading...</Text>
+                </View>
+            )
+        }
     }
 }
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: '#1a3f95',
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         width: width,
         height: height
-    }
+    },
+    logoImage: {
+        width: height / 6,
+        height: height / 6,
+        marginBottom: width / 10,
+        marginTop: width / 15
+    },
+    mainText: {
+        fontSize: width / 20,
+        fontWeight: '500',
+        textAlign: 'center',
+        marginBottom: width / 20,
+        color: 'white'
+    },
+    infoText: {
+        fontSize: width / 25,
+        fontWeight: '500',
+        textAlign: 'center',
+        marginBottom: width / 20,
+        color: 'white'
+    },
+    buttonBox: {
+        width: width * 4 / 5,
+        height: height / 15,
+        backgroundColor: '#a8a9ad',
+        borderRadius: 25,
+        marginVertical: 10,
+        paddingVertical: 5,
+        justifyContent: 'center'
+    },
+    buttonText: {
+        fontSize: width / 25,
+        fontWeight: '500',
+        color: "#ffffff",
+        textAlign: 'center'
+    },
 });

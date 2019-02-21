@@ -236,6 +236,7 @@ const styles = StyleSheet.create({
     navigateText: {
         fontSize: width / 22,
         fontWeight: '300',
-        textAlign: 'center'
+        textAlign: 'center',
+        color: 'white'
     }
 });
