@@ -103,11 +103,14 @@ export default class RequestTripScreen extends React.Component {
 
 
     navigateToCheckRequest = () => {
-        let {pickedTime, driver} = this.state;
+        let { pickUpLocation, destination, destinationGeolocation, pickedTime, driver } = this.state;
 
         this.props.navigation.navigate('CheckRequest', {
             time: pickedTime,
-            driver: driver
+            driver: driver,
+            pickUpLocation: pickUpLocation,
+            destination: destination,
+            destinationGeolocation: destinationGeolocation
         });
     }
 
