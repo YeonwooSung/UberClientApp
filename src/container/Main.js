@@ -144,7 +144,7 @@ export default class MainScreen extends React.Component {
 
 
     _onPressRequestButton = (regionValue) => {
-        this.setState({selected: false}); //TODO need to test this
+        this.setState({selected: false});
 
         let {region, drivers, selectedDestination} = this.state;
 
