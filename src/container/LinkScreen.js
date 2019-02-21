@@ -5,9 +5,10 @@ import {
     AsyncStorage,
     StyleSheet,
     TouchableOpacity,
-    StyleSheet,
     Dimensions,
-    Alert
+    Alert,
+    Image,
+    Text
 } from 'react-native';
 import uuidv1 from 'uuid/v1';
 
@@ -26,11 +27,20 @@ export default class LinkScreen extends React.Component {
     }
 
     /**
+     * This method will refresh and re-render the LinkScreen component to delete the completed journey from the list.
+     */
+    refreshToDeleteCompletedJourney = () => {
+        //TODO clean the stack navigator history
+
+        this.getJourneyList_Async();
+    }
+
+    /**
      * The aim of this method is to load the journey list from the local storage.
      */
     getJourneyList_Async = async () => {
         try {
-            const journeyListStr = AsyncStorage.getItem('cs3301Uber@journey', (err, res) => {
+            const journeyListStr = await AsyncStorage.getItem('cs3301Uber@journey', (err, res) => {
                 if (err) {
                     alert('Failed to get journey list!');
                 } else {
@@ -74,8 +84,20 @@ export default class LinkScreen extends React.Component {
     }
 
 
+    /**
+     * The aim of this method is to navigate the screen to the summary page.
+     *
+     * @param {object} journey The object that contains the information of a requested journey.
+     */
+    goToSummaryPage = (journey) => {
+        this.props.navigation.navigate('Summary', {
+            journey: journey,
+            refresh: this.refreshToDeleteCompletedJourney
+        });
+    }
+
     componentDidMount = () => {
-        getJourneyList_Async(); //load the journey list from the local storage
+        this.getJourneyList_Async(); //load the journey list from the local storage
     }
 
 
