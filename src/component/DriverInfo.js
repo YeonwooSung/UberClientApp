@@ -108,6 +108,6 @@ const styles = StyleSheet.create({
         fontSize: width / 28,
         fontWeight: '200',
         textAlign: 'center',
-        marginBottom: width / 25,
+        marginBottom: width / 40,
     }
 });

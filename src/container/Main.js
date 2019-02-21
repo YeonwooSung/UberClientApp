@@ -227,8 +227,8 @@ export default class MainScreen extends React.Component {
                 </MapView>
                 <GoogleAutoComplete 
                     apiKey={placeAPI_key.Google_Place_API_KEY} 
-                    debounce={300} components="country:uk" 
-                    queryTypes='geocode' 
+                    debounce={500} components="country:uk" 
+                    queryTypes='geocode' //establishment
                 >
                     {({
                         handleTextChange,

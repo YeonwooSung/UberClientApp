@@ -147,12 +147,12 @@ export default class RequestTripScreen extends React.Component {
                     ))}
                 </ScrollView>
                 {selected &&
-                <View>
+                <View style={styles.navigateButtonContainer}>
                     <TouchableOpacity
                         onPress={() => this.navigateToCheckRequest()}
                         style={styles.navigateButton}
                     >
-                        <Text>{'request journey to ' + driver.name}</Text>
+                        <Text style={styles.navigateText}>{'request journey to ' + driver.name}</Text>
                     </TouchableOpacity>
                 </View>
                 }
@@ -215,12 +215,24 @@ const styles = StyleSheet.create({
         borderWidth: 0.6
     },
     navigateButton: {
-        width: width * 4 / 5,
-        height: height / 15,
-        backgroundColor: '#a8a9ad',
+        width: width * 3 / 5,
+        height: width / 10,
+        backgroundColor: '#1a3f95',
         borderRadius: 25,
-        marginVertical: 10,
-        paddingVertical: 5,
         justifyContent: 'center'
+    },
+    navigateButtonContainer: {
+        width: width * 4 / 5,
+        height: width / 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        top: height / 6 * 5,
+        left: width / 10
+    },
+    navigateText: {
+        fontSize: width / 22,
+        fontWeight: '300',
+        textAlign: 'center'
     }
 });
