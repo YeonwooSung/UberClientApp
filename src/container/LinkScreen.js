@@ -44,7 +44,7 @@ export default class LinkScreen extends React.Component {
                 if (err) {
                     alert('Failed to get journey list!');
                 } else {
-                    console.log(res);
+                    console.log('res', res);
                 }
             });
 
@@ -74,7 +74,25 @@ export default class LinkScreen extends React.Component {
      * This method helps the user to cancel the requested journey.
      */
     cancelJourney = async (journey) => {
-        //TODO remove the given journey from the journey list, and change update the state and asyncstorage
+        //TODO need to test
+        let {journeyList} = this.state;
+
+        for (var i = 0; i < journeyList.length - 1; i++) {
+
+            if (journeyList[i].pickUpLocation == journey.pickUpLocation) {
+                if (journeyList[i].destination == journey.destination) {
+                    if (journeyList[i].time == journey.time) {
+                        journeyList.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+
+        }
+
+        await AsyncStorage.setItem('cs3301Uber@journey', JSON.stringify(journeyList));
+
+        this.setState({journeyList: journeyList}); //TODO need to test
     }
 
 
@@ -112,7 +130,7 @@ export default class LinkScreen extends React.Component {
                     <LinkObject 
                         journey={j} 
                         navigateTo={this.props.navigation.navigate} 
-                        cancel={this.cancelJourney} 
+                        cancel={() => this.cancelJourney(j)} 
                         key={uuidv1()}
                     />
                 );
@@ -145,7 +163,9 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#1a3f95',
         width: width,
-        height: height
+        height: height,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     logoImage: {
         width: height / 6,
