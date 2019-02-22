@@ -8,7 +8,8 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-import callNumber from '../component/phoneCallLinker';
+
+let phoneCall = require('../component/phoneCallLinker');
 
 /* global variables for width and height of device */
 const { width, height } = Dimensions.get('window');
@@ -35,13 +36,18 @@ export default class LinkObject extends React.PureComponent {
      * The aim of this method is to open the phone call component to have a phone call with driver.
      */
     callToDriver = () => {
-        let phoneNumber;
+        let {journey} = this.state;
+        if (journey) {
+            console.log('journey: ', journey);
+            console.log('driver: ', journey.driver);
+            let phoneNumber = journey.driver.phoneNum;
 
-        if (phoneNumber) {
-            // linke to the phone call component
-            callNumber(phoneNumber);
-        } else {
-            alert('Driver phone number is not registered!');
+            if (phoneNumber) {
+                // link to the phone call component
+                phoneCall.callNumber(phoneNumber); //TODO need to test
+            } else {
+                alert('Driver phone number is not registered!');
+            }
         }
     }
 
@@ -64,57 +70,64 @@ export default class LinkObject extends React.PureComponent {
     render() {
         let { journey, journeyTime, started, finished } = this.state;
 
-        let timeString = journeyTime.toString().split(' GMT')[0];
-        let destinationString = journey.destination;
+        if (journeyTime) {
+            let timeString = journeyTime.toString().split(' GMT')[0];
+            let destinationString = journey.destination;
 
-        // check if the journey is started
-        if (started) {
+            // check if the journey is started
+            if (started) {
 
-            // check if the journey is finished
-            if (finished) {
-                //TODO
-                return (
-                    <View style={styles.finishedContainer}>
-                        <TouchableOpacity>
-                            <Text>Finish the journey</Text>
-                        </TouchableOpacity>
-                    </View>
-                );
+                // check if the journey is finished
+                if (finished) {
+                    //TODO
+                    return (
+                        <View style={styles.finishedContainer}>
+                            <TouchableOpacity>
+                                <Text>Finish the journey</Text>
+                            </TouchableOpacity>
+                        </View>
+                    );
+
+                } else {
+                    //TODO
+                    return (
+                        <View style={styles.startedContainer}>
+                            <TouchableOpacity onPress={this.trackJourney}>
+                                <Text>Track the journey</Text>
+                            </TouchableOpacity>
+                        </View>
+                    );
+
+                }
 
             } else {
-                //TODO
+
                 return (
-                    <View style={styles.startedContainer}>
-                        <TouchableOpacity>
-                            <Text>Track the journey</Text>
-                        </TouchableOpacity>
+                    <View style={styles.container}>
+                        <View>
+                            <Text>{timeString}</Text>
+                            <Text>{destinationString}</Text>
+                        </View>
+                        <View>
+                            <TouchableOpacity onPress={this.callToDriver}>
+                                <Text>call</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <Text>start</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={this.props.cancel}>
+                                <Text>cancel</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 );
 
             }
-
+        
         } else {
-
             return (
-                <View style={styles.container}>
-                    <View>
-                        <Text>{timeString}</Text>
-                        <Text>{destinationString}</Text>
-                    </View>
-                    <View>
-                        <TouchableOpacity>
-                            <Text>call</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Text>start</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Text>cancel</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            );
-
+                <View></View>
+            )
         }
     }
 }

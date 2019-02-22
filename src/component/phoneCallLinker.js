@@ -1,34 +1,12 @@
-import { 
-    Linking, 
-    Alert, 
-    Platform 
-} from 'react-native';
+import call from 'react-native-phone-call'
 
 
 // The aim of this function is to check and connect to the phone call component.
-export const callNumber = (phone) => {
-    console.log('callNumber ----> ', phone);
-
-    let phoneNumber = phone;
-
-    if (Platform.OS !== 'android') {
-        phoneNumber = `telprompt:${phone}`; //TODO need to test this code..
-    } else {
-        phoneNumber = `tel:${phone}`;
+module.exports.callNumber = (phone) => {
+    const args = {
+        number: phone, // String value with the number to call
+        prompt: false  // Optional boolean property. Determines if the user should be prompt prior to the call 
     }
 
-    /*
-     * Check if it is able to connect with the phone call component.
-     * If so, open the phone call component.
-     * Otherwise, it will alert the error message.
-     */
-    Linking.canOpenURL(phoneNumber)
-        .then(supported => {
-            if (!supported) {
-                Alert.alert('Phone number is not available');
-            } else {
-                return Linking.openURL(phoneNumber);
-            }
-        })
-        .catch(err => console.log(err));
+    call(args).catch(console.error)
 };
