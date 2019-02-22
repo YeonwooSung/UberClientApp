@@ -85,18 +85,16 @@ export default class DriverInfo extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         width: width / 5 * 4,
-        height: width / 5,
+        height: height / 8,
         borderBottomWidth: 0.5,
         borderBottomColor: 'black',
         backgroundColor: 'lightgrey'
     },
     container_selected: {
         backgroundColor: 'lightgreen',
-        flex: 1,
         width: width / 5 * 4,
-        height: width / 5,
+        height: height / 8,
         borderBottomWidth: 0.5,
         borderBottomColor: 'black',
     },

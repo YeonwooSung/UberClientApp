@@ -140,16 +140,8 @@ export default class RequestTripScreen extends React.Component {
                     </View>
                 </View>
                 <ScrollView
-                    style={{
-                        width: width * 4 / 5,
-                        height: (availableDrivers.length > 3 ? 
-                            (width / 5 * 3) : (width / 5 * (availableDrivers.length - 1))
-                        ),
-                        marginTop: width / 10,
-                        marginBottom: width / 10,
-                        borderColor: 'black',
-                        borderWidth: 1.0,
-                    }}
+                    style={styles.scrollContainer} //TODO need to test
+                    contentContainerStyle={{flexGrow: 1}} 
                 >
                     {availableDrivers.map(d => (
                         <DriverInfo driver={d} selectDriver={this.selectDriver} key={uuidv1()} />
@@ -185,9 +177,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     logoImage: {
-        width: height / 6,
-        height: height / 6,
-        marginBottom: width / 10,
+        width: height / 8,
+        height: height / 8,
+        marginBottom: width / 15,
         marginTop: width / 15
     },
     textContainer: {
@@ -248,5 +240,15 @@ const styles = StyleSheet.create({
         fontWeight: '300',
         textAlign: 'center',
         color: 'white'
+    },
+    scrollContainer: {
+        width: width * 4 / 5,
+        height: height / 4,
+        marginBottom: width / 10,
+        borderColor: 'black',
+        borderWidth: 1.0,
+        position: 'absolute',
+        top: height / 2,
+        left: width / 10
     }
 });
