@@ -135,6 +135,15 @@ export default class CheckRequestScreen extends React.Component {
             fare: fare
         }
 
+        //TODO remove journey list (for testing)
+        //-----------
+        try {
+            await AsyncStorage.removeItem('cs3301Uber@journey');
+        } catch {
+            console.log('test error');
+        }
+        //-----------
+
         try {
             // gets the journey list from the local storage
             let journeyList = JSON.parse(await AsyncStorage.getItem('cs3301Uber@journey'));
