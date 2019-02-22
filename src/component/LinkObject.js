@@ -108,15 +108,15 @@ export default class LinkObject extends React.PureComponent {
                             <Text>{timeString}</Text>
                             <Text>{destinationString}</Text>
                         </View>
-                        <View>
-                            <TouchableOpacity onPress={this.callToDriver}>
-                                <Text>call</Text>
+                        <View style={styles.actionButtonContainer}>
+                            <TouchableOpacity onPress={this.callToDriver} style={styles.actionButton}>
+                                <Text style={styles.actionText}>call</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
-                                <Text>start</Text>
+                            <TouchableOpacity style={styles.actionButton}>
+                                <Text style={styles.actionText}>start</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={this.props.cancel}>
-                                <Text>cancel</Text>
+                            <TouchableOpacity onPress={this.props.cancel} style={styles.actionButton}>
+                                <Text style={styles.actionText}>cancel</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -132,24 +132,53 @@ export default class LinkObject extends React.PureComponent {
     }
 }
 
+//TODO need to check style
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        backgroundColor: "#1a3f95",
         width: width / 5 * 4,
-        height: width / 5 * 3 //TODO
+        height: width / 5 * 3,
+        borderBottomColor: "#bbbbbb",
+        borderBottomWidth: 0.5,
+        flexDirection: "row",
+        justifyContent: 'space-between',
+        alignItems: 'flex-start'
     },
     startedContainer: {
         flex: 1,
+        backgroundColor: "#1a3f95",
         width: width / 5 * 4,
-        height: width / 5 * 3, //TODO
+        height: width / 5 * 3,
+        borderBottomColor: "#bbbbbb",
+        borderBottomWidth: 0.5,
         alignItems: 'center',
         justifyContent: 'center'
     },
     finishedContainer: {
         flex: 1,
+        backgroundColor: "#1a3f95",
         width: width / 5 * 4,
-        height: width / 5 * 3, //TODO
+        height: width / 5 * 3,
+        borderBottomColor: "#bbbbbb",
+        borderBottomWidth: 0.5,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    actionButton: {
+        width: width / 7,
+        height: width / 13,
+        backgroundColor: '#a8a9ad',
+        borderColor: '#1a3f95',
+        borderWidth: 0.7,
+        borderRadius: 13,
+        alignItems: 'center'
+    },
+    actionText: {
+        color: "#1a3f95",
+        fontSize: width / 25
+    },
+    actionButtonContainer: {
+        backgroundColor: "#1a3f95",
+        flex: 1
     }
 });

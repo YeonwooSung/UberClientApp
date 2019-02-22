@@ -146,7 +146,9 @@ export default class LinkScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <Image style={styles.logoImage} source={require('../../assets/logo.png')} />
-                <ScrollView contentContainerStyle={styles.scrollContainer}>
+                <ScrollView 
+                    style={styles.scrollContainer}
+                >
                     {journeyComponent}
                 </ScrollView>
                 <TouchableOpacity onPress={this.makeNewJourney}>
@@ -187,5 +189,19 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         textAlign: 'center',
         marginBottom: width / 20
+    },
+    addJourneyButton: {
+        width: width * 4 / 5,
+        height: height / 15,
+        backgroundColor: '#a8a9ad',
+        borderRadius: 25,
+        marginVertical: width / 15,
+        justifyContent: 'center'
+    },
+    buttonText: {
+        fontSize: width / 25,
+        fontWeight: '500',
+        color: "#ffffff",
+        textAlign: 'center'
     }
 });
