@@ -124,6 +124,13 @@ export default class CheckRequestScreen extends React.Component {
     startJourney = async () => {
         const { time, driver, pickUpLocation, destination, destinationGeolocation, estimatedTime, fare } = this.state;
 
+        // if the user didn't set up the journey time, set the journey time as now
+        if (time == undefined) {
+            time = new Date();
+
+            timeString = time.toString().split(' GMT')[0];
+        }
+
         // make an instance to store the information of the new journey
         const newJourney = {
             time: time,
