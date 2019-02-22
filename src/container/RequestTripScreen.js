@@ -126,7 +126,6 @@ export default class RequestTripScreen extends React.Component {
 
         let destinationStr = "Destination: " + destination
 
-        //TODO fix the ScrollView's sizing issue
         return (
             <View style={styles.container}>
                 <Image style={styles.logoImage} source={require('../../assets/logo.png')} />
@@ -140,7 +139,7 @@ export default class RequestTripScreen extends React.Component {
                     </View>
                 </View>
                 <ScrollView
-                    style={styles.scrollContainer} //TODO need to test
+                    style={styles.scrollContainer} 
                     contentContainerStyle={{flexGrow: 1}} 
                 >
                     {availableDrivers.map(d => (
