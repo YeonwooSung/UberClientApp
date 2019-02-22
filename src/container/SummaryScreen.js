@@ -6,7 +6,7 @@ import {
     Dimensions
 } from 'react-native';
 import { Rating } from 'react-native-elements';
-
+import { StackActions, NavigationActions } from 'react-navigation';
 
 /* global variables for width and height of device */
 const { width, height } = Dimensions.get('window');
@@ -33,7 +33,7 @@ export default class SummaryScreen extends React.Component {
      * Then, the app screen will be navigated to the LinkScreen component.
      */
     completeJourney = async () => {
-        //TODO update the journey list and store it in the async storage.
+        //TODO clean the stack navigator, and update the journey list (remove completed journey)
 
         this.props.navigation.state.params.refresh(); //TODO need to test this
 
