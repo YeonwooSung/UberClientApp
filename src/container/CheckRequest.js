@@ -9,6 +9,11 @@ import {
     AsyncStorage
 } from 'react-native';
 
+
+/* global variable for the api key */
+const API_KEY = require('../component/key').GOOGLE_API_KEYS;
+
+/* global variable to get the width and height of the screen */
 const {width, height} = Dimensions.get('window');
 
 
@@ -18,18 +23,21 @@ const {width, height} = Dimensions.get('window');
 export default class CheckRequestScreen extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            time: undefined,
-            driver: undefined,
-            pickUpLocation: undefined,
-            destination: undefined,
-            destinationGeolocation: undefined,
-            timeString: '',
-            estimatedTime: '',
-            fare: 0
-        }
     }
+
+    state = {
+        time: undefined,
+        driver: undefined,
+        pickUpLocation: undefined,
+        destination: undefined,
+        destinationGeolocation: undefined,
+        timeString: '',
+        estimatedTime: '',
+        fare: 0,
+        distance: '',
+        distanceVal: 0
+    }
+
 
     /* Make the navigation header invisible. */
     static navigationOptions = {
@@ -37,19 +45,67 @@ export default class CheckRequestScreen extends React.Component {
     };
 
 
+    /**
+     * This method uses the google distance matrix api to get the distance data.
+     * By using that data, it will calculate the duration (estimated time) and fare of the requested journey.
+     */
+    getDistanceMatrix = (pickUpLocation, destinationGeolocation) => {
+        let destinationString = destinationGeolocation.latitude + ',' + destinationGeolocation.longitude;
+        let pickUpLocationString = pickUpLocation.latitude + ',' + pickUpLocation.longitude;
+
+        console.log(pickUpLocationString, destinationString);
+
+        const API_URL = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${pickUpLocationString}&destinations=${destinationString}&key=${API_KEY.Google_API_KEY}`;
+
+        fetch(API_URL)
+        .then((res) => res.json())
+        .then((responseJson) => {
+            let element = responseJson.rows[0].elements[0];
+            let distance = element.distance.text;
+            let duration = element.duration.text;
+            let distanceVal = element.distance.value;
+
+            //calculate the taxi-fare
+            //--------------------------------------------------
+            let fare;
+
+            if (distanceVal < 5000) {
+                fare = 3.5;
+            } else if (distanceVal < 10000) {
+                fare = 6;
+            } else {
+                fare = ((distanceVal - 1000) / 100) * 0.1 + 6;
+            }
+            //--------------------------------------------------
+
+            this.setState({ distance: distance, estimatedTime: duration, distanceVal: distanceVal, fare: fare });
+        }).catch(err => console.log(err));
+    }
+
+
     componentDidMount = () => {
         // gets the navigation parameters, and set the state of CheckRequest component
         //----------------------------------------------------------------------------
-        const time = this.props.navigation.getParam('time');
-        const driver = this.props.navigation.getParam('driver');
-        const pickup = this.props.navigation.getParam('pickUpLocation');
-        const dest = this.props.navigation.getParam('destination');
-        const destGeo = this.props.navigation.getParam('destinationGeolocation');
+        const time = this.props.navigation.getParam('time', new Date());
+        const driver = this.props.navigation.getParam('driver', {
+            name: "",
+            phoneNum: '',
+            ratings: []
+        });
+        const pickup = this.props.navigation.getParam('pickUpLocation', {
+            latitude: 56.34026,
+            longitude: -2.808796
+        });
+        const dest = this.props.navigation.getParam('destination', 'St Andrews');
+        const destGeo = this.props.navigation.getParam('destinationGeolocation', {
+            latitude: 56.34026,
+            longitude: -2.808796
+        });
 
         let timeString = time.toString().split(' GMT')[0];
 
         this.setState({
-            time: time, 
+            time: time,
             driver: driver,
             pickUpLocation: pickup,
             destination: dest,
@@ -59,8 +115,8 @@ export default class CheckRequestScreen extends React.Component {
         //----------------------------------------------------------------------------
 
 
-        //TODO need to calculate the "estimated time for journey"
-        //TODO need to calculate the "fare"
+        // use the google distance matrix api
+        this.getDistanceMatrix(pickup, destGeo);
     }
 
 
@@ -118,7 +174,7 @@ export default class CheckRequestScreen extends React.Component {
             let destinationString = 'Your destination: ' + destination;
             let timeStr = 'Journey time: ' + timeString;
 
-            let estimatedTime = 'Estimated time: ' + estimatedTime;
+            let estimatedTimeStr = 'Estimated time: ' + estimatedTime;
 
             let fareString = 'Fare: £' + fare;
 
@@ -129,7 +185,7 @@ export default class CheckRequestScreen extends React.Component {
                     <Text style={styles.infoText}>{driverString}</Text>
                     <Text style={styles.infoText}>{destinationString}</Text>
                     <Text style={styles.infoText}>{timeStr}</Text>
-                    <Text style={styles.infoText}>{estimatedTime}</Text>
+                    <Text style={styles.infoText}>{estimatedTimeStr}</Text>
                     <Text style={styles.infoText}>{fareString}</Text>
                     <TouchableOpacity onPress={this.startJourney} style={styles.buttonBox}>
                         <Text style={styles.buttonText}>Confirm</Text>

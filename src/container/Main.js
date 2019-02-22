@@ -167,15 +167,6 @@ export default class MainScreen extends React.Component {
 
 
     /**
-     * Change the state of the MainScreen component when the region is changed.
-     * @param {*} newRegion 
-     */
-    onRegionChange(newRegion) {
-        this.setState({ region: newRegion });
-    }
-
-
-    /**
      * Set the latitude and longitude of destination.
      */
     setDestinationLatLng = (lat, lng) => {
@@ -210,7 +201,6 @@ export default class MainScreen extends React.Component {
                 <MapView
                     region={region}
                     style={styles.mapContainer}
-                    onRegionChange={() => { this.onRegionChange() }}
                 >
                     {drivers.map(d => (
                         <Marker

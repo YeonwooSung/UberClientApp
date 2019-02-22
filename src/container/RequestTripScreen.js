@@ -44,7 +44,7 @@ export default class RequestTripScreen extends React.Component {
     };
 
     componentDidMount = () => {
-        const pickUpLocation = this.props.navigation.getParam('destination', { latitude: 56.34026, longitude: -2.808796 });
+        const pickUpLocation = this.props.navigation.getParam('pickUpLocation', { latitude: 56.34026, longitude: -2.808796 });
         const destination = this.props.navigation.getParam('destination', {latitude: 56.34026, longitude: -2.808796});
         const availableDrivers = this.props.navigation.getParam('drivers',[]);
         const destinationGeolocation = this.props.navigation.getParam('destinationGeolocation', { latitude: 56.34026, longitude: -2.808796 });
@@ -126,18 +126,17 @@ export default class RequestTripScreen extends React.Component {
                 <View style={styles.textContainer}>
                     <Text style={styles.pickUpRegionText}>Pick Up: Your current location</Text>
                     <Text style={styles.destinationText}>{destinationStr}</Text>
-                    <TouchableOpacity 
-                        style={styles.timePickerButton}
-                        onPress={() => this.showDateTimePicker()}
-                    >
-                        <Text style={styles.journeyTimeText}>{isDatePicked ? timeString : 'Press to pick the journey time!'}</Text>
-                    </TouchableOpacity>
+                    <View style={styles.timePickerButtonContainer}>
+                        <TouchableOpacity style={styles.timePickerButton} onPress={this.showDateTimePicker}>
+                            <Text style={styles.journeyTimeText}>{isDatePicked ? timeString : 'Press to pick the journey time!'}</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
                 <ScrollView
-                    contentContainerStyle={{
+                    style={{
                         width: width * 4 / 5,
                         height: (availableDrivers.length > 3 ? 
-                            (width / 5 * 3) : (width / 5 * availableDrivers.length)
+                            (width / 5 * 3) : (width / 5 * (availableDrivers.length - 1))
                         ),
                         marginTop: width / 10,
                         marginBottom: width / 10,
@@ -207,15 +206,19 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         textAlign: 'center'
     },
-    timePickerButton: {
+    timePickerButtonContainer: {
         marginBottom: width / 15,
         width: width / 5 * 4,
         height: width / 10,
-        marginBottom: width / 15,
-        justifyContent: 'center',
         alignItems: 'center',
+        justifyContent: 'center',
         borderColor: 'black',
         borderWidth: 0.6
+    },
+    timePickerButton: {
+        width: width / 5 * 4,
+        height: width / 10,
+        alignItems: 'center',
     },
     navigateButton: {
         width: width * 3 / 5,
