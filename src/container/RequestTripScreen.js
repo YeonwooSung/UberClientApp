@@ -44,6 +44,8 @@ export default class RequestTripScreen extends React.Component {
     };
 
     componentDidMount = () => {
+        //initialise the attributes
+        //-------------------------
         const pickUpLocation = this.props.navigation.getParam('pickUpLocation', { latitude: 56.34026, longitude: -2.808796 });
         const destination = this.props.navigation.getParam('destination', {latitude: 56.34026, longitude: -2.808796});
         const availableDrivers = this.props.navigation.getParam('drivers',[]);
@@ -55,6 +57,7 @@ export default class RequestTripScreen extends React.Component {
             availableDrivers: availableDrivers, 
             destinationGeolocation: destinationGeolocation 
         });
+        //-------------------------
     }
 
 
@@ -102,6 +105,9 @@ export default class RequestTripScreen extends React.Component {
     };
 
 
+    /**
+     * Change the screen to CheckRequest component, which lets the user the confirm or cancel the request.
+     */
     navigateToCheckRequest = () => {
         let { pickUpLocation, destination, destinationGeolocation, pickedTime, driver } = this.state;
 
