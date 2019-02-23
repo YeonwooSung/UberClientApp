@@ -78,7 +78,11 @@ export default class CheckRequestScreen extends React.Component {
             }
             //--------------------------------------------------
 
-            this.setState({ distance: distance, estimatedTime: duration, distanceVal: distanceVal, fare: fare });
+
+            // use Math.round() method and toFixed() method to make the fare has up to 2 decimal numbers
+            let fareStr = parseFloat(Math.round(fare * 100) / 100).toFixed(2); //TODO need to test
+
+            this.setState({ distance: distance, estimatedTime: duration, distanceVal: distanceVal, fare: fareStr });
         }).catch(err => console.log(err));
     }
 
