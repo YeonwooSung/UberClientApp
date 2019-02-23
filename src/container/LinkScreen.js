@@ -89,7 +89,7 @@ export default class LinkScreen extends React.Component {
             // use the for loop to iterate the journey list to remove the given journey instance from the list
             for (var i = 0; i < journeyList.length; i++) {
 
-                if (journeyList[i].driver.name == journeyList[i].driver.name) {
+                if (journeyList[i].driver.name == journey.driver.name) {
                     journeyList.splice(i, 1);
                     break;
                 }
@@ -161,8 +161,11 @@ export default class LinkScreen extends React.Component {
                 >
                     {journeyComponent}
                 </ScrollView>
-                <TouchableOpacity onPress={this.makeNewJourney}>
-                    <Text>Add New Journey</Text>
+                <TouchableOpacity 
+                    style={styles.addNewJourneyButtonBox} 
+                    onPress={this.makeNewJourney}
+                >
+                    <Text style={styles.addNewJourneyButtonText}>Add New Journey</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -209,6 +212,20 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     buttonText: {
+        fontSize: width / 25,
+        fontWeight: '500',
+        color: "#ffffff",
+        textAlign: 'center'
+    },
+    addNewJourneyButtonBox: {
+        width: width * 4 / 5,
+        height: height / 18,
+        backgroundColor: '#a8a9ad',
+        borderRadius: 25,
+        marginVertical: width / 10,
+        justifyContent: 'center'
+    },
+    addNewJourneyButtonText: {
         fontSize: width / 25,
         fontWeight: '500',
         color: "#ffffff",
