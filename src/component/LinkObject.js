@@ -88,7 +88,7 @@ export default class LinkObject extends React.PureComponent {
 
                 // check if the journey is finished
                 if (finished) {
-                    //TODO
+                    //TODO styling
                     return (
                         <View style={styles.finishedContainer}>
                             <TouchableOpacity onPress={() => goToSummaryPage()}>
@@ -98,7 +98,7 @@ export default class LinkObject extends React.PureComponent {
                     );
 
                 } else {
-                    //TODO
+                    //TODO styling
                     return (
                         <View style={styles.startedContainer}>
                             <TouchableOpacity onPress={this.trackJourney}>
@@ -111,6 +111,7 @@ export default class LinkObject extends React.PureComponent {
 
             } else {
 
+                //TODO styling and testing
                 return (
                     <View style={styles.container}>
                         <View>
@@ -132,7 +133,7 @@ export default class LinkObject extends React.PureComponent {
                 );
 
             }
-        
+
         } else {
             return (
                 <View></View>
