@@ -13,6 +13,11 @@ import {
 const { width, height } = Dimensions.get('window');
 
 export default class LoadingScreen extends React.Component {
+    /* Make the navigation header invisible. */
+    static navigationOptions = {
+        header: null
+    };
+
     render() {
         return (
             <View style={styles.container}>
@@ -42,7 +47,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     welcomeScreenImage: {
-        width: width,
-        height: height - 70
+        width: width / 3,
     }
 });

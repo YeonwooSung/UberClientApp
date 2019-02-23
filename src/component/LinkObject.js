@@ -28,8 +28,9 @@ export default class LinkObject extends React.PureComponent {
 
     static propTypes = {
         journey: PropTypes.object.isRequired,
-        cancel: PropTypes.func.isRequired, //TODO
-        navigateTo: PropTypes.func.isRequired //TODO
+        cancel: PropTypes.func.isRequired,
+        navigateTo: PropTypes.func.isRequired,
+        goToSummaryPage: PropTypes.func.isRequired
     }
 
     /**
@@ -64,11 +65,19 @@ export default class LinkObject extends React.PureComponent {
         let { journey } = this.props;
         let journeyTime = journey.time;
 
-        this.setState({journey: journey, journeyTime: journeyTime});
+        let cur = new Date();
+
+        if (journeyTime >= cur) {
+            this.setState({ journey: journey, journeyTime: journeyTime, started: true });
+        } else {
+            this.setState({ journey: journey, journeyTime: journeyTime });
+        }
+
     }
 
     render() {
         let { journey, journeyTime, started, finished } = this.state;
+        let { goToSummaryPage } = this.props;
 
         if (journeyTime) {
             let timeString = journeyTime.toString().split(' GMT')[0];
@@ -82,7 +91,7 @@ export default class LinkObject extends React.PureComponent {
                     //TODO
                     return (
                         <View style={styles.finishedContainer}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => goToSummaryPage()}>
                                 <Text>Finish the journey</Text>
                             </TouchableOpacity>
                         </View>

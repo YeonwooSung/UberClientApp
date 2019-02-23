@@ -11,6 +11,7 @@ import {
     Text
 } from 'react-native';
 import uuidv1 from 'uuid/v1';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 import LinkObject from '../component/LinkObject';
 
@@ -26,14 +27,12 @@ export default class LinkScreen extends React.Component {
         }
     }
 
-    /**
-     * This method will refresh and re-render the LinkScreen component to delete the completed journey from the list.
-     */
-    refreshToDeleteCompletedJourney = () => {
-        //TODO clean the stack navigator history
 
-        this.getJourneyList_Async();
-    }
+    /* Make the navigation header invisible. */
+    static navigationOptions = {
+        header: null
+    };
+
 
     /**
      * The aim of this method is to load the journey list from the local storage.
@@ -50,9 +49,11 @@ export default class LinkScreen extends React.Component {
 
             let journeyList = JSON.parse(journeyListStr);
 
-            this.setState({journeyList: journeyList});
+            this.setState({ journeyList: journeyList });
+
         } catch {
 
+            // alert the error
             Alert.alert(
                 'Err: getJourneyList_Async() failed',
                 'failed to get the list of journey..',
@@ -74,25 +75,33 @@ export default class LinkScreen extends React.Component {
      * This method helps the user to cancel the requested journey.
      */
     cancelJourney = async (journey) => {
-        //TODO need to test
-        let {journeyList} = this.state;
-
-        for (var i = 0; i < journeyList.length - 1; i++) {
-
-            if (journeyList[i].pickUpLocation == journey.pickUpLocation) {
-                if (journeyList[i].destination == journey.destination) {
-                    if (journeyList[i].time == journey.time) {
-                        journeyList.splice(i, 1);
-                        break;
-                    }
+        try {
+            const journeyListStr = await AsyncStorage.getItem('cs3301Uber@journey', (err, res) => {
+                if (err) {
+                    alert('Failed to get journey list!');
+                } else {
+                    console.log('res', res);
                 }
+            });
+
+            let journeyList = JSON.parse(journeyListStr);
+
+            // use the for loop to iterate the journey list to remove the given journey instance from the list
+            for (var i = 0; i < journeyList.length; i++) {
+
+                if (journeyList[i].driver.name == journeyList[i].driver.name) {
+                    journeyList.splice(i, 1);
+                    break;
+                }
+
             }
 
+            await AsyncStorage.setItem('cs3301Uber@journey', JSON.stringify(journeyList));
+
+            this.setState({ journeyList: journeyList });
+        } catch {
+            console.log('error');
         }
-
-        await AsyncStorage.setItem('cs3301Uber@journey', JSON.stringify(journeyList));
-
-        this.setState({journeyList: journeyList}); //TODO need to test
     }
 
 
@@ -110,7 +119,7 @@ export default class LinkScreen extends React.Component {
     goToSummaryPage = (journey) => {
         this.props.navigation.navigate('Summary', {
             journey: journey,
-            refresh: this.refreshToDeleteCompletedJourney
+            refresh: this.cancelJourney
         });
     }
 
@@ -131,6 +140,7 @@ export default class LinkScreen extends React.Component {
                         journey={j} 
                         navigateTo={this.props.navigation.navigate} 
                         cancel={() => this.cancelJourney(j)} 
+                        goToSummaryPage={() => this.goToSummaryPage(j)} 
                         key={uuidv1()}
                     />
                 );
