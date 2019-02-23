@@ -8,6 +8,7 @@ import JourneyScreen from './src/container/Journey';
 import CheckRequestScreen from './src/container/CheckRequest';
 import LinkScreen from './src/container/LinkScreen';
 import SummaryScreen from './src/container/SummaryScreen';
+import LoadingScreen from './src/container/LoadingScreen';
 
 /* create stack navigator */
 const AppStackNavigator = createStackNavigator({
@@ -16,7 +17,8 @@ const AppStackNavigator = createStackNavigator({
   Journey: { screen: JourneyScreen },
   CheckRequest: { screen: CheckRequestScreen },
   LinkScreen: { screen: LinkScreen },
-  Summary: { screen: SummaryScreen }
+  Summary: { screen: SummaryScreen },
+  LoadingScreen: {screen: LoadingScreen}
 });
 
 export default class App extends React.Component {
