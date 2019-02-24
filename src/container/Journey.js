@@ -134,9 +134,13 @@ export default class JourneyScreen extends React.Component {
         } else {
             let {intervalID} = this.state;
 
-            clearInterval(intervalID); //stop setInterval() to execute animateDriver().
+            clearInterval(intervalID); //stop setInterval() to execute animateDriver()
 
             alert('Finished!!'); //TODO use notification component
+
+            // Let the LinkScreen know that this journey is finished.
+            let finishJourney = this.props.navigation.getParam('finishJourney');
+            finishJourney();
         }
 
     }

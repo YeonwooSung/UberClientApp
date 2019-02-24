@@ -33,6 +33,15 @@ export default class LinkObject extends React.PureComponent {
         goToSummaryPage: PropTypes.func.isRequired
     }
 
+
+    /**
+     * This method will be called when the journey is finished.
+     */
+    finishTheJourney = () => {
+        this.setState({finished: true});
+    }
+
+
     /**
      * The aim of this method is to open the phone call component to have a phone call with driver.
      */
@@ -45,18 +54,20 @@ export default class LinkObject extends React.PureComponent {
 
             if (phoneNumber) {
                 // link to the phone call component
-                phoneCall.callNumber(phoneNumber); //TODO need to test
+                phoneCall.callNumber(phoneNumber);
             } else {
                 alert('Driver phone number is not registered!');
             }
         }
     }
 
+    // Track the journey by navigating to the JourneyScreen.
     trackJourney = () => {
         const {journey} = this.state;
 
         this.props.navigateTo('Journey', {
-            journey: journey
+            journey: journey,
+            finishJourney: this.finishTheJourney()
         });
     }
 
