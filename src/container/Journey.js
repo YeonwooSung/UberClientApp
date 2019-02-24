@@ -47,7 +47,8 @@ export default class JourneyScreen extends React.Component {
         pickUp: undefined,
         destination: undefined,
         coordIndex: 0,
-        currentCoord: undefined
+        currentCoord: undefined,
+        intervalID: 0
     }
 
 
@@ -88,7 +89,7 @@ export default class JourneyScreen extends React.Component {
                 currentCoord: initialCoordination
             });
 
-            this.interval_animation()
+            this.interval_animation();
 
             return coords
         } catch (error) {
@@ -96,22 +97,29 @@ export default class JourneyScreen extends React.Component {
         }
     }
 
+    // use the setInterval() function to execute the animateDriver() method every seconds
     interval_animation() {
-        //TODO
-        setInterval(() => {
+        let timerId = setInterval(() => {
             this.animateDriver();
             console.log('yes');
         }, 1000);
+
+        // storet the id of setInterval() function, which will be used for removing the timer when the task is finished
+        this.setState({intervalID: timerId});
     }
 
+    /**
+     * The aim of this method is to animate the map marker on the google map.
+     * By using the animation, the driver (marker with the car image) could move along the polyline.
+     * This will allow the user to track the driver’s location and display in real time.
+     */
     animateDriver = () => {
         let { coords, coordIndex, currentCoord } = this.state;
 
         if (coords.length - 1 > coordIndex) {
-            //TODO
             coordIndex += 1;
+
             this.setState({ coordIndex: coordIndex });
-            console.log(coordIndex);
 
             let newCoordinate = {
                 latitude: coords[coordIndex].latitude,
@@ -119,12 +127,18 @@ export default class JourneyScreen extends React.Component {
             };
 
             if (this.marker) {
-                //this.marker._component.animateMarkerToCoordinate(newCoordinate, 500);
+                //move the marker on the map from current coordinate to given coordinate
                 currentCoord.timing(newCoordinate).start();
             }
+
         } else {
-            alert('Finished!!');
+            let {intervalID} = this.state;
+
+            clearInterval(intervalID); //stop setInterval() to execute animateDriver().
+
+            alert('Finished!!'); //TODO use notification component
         }
+
     }
 
 
