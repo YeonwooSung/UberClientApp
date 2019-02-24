@@ -21,7 +21,7 @@ export default class LinkObject extends React.PureComponent {
         this.state = {
             journey: undefined,
             journeyTime: undefined,
-            started: false,
+            started: true,
             finished: false
         }
     }
@@ -82,6 +82,8 @@ export default class LinkObject extends React.PureComponent {
         if (journeyTime) {
             let timeString = journeyTime.toString().split(' GMT')[0];
             let destinationString = journey.destination;
+            
+            //TODO split the destination string if it is too long to display
 
             // check if the journey is started
             if (started) {
@@ -121,9 +123,6 @@ export default class LinkObject extends React.PureComponent {
                         <View style={styles.actionButtonContainer}>
                             <TouchableOpacity onPress={this.callToDriver} style={styles.actionButton}>
                                 <Text style={styles.actionText}>call</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.actionButton}>
-                                <Text style={styles.actionText}>start</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={this.props.cancel} style={styles.actionButton}>
                                 <Text style={styles.actionText}>cancel</Text>

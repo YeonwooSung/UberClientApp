@@ -6,7 +6,7 @@ import {
     Dimensions,
     Image
 } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { ProviderPropType, Marker, AnimatedRegion } from 'react-native-maps';
 
 import Polyline from '@mapbox/polyline';
 
@@ -22,6 +22,8 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 /* global variable for the api key */
 const API_KEY = require('../component/key').GOOGLE_API_KEYS;
 
+/* constant to load the image */
+const TAXI_IMG = require('../../assets/taxi.png');
 
 /**
  * The aim of this class is to display the route of the client's journey on the google map.
@@ -40,8 +42,14 @@ export default class JourneyScreen extends React.Component {
         },
         coords: [],
         isLoaded: false,
-        journey: undefined
+        journey: undefined,
+        driver: undefined,
+        pickUp: undefined,
+        destination: undefined,
+        coordIndex: 0,
+        currentCoord: undefined
     }
+
 
     /* Make the navigation header invisible. */
     static navigationOptions = {
@@ -69,7 +77,18 @@ export default class JourneyScreen extends React.Component {
                 }
             });
 
-            this.setState({ coords: coords });
+            // this will be used to animate the driver marker on the map along polyline
+            let initialCoordination = new AnimatedRegion({
+                latitude: coords[0].latitude,
+                longitude: coords[0].longitude
+            });
+
+            this.setState({ 
+                coords: coords,
+                currentCoord: initialCoordination
+            });
+
+            this.interval_animation()
 
             return coords
         } catch (error) {
@@ -77,11 +96,43 @@ export default class JourneyScreen extends React.Component {
         }
     }
 
+    interval_animation() {
+        //TODO
+        setInterval(() => {
+            this.animateDriver();
+            console.log('yes');
+        }, 1000);
+    }
+
+    animateDriver = () => {
+        let { coords, coordIndex, currentCoord } = this.state;
+
+        if (coords.length - 1 > coordIndex) {
+            //TODO
+            coordIndex += 1;
+            this.setState({ coordIndex: coordIndex });
+            console.log(coordIndex);
+
+            let newCoordinate = {
+                latitude: coords[coordIndex].latitude,
+                longitude: coords[coordIndex].longitude
+            };
+
+            if (this.marker) {
+                //this.marker._component.animateMarkerToCoordinate(newCoordinate, 500);
+                currentCoord.timing(newCoordinate).start();
+            }
+        } else {
+            alert('Finished!!');
+        }
+    }
+
 
     componentDidMount = () => {
         // Initialise the attributes, and send a request for the google directions api to draw journey route on the map.
         //--------------------------------------------------------------------------------------------------------------
-        const journey = this.props.navigation.getParam('journey');
+        let journey = this.props.navigation.getParam('journey');
+        let driver = journey.driver;
 
         const pickUpLocation = journey.pickUpLocation;
         const destination = journey.destinationGeolocation;
@@ -93,7 +144,14 @@ export default class JourneyScreen extends React.Component {
         //      i.e. "40.1884979, 29.061018"
         this.getDirections(pickUp, dest);
 
-        this.setState({ journey: journey, isLoaded: true});
+        // set the attributes with suitable values
+        this.setState({ 
+            journey: journey, 
+            isLoaded: true, 
+            driver: driver, 
+            pickUp: pickUpLocation, 
+            destination: destination
+        });
         //--------------------------------------------------------------------------------------------------------------
     }
 
@@ -108,16 +166,27 @@ export default class JourneyScreen extends React.Component {
 
 
     render() {
-        const { region, coords, isLoaded } = this.state;
+        const { region, coords, isLoaded, currentCoord } = this.state;
 
-        //TODO animate google map to make the marker moves on the polyline
         return (
             <View style={styles.container}>
                 <MapView
                     region={region}
-                    style={styles.mapContainer}
+                    style={styles.mapContainer} 
                     onRegionChange={() => { this.onRegionChange() }}
                 >
+                    <Marker.Animated
+                        ref={marker => { this.marker = marker; }} 
+                        coordinate={currentCoord} 
+                    >
+                        <View>
+                            <Image
+                                source={TAXI_IMG}
+                                style={styles.carImage}
+                                onLoad={() => this.forceUpdate()}
+                            />
+                        </View>
+                    </Marker.Animated>
                     {isLoaded ? //check if the coordinates are loaded
                     <MapView.Polyline
                         coordinates={coords} 
@@ -130,9 +199,14 @@ export default class JourneyScreen extends React.Component {
                     }
                 </MapView>
             </View>
-        )
+        );
     }
+
 }
+
+JourneyScreen.propTypes = {
+    provider: ProviderPropType,
+};
 
 
 const styles = StyleSheet.create({
@@ -145,4 +219,8 @@ const styles = StyleSheet.create({
         width: width,
         height: height,
     },
+    carImage: {
+        width: width / 15,
+        height: width / 15
+    }
 });
