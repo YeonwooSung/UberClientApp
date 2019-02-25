@@ -84,6 +84,16 @@ export default class MarkScreen extends React.Component {
     }
 
 
+    /* Make the navigation header invisible. */
+    static navigationOptions = {
+        header: null
+    };
+
+
+    componentDidMount = () => {
+        //TODO get drivers from local storage
+    }
+
     /**
      * To let the app know that the user picked the pickup location.
      */
@@ -108,8 +118,6 @@ export default class MarkScreen extends React.Component {
             destinationGeolocation,
             drivers
         } = this.state;
-
-        //TODO navigation param
 
         let navigate = this.props.navigation.navigate;
 

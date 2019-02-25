@@ -103,8 +103,6 @@ export default class LinkObject extends React.PureComponent {
         if (journeyTime) {
             let timeString = journeyTime.toString().split(' GMT')[0];
             let destinationString = journey.destination;
-            
-            //TODO split the destination string if it is too long to display
 
             // check if the journey is started
             if (started) {
