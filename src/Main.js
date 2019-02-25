@@ -35,10 +35,10 @@ export default class Main extends React.Component {
         const pw = await AsyncStorage.getItem('cs3301Uber@pw', undefined);
 
         if (id && pw) {
-            this.setState({ screenName: 'Main' });
+            this.setState({ screenName: 'Menu' });
         }
 
-        //after finish checking, load the corresponding screen (Main screen or Log in Screen)
+        //after finish checking, load the corresponding screen (Menu screen or Log in Screen)
         this.setState({ isLoaded: true });
     }
 
@@ -46,7 +46,7 @@ export default class Main extends React.Component {
         this.checkIfLoggedIn();
     }
 
-    /* change the screen (log in screen, sign up screen, or main screen) */
+    /* change the screen (log in screen, sign up screen, or menu screen) */
     changeScreen = (screen) => {
         this.setState({screenName: screen});
     }
@@ -58,8 +58,10 @@ export default class Main extends React.Component {
         /* check the screen name to load the suitable screen */
         if (isLoaded) {
             if (screenName == 'Login') {
+                // load the log in screen
                 return (<LoginScreen navigateTo={this.changeScreen}></LoginScreen>);
             } else if (screenName == 'Signup') {
+                // load the sign up screen
                 return (<SignupScreen navigateTo={this.changeScreen}></SignupScreen>);
             }
 

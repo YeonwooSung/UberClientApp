@@ -46,7 +46,7 @@ export default class LoginScreen extends React.Component {
 
                         await AsyncStorage.setItem('cs3301Uber@pw', pw);
 
-                        this.props.navigateTo('Main');
+                        this.props.navigateTo('Menu');
                     }
                 }
             }
