@@ -65,7 +65,7 @@ export default class JourneyScreen extends React.Component {
      * The format of the startLoc and destinationLoc should be "latitude, longitude".
      *      i.e. "56.325054, -2.8063431"
      */
-    getDirections = async (startLoc, destinationLoc) => {
+    getDirections = async (startLoc, destinationLoc, initialCoordination) => {
         try {
             let resp = await fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc}&destination=${destinationLoc}&key=${API_KEY.Google_API_KEY}`)
             let respJson = await resp.json();
@@ -76,12 +76,6 @@ export default class JourneyScreen extends React.Component {
                     latitude: point[0],
                     longitude: point[1]
                 }
-            });
-
-            // this will be used to animate the driver marker on the map along polyline
-            let initialCoordination = new AnimatedRegion({
-                latitude: coords[0].latitude,
-                longitude: coords[0].longitude
             });
 
             this.setState({ 
@@ -96,6 +90,7 @@ export default class JourneyScreen extends React.Component {
             return error
         }
     }
+
 
     // use the setInterval() function to execute the animateDriver() method every seconds
     interval_animation() {
@@ -117,14 +112,15 @@ export default class JourneyScreen extends React.Component {
         let { coords, coordIndex, currentCoord } = this.state;
 
         if (coords.length - 1 > coordIndex) {
-            coordIndex += 1;
-
-            this.setState({ coordIndex: coordIndex });
-
             let newCoordinate = {
                 latitude: coords[coordIndex].latitude,
                 longitude: coords[coordIndex].longitude
             };
+
+            coordIndex += 1;
+
+            this.setState({ coordIndex: coordIndex });
+
 
             if (this.marker) {
                 //move the marker on the map from current coordinate to given coordinate
@@ -158,9 +154,18 @@ export default class JourneyScreen extends React.Component {
         const pickUp = pickUpLocation.latitude + ',' + pickUpLocation.longitude;
         const dest = destination.latitude + ',' + destination.longitude;
 
+
+        // this will be used to animate the driver marker on the map along polyline
+        let initialCoordination = new AnimatedRegion({
+            latitude: pickUpLocation.latitude,
+            longitude: pickUpLocation.longitude
+        });
+
+
         // The parameters should be string that contains latitude and longitude
         //      i.e. "40.1884979, 29.061018"
-        this.getDirections(pickUp, dest);
+        this.getDirections(pickUp, dest, initialCoordination);
+
 
         // set the attributes with suitable values
         this.setState({ 
