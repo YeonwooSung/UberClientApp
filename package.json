@@ -19,6 +19,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
     "react-native-background-task": "^0.2.1",
     "react-native-elements": "^1.0.0",
+    "react-native-geocoding": "^0.3.0",
     "react-native-geolocation-service": "^1.1.0",
     "react-native-google-autocomplete": "^0.1.5",
     "react-native-google-matrix": "0.0.3",
