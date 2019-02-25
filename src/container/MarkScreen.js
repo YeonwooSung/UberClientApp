@@ -22,6 +22,12 @@ const LATITUDE_DELTA = 0.0112;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 
+// This function will log the occurred event
+function log(eventName, e) {
+    console.log(eventName, e.nativeEvent);
+}
+
+
 /**
  * The aim of this class is to allow the user to mark the pickup location and the
  * destination by placing the location pins at a desired pickup location and destination.
@@ -33,11 +39,13 @@ export default class MarkScreen extends React.Component {
         header: null
     };
 
-    static propTypes = {
-        provider: ProviderPropType,
-    };
-
     state = {
+        region: {
+            latitude: 56.34026,
+            longitude: -2.808796,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+        },
         pickUpLocation: {
             latitude: 56.34026,
             longitude: -2.808796,
@@ -77,18 +85,16 @@ export default class MarkScreen extends React.Component {
 
 
     /**
-     * 
+     * To let the app know that the user picked the pickup location.
      */
     pickMarker_pickupLocation = () => {
-        //TODO get pickup location info when user put marker on the pickup location
         this.setState({isPicked_pickUp: true});
     }
 
     /**
-     * 
+     * To let the app know that the user picked the destination.
      */
     pickMarker_destination = () => {
-        //TODO get destination info when user put marker on the destination
         this.setState({isPicked_dest: true});
     }
 
@@ -103,20 +109,21 @@ export default class MarkScreen extends React.Component {
             drivers
         } = this.state;
 
+        //TODO navigation param
+
         let navigate = this.props.navigation.navigate;
 
         // use a valid API key to initialise the Geocoder (Google Geocoding API)
         Geocoder.init(API_KEY.Google_API_KEY);
 
         // get the name of the destination by using Google Geocoding API
-        Geocoder.from(destination)
+        Geocoder.from(destinationGeolocation)
         .then(json => {
             let destination = json.results[0].address_components[0];
-            console.log(destination); //TODO need to test this
 
             navigate('Request', {
                 pickUpLocation: pickUpLocation,
-                destination: 'TODO',
+                destination: destination,
                 drivers: drivers,
                 destinationGeolocation: destinationGeolocation
             });
@@ -126,77 +133,75 @@ export default class MarkScreen extends React.Component {
 
 
     render() {
-        let { pickUpLocation, destinationGeolocation, isPicked_pickUp, isPicked_dest } = this.state;
+        let { region, pickUpLocation, destinationGeolocation, isPicked_pickUp, isPicked_dest } = this.state;
 
         return(
             <View style={styles.container}>
                 <MapView
                     provider={this.props.provider}
                     style={styles.map}
-                    initialRegion={{
-                        latitude: LATITUDE,
-                        longitude: LONGITUDE,
-                        latitudeDelta: LATITUDE_DELTA,
-                        longitudeDelta: LONGITUDE_DELTA,
-                    }}
+                    initialRegion={region}
                 >
-                    {isPicked_pickUp &&
                     <Marker
                         coordinate={pickUpLocation}
+                        title={'pickup location'}
                         onSelect={(e) => log('onSelect', e)}
-                        onDrag={(e) => log('onDrag', e)}
                         onDragStart={(e) => log('onDragStart', e)}
-                        onDragEnd={(e) => log('onDragEnd', e)}
+                        onDragEnd={(e) => this.setState({pickUpLocation: e.nativeEvent.coordinate})}
                         onPress={(e) => log('onPress', e)}
                         draggable
-                    />}
-                    {isPicked_dest &&
+                    />
+                    {isPicked_pickUp &&
                     <Marker
                         coordinate={destinationGeolocation}
+                        title={'destination'}
                         onSelect={(e) => log('onSelect', e)}
-                        onDrag={(e) => log('onDrag', e)}
                         onDragStart={(e) => log('onDragStart', e)}
-                        onDragEnd={(e) => log('onDragEnd', e)}
+                        onDragEnd={(e) => this.setState({ destinationGeolocation: e.nativeEvent.coordinate })}
                         onPress={(e) => log('onPress', e)}
                         draggable
                     />}
-                    {!isPicked_pickUp ?
-                    (<TouchableOpacity style={styles.requestTripButton} onPress={}>
-                        <Text style={styles.requestTripText}>
-                            Select pickup location
-                        </Text>
-                    </TouchableOpacity>)
-                    :
-                    (!isPicked_dest ? 
-                    <TouchableOpacity style={styles.requestTripButton} onPress={}>
-                        <Text style={styles.requestTripText}>
-                            Select destination
-                        </Text>
-                    </TouchableOpacity>
-                    :
-                    <TouchableOpacity style={styles.requestTripButton} onPress={}>
-                        <Text style={styles.requestTripText}>
-                            Request journey
-                        </Text>
-                    </TouchableOpacity>)
-                    }
                 </MapView>
+                {!isPicked_pickUp ?
+                (<TouchableOpacity style={styles.requestTripButton} onPress={this.pickMarker_pickupLocation}>
+                    <Text style={styles.requestTripText}>
+                        Select pickup location
+                    </Text>
+                </TouchableOpacity>)
+                :
+                (!isPicked_dest ? 
+                <TouchableOpacity style={styles.requestTripButton} onPress={this.pickMarker_destination}>
+                    <Text style={styles.requestTripText}>
+                        Select destination
+                    </Text>
+                </TouchableOpacity>
+                :
+                <TouchableOpacity style={styles.requestTripButton} onPress={this.requestTrip}>
+                    <Text style={styles.requestTripText}>
+                        Request journey
+                    </Text>
+                </TouchableOpacity>)
+                }
             </View>
         );
     }
 }
 
+MarkScreen.propTypes = {
+    provider: ProviderPropType,
+};
+
 
 const styles = StyleSheet.create({
     container: {
-        ...StyleSheet.absoluteFillObject,
-        justifyContent: 'flex-end',
-        alignItems: 'center',
+        flex: 1,
+        justifyContent: 'center',
     },
     map: {
         ...StyleSheet.absoluteFillObject,
         width: width,
-        height: height
+        height: height,
+        flex: 1
     },
     requestTripButton: {
         position: 'absolute',
@@ -206,6 +211,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#1a3f95',
         borderRadius: 25,
+        top: height / 6 * 5,
+        left: width / 3
     },
     requestTripText: {
         color: 'white',
