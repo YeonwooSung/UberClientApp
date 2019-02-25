@@ -10,11 +10,13 @@ import LinkScreen from './src/container/LinkScreen';
 import SummaryScreen from './src/container/SummaryScreen';
 import LoadingScreen from './src/container/LoadingScreen';
 import MarkScreen from './src/container/MarkScreen';
+import MainScreen from './src/container/Main';
 
 /* create stack navigator */
 const AppStackNavigator = createStackNavigator({
-  //Main: { screen: Main },
+  Main: { screen: Main },
   MarkScreen: { screen: MarkScreen },
+  MainScreen: { screen: MainScreen },
   Request: { screen: RequestTripScreen },
   Journey: { screen: JourneyScreen },
   CheckRequest: { screen: CheckRequestScreen },

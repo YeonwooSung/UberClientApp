@@ -85,23 +85,10 @@ export default class MainScreen extends React.Component {
     }
 
 
-    static propTypes = {
-        /* the navigateTo() function will be used for implementing the log out function */
-        navigateTo: PropTypes.func.isRequired,
-        /* navigate() function will be used for navigation that navigates to the request trip screen */
-        navigate: PropTypes.func.isRequired
-    }
-
-
-    /**
-     * Implemented for the log out feature.
-     */
-    removeInfo_Async = async () => {
-        await AsyncStorage.removeItem('cs3301Uber@id', (err) => { if (err) console.log(err); });
-        await AsyncStorage.removeItem('cs3301Uber@pw', (err) => { if (err) console.log(err); });
-
-        navigateTo('Login'); //TODO log out button?
-    }
+    /* Make the navigation header invisible. */
+    static navigationOptions = {
+        header: null
+    };
 
 
     /**
@@ -151,7 +138,7 @@ export default class MainScreen extends React.Component {
 
         let {region, drivers, selectedDestination} = this.state;
 
-        this.props.navigate('Request', {
+        this.props.navigation.navigate('Request', {
             pickUpLocation: region, 
             destination: regionValue, 
             drivers: drivers,

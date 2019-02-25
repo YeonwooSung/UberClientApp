@@ -7,9 +7,9 @@ import {
     Dimensions
 } from 'react-native';
 
-import MainScreen from './container/Main';
 import LoginScreen from './container/Login';
 import SignupScreen from './container/Signup';
+import Menu from './container/Menu';
 
 
 const { width, height } = Dimensions.get('window');
@@ -64,7 +64,7 @@ export default class Main extends React.Component {
             }
 
             return (
-                <MainScreen navigateTo={this.changeScreen} navigate={navigate}></MainScreen>
+                <Menu navigateTo={this.changeScreen} navigate={navigate}></Menu>
             );
         } else {
             return (
