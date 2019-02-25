@@ -21,7 +21,7 @@ export default class LinkObject extends React.PureComponent {
         this.state = {
             journey: undefined,
             journeyTime: undefined,
-            started: true,
+            started: false,
             finished: false
         }
     }
@@ -39,6 +39,14 @@ export default class LinkObject extends React.PureComponent {
      */
     finishTheJourney = () => {
         this.setState({finished: true});
+    }
+
+
+    /**
+     * This method will be called when the user starts the journey
+     */
+    startJourney = () => {
+        this.setState({started: true});
     }
 
 
@@ -71,6 +79,7 @@ export default class LinkObject extends React.PureComponent {
         });
     }
 
+
     // initialise the attributes of LinkObject component
     componentDidMount = () => {
         let { journey } = this.props;
@@ -85,6 +94,7 @@ export default class LinkObject extends React.PureComponent {
         }
 
     }
+
 
     render() {
         let { journey, journeyTime, started, finished } = this.state;
@@ -134,6 +144,9 @@ export default class LinkObject extends React.PureComponent {
                         <View style={styles.actionButtonContainer}>
                             <TouchableOpacity onPress={this.callToDriver} style={styles.actionButton}>
                                 <Text style={styles.actionText}>call</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={this.startJourney} style={styles.actionButton}>
+                                <Text style={styles.actionText}>start</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={this.props.cancel} style={styles.actionButton}>
                                 <Text style={styles.actionText}>cancel</Text>
