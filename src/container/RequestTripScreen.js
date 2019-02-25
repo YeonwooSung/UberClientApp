@@ -47,9 +47,14 @@ export default class RequestTripScreen extends React.Component {
         //initialise the attributes
         //-------------------------
         const pickUpLocation = this.props.navigation.getParam('pickUpLocation', { latitude: 56.34026, longitude: -2.808796 });
-        const destination = this.props.navigation.getParam('destination', {latitude: 56.34026, longitude: -2.808796});
+        const destination = this.props.navigation.getParam('destination', 'Current location');
         const availableDrivers = this.props.navigation.getParam('drivers',[]);
         const destinationGeolocation = this.props.navigation.getParam('destinationGeolocation', { latitude: 56.34026, longitude: -2.808796 });
+
+        // If the destination name is too long, split it and store the first string element as a destination name
+        if (destination.length > 15) {
+            destination = destination.split(', ')[0];
+        }
 
         this.setState({
             pickUpLocation: pickUpLocation, 
