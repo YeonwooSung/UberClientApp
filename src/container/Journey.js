@@ -132,7 +132,7 @@ export default class JourneyScreen extends React.Component {
 
             clearInterval(intervalID); //stop setInterval() to execute animateDriver()
 
-            alert('Finished!!'); //TODO use notification component
+            alert('Finished!!');
 
             // Let the LinkScreen know that this journey is finished.
             let finishJourney = this.props.navigation.getParam('finishJourney');
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     mapContainer: {
-        ...StyleSheet.absoluteFillObject, //TODO need to test
+        ...StyleSheet.absoluteFillObject,
         flex: 1,
         width: width,
         height: height,
