@@ -157,7 +157,8 @@ export default class LinkScreen extends React.Component {
             <View style={styles.container}>
                 <Image style={styles.logoImage} source={require('../../assets/logo.png')} />
                 <ScrollView 
-                    style={styles.scrollContainer}
+                    style={styles.scrollContainer} 
+                    contentContainerStyle={{ flexGrow: 1 }} 
                 >
                     {journeyComponent}
                 </ScrollView>
@@ -168,7 +169,7 @@ export default class LinkScreen extends React.Component {
                     <Text style={styles.addNewJourneyButtonText}>Add New Journey</Text>
                 </TouchableOpacity>
             </View>
-        )
+        );
     }
 }
 
@@ -186,36 +187,29 @@ const styles = StyleSheet.create({
         width: height / 6,
         height: height / 6,
         marginBottom: width / 10,
-        marginTop: width / 15
+        marginTop: width / 15,
+        position: 'absolute',
+        top: width / 8,
+        left: (width - height / 6) / 2
     },
     scrollContainer: {
         flex: 1,
         width: width / 5 * 4,
-        height: height / 5 * 3
+        height: height / 6,
+        position: 'absolute',
+        top: height / 2,
+        left: width / 10
     },
     containerForEmptyJourneyList: {
         width: width / 5 * 4,
-        height: width / 5 * 3 //TODO
+        height: width / 5 * 3
     },
     textForEmptyJourney: {
+        color: 'white',
         fontSize: width / 20,
         fontWeight: '500',
         textAlign: 'center',
         marginBottom: width / 20
-    },
-    addJourneyButton: {
-        width: width * 4 / 5,
-        height: height / 15,
-        backgroundColor: '#a8a9ad',
-        borderRadius: 25,
-        marginVertical: width / 15,
-        justifyContent: 'center'
-    },
-    buttonText: {
-        fontSize: width / 25,
-        fontWeight: '500',
-        color: "#ffffff",
-        textAlign: 'center'
     },
     addNewJourneyButtonBox: {
         width: width * 4 / 5,
@@ -223,7 +217,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#a8a9ad',
         borderRadius: 25,
         marginVertical: width / 10,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        position: 'absolute',
+        top: height / 6 * 5,
+        left: width / 10
     },
     addNewJourneyButtonText: {
         fontSize: width / 25,

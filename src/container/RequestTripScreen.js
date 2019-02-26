@@ -51,11 +51,6 @@ export default class RequestTripScreen extends React.Component {
         const availableDrivers = this.props.navigation.getParam('drivers',[]);
         const destinationGeolocation = this.props.navigation.getParam('destinationGeolocation', { latitude: 56.34026, longitude: -2.808796 });
 
-        // If the destination name is too long, split it and store the first string element as a destination name
-        if (destination.length > 15) {
-            destination = destination.split(', ')[0];
-        }
-
         this.setState({
             pickUpLocation: pickUpLocation, 
             destination: destination, 
@@ -135,7 +130,6 @@ export default class RequestTripScreen extends React.Component {
             <View style={styles.container}>
                 <Image style={styles.logoImage} source={require('../../assets/logo.png')} />
                 <View style={styles.textContainer}>
-                    <Text style={styles.pickUpRegionText}>Pick Up: Your current location</Text>
                     <Text style={styles.destinationText}>{destinationStr}</Text>
                     <View style={styles.timePickerButtonContainer}>
                         <TouchableOpacity style={styles.timePickerButton} onPress={this.showDateTimePicker}>
@@ -192,14 +186,8 @@ const styles = StyleSheet.create({
         width: width,
         height: height / 4
     },
-    pickUpRegionText: {
-        fontSize: width / 20,
-        fontWeight: '500',
-        textAlign: 'center',
-        marginBottom: width / 20
-    },
     destinationText: {
-        fontSize: width / 25,
+        fontSize: width / 20,
         fontWeight: '500',
         textAlign: 'center',
         marginBottom: width / 15

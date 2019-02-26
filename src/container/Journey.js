@@ -96,7 +96,6 @@ export default class JourneyScreen extends React.Component {
     interval_animation() {
         let timerId = setInterval(() => {
             this.animateDriver();
-            console.log('yes');
         }, 1000);
 
         // storet the id of setInterval() function, which will be used for removing the timer when the task is finished
@@ -137,6 +136,8 @@ export default class JourneyScreen extends React.Component {
             // Let the LinkScreen know that this journey is finished.
             let finishJourney = this.props.navigation.getParam('finishJourney');
             finishJourney();
+
+            this.props.navigation.goBack();
         }
 
     }
@@ -191,38 +192,46 @@ export default class JourneyScreen extends React.Component {
     render() {
         const { region, coords, isLoaded, currentCoord } = this.state;
 
-        return (
-            <View style={styles.container}>
-                <MapView
-                    region={region}
-                    style={styles.mapContainer} 
-                    onRegionChange={() => { this.onRegionChange() }}
-                >
-                    <Marker.Animated
-                        ref={marker => { this.marker = marker; }} 
-                        coordinate={currentCoord} 
+        // check if the currentCoord is undefined
+        if (currentCoord) {
+
+            return (
+                <View style={styles.container}>
+                    <MapView
+                        region={region}
+                        style={styles.mapContainer} 
+                        onRegionChange={() => { this.onRegionChange() }}
                     >
-                        <View>
-                            <Image
-                                source={TAXI_IMG}
-                                style={styles.carImage}
-                                onLoad={() => this.forceUpdate()}
-                            />
-                        </View>
-                    </Marker.Animated>
-                    {isLoaded ? //check if the coordinates are loaded
-                    <MapView.Polyline
-                        coordinates={coords} 
-                        strokeWidth={5} 
-                        strokeColor="blue" 
-                        fillColor="blue" 
-                    /> 
-                    : 
-                    <ActivityIndicator size="large" color="red" />
-                    }
-                </MapView>
-            </View>
-        );
+                        <Marker.Animated
+                            ref={marker => { this.marker = marker; }} 
+                            coordinate={currentCoord} 
+                        >
+                            <View>
+                                <Image
+                                    source={TAXI_IMG}
+                                    style={styles.carImage}
+                                    onLoad={() => this.forceUpdate()}
+                                />
+                            </View>
+                        </Marker.Animated>
+                        {isLoaded ? //check if the coordinates are loaded
+                        <MapView.Polyline
+                            coordinates={coords} 
+                            strokeWidth={5} 
+                            strokeColor="blue" 
+                            fillColor="blue" 
+                        /> 
+                        : 
+                        <ActivityIndicator size="large" color="red" />
+                        }
+                    </MapView>
+                </View>
+            );
+
+        } else {
+            // render raw View component when the attributes are not initialised.
+            return (<View></View>);
+        }
     }
 
 }

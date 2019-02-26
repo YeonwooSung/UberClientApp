@@ -53,8 +53,6 @@ export default class CheckRequestScreen extends React.Component {
         let destinationString = destinationGeolocation.latitude + ',' + destinationGeolocation.longitude;
         let pickUpLocationString = pickUpLocation.latitude + ',' + pickUpLocation.longitude;
 
-        console.log(pickUpLocationString, destinationString);
-
         const API_URL = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${pickUpLocationString}&destinations=${destinationString}&key=${API_KEY.Google_API_KEY}`;
 
         fetch(API_URL)
@@ -80,7 +78,7 @@ export default class CheckRequestScreen extends React.Component {
 
 
             // use Math.round() method and toFixed() method to make the fare has up to 2 decimal numbers
-            let fareStr = parseFloat(Math.round(fare * 100) / 100).toFixed(2); //TODO need to test
+            let fareStr = parseFloat(Math.round(fare * 100) / 100).toFixed(2);
 
             this.setState({ distance: distance, estimatedTime: duration, distanceVal: distanceVal, fare: fareStr });
         }).catch(err => console.log(err));
@@ -124,6 +122,34 @@ export default class CheckRequestScreen extends React.Component {
     }
 
 
+    /**
+     * Remove your driver from the list of available drivers.
+     */
+    makeDriverUnavailable = async () => {
+        const {driver} = this.state;
+
+        try {
+            let driverList = await AsyncStorage.getItem('cs3301Uber@drivers');
+
+            if (driverList) {
+                let drivers = JSON.parse(driverList);
+
+                for (let i = 0; i < drivers.length; i++) {
+                    if (drivers[i].name == driver.name) {
+                        drivers.splice(i, 1);
+                        break;
+                    }
+                }
+
+                await AsyncStorage.setItem('cs3301Uber@drivers', JSON.stringify(drivers));
+            }
+
+        } catch {
+            console.log('error in CheckRequest::makeDriverUnavailable()');
+            alert('error occurred while get driver list');
+        }
+    }
+
     // This method will start the journey when the user press the "confirm" button
     startJourney = async () => {
         const { time, driver, pickUpLocation, destination, destinationGeolocation, estimatedTime, fare } = this.state;
@@ -145,6 +171,8 @@ export default class CheckRequestScreen extends React.Component {
             estimatedTime: estimatedTime,
             fare: fare
         }
+
+        await this.makeDriverUnavailable();
 
         //TODO remove journey list (for testing)
         //-----------
@@ -190,7 +218,7 @@ export default class CheckRequestScreen extends React.Component {
         let { driver, destination, timeString, estimatedTime, fare } = this.state;
 
         if (driver) {
-            let driverString = 'The driver that you selected is ' + driver.name;
+            let driverString = 'Your driver: ' + driver.name;
             let destinationString = 'Your destination: ' + destination;
             let timeStr = 'Journey time: ' + timeString;
 

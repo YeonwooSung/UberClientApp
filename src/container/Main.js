@@ -12,7 +12,6 @@ import {
     Text
 } from 'react-native';
 import { Location, Permissions } from 'expo';
-import PropTypes from 'prop-types';
 import MapView, { Marker } from 'react-native-maps';
 import { GoogleAutoComplete } from 'react-native-google-autocomplete';
 import uuidv1 from 'uuid/v1';
@@ -147,10 +146,40 @@ export default class MainScreen extends React.Component {
     }
 
 
-    componentDidMount() {
-        this.getPermissionForLocationAsync();
+    /**
+     * Gets the list of available drivers from the local storage.
+     */
+    getListOfAvailableDrivers = async () => {
+        try {
+            // get the list of available drivers
+            let driverList = await AsyncStorage.getItem('cs3301Uber@drivers');
 
-        //TODO get drivers from local storage
+            if (driverList) {
+                let drivers = JSON.parse(driverList);
+                this.setState({ drivers: drivers });
+            } else {
+                let { drivers } = this.state;
+
+                let driverListStr = JSON.stringify(drivers);
+
+                console.log('stringify: ', driverListStr);
+
+                // if the AsyncStorage does not have key 'drivers', then store the list of available drivers in the local storage
+                await AsyncStorage.setItem('cs3301Uber@drivers', driverListStr);
+
+                console.log('hi');
+            }
+
+        } catch {
+            console.log('error in MainScreen::getListOfAvailableDrivers()');
+        }
+    }
+
+
+    componentDidMount() {
+        //TODO this.getPermissionForLocationAsync();
+
+        this.getListOfAvailableDrivers();
     }
 
 

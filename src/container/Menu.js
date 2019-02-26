@@ -4,10 +4,14 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
-    Image
+    Image,
+    Dimensions
 } from 'react-native';
 import PropTypes from 'prop-types';
 
+
+/* global variables for width and height of device */
+const { width, height } = Dimensions.get('window');
 
 export default class Menu extends React.Component {
     constructor(props) {

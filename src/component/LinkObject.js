@@ -46,6 +46,7 @@ export default class LinkObject extends React.PureComponent {
      * This method will be called when the user starts the journey
      */
     startJourney = () => {
+        console.log('start');
         this.setState({started: true});
     }
 
@@ -56,8 +57,6 @@ export default class LinkObject extends React.PureComponent {
     callToDriver = () => {
         let {journey} = this.state;
         if (journey) {
-            console.log('journey: ', journey);
-            console.log('driver: ', journey.driver);
             let phoneNumber = journey.driver.phoneNum;
 
             if (phoneNumber) {
@@ -75,7 +74,7 @@ export default class LinkObject extends React.PureComponent {
 
         this.props.navigateTo('Journey', {
             journey: journey,
-            finishJourney: this.finishTheJourney()
+            finishJourney: this.finishTheJourney
         });
     }
 
@@ -109,21 +108,31 @@ export default class LinkObject extends React.PureComponent {
 
                 // check if the journey is finished
                 if (finished) {
-                    //TODO styling
+
                     return (
                         <View style={styles.finishedContainer}>
-                            <TouchableOpacity onPress={() => goToSummaryPage()}>
-                                <Text>Finish the journey</Text>
+                            <TouchableOpacity 
+                                onPress={() => goToSummaryPage()} 
+                                style={styles.finishedButtonBox}
+                            >
+                                <Text style={styles.finishedText}>
+                                    Finish the journey
+                                </Text>
                             </TouchableOpacity>
                         </View>
                     );
 
                 } else {
-                    //TODO styling
+                    // journey is started, but not finished yet - so go track the journey
                     return (
                         <View style={styles.startedContainer}>
-                            <TouchableOpacity onPress={this.trackJourney}>
-                                <Text>Track the journey</Text>
+                            <TouchableOpacity 
+                                onPress={this.trackJourney} 
+                                style={styles.trackButtonBox} 
+                            >
+                                <Text style={styles.trackButtonText}>
+                                    Track journey
+                                </Text>
                             </TouchableOpacity>
                         </View>
                     );
@@ -132,12 +141,16 @@ export default class LinkObject extends React.PureComponent {
 
             } else {
 
-                //TODO styling and testing
+                // journey is not started
                 return (
                     <View style={styles.container}>
-                        <View>
-                            <Text>{timeString}</Text>
-                            <Text>{destinationString}</Text>
+                        <View style={styles.infoTextContainer}>
+                            <Text style={styles.infoText}>
+                                {timeString}
+                            </Text>
+                            <Text style={styles.infoText}>
+                                {destinationString}
+                            </Text>
                         </View>
                         <View style={styles.actionButtonContainer}>
                             <TouchableOpacity onPress={this.callToDriver} style={styles.actionButton}>
@@ -163,12 +176,12 @@ export default class LinkObject extends React.PureComponent {
     }
 }
 
-//TODO need to check style
+
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#1a3f95",
         width: width / 5 * 4,
-        height: width / 5 * 3,
+        height: height / 6,
         borderBottomColor: "#bbbbbb",
         borderBottomWidth: 0.5,
         flexDirection: "row",
@@ -179,7 +192,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#1a3f95",
         width: width / 5 * 4,
-        height: width / 5 * 3,
+        height: height / 6,
         borderBottomColor: "#bbbbbb",
         borderBottomWidth: 0.5,
         alignItems: 'center',
@@ -189,10 +202,25 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#1a3f95",
         width: width / 5 * 4,
-        height: width / 5 * 3,
+        height: height / 6,
         borderBottomColor: "#bbbbbb",
         borderBottomWidth: 0.5,
         alignItems: 'center',
+        justifyContent: 'center'
+    },
+    finishedText: {
+        fontSize: width / 25,
+        fontWeight: '500',
+        color: "#ffffff",
+        textAlign: 'center'
+    },
+    finishedButtonBox: {
+        width: width * 2 / 3,
+        height: height / 15,
+        backgroundColor: '#a8a9ad',
+        borderRadius: 25,
+        marginVertical: 10,
+        paddingVertical: 5,
         justifyContent: 'center'
     },
     actionButton: {
@@ -210,6 +238,32 @@ const styles = StyleSheet.create({
     },
     actionButtonContainer: {
         backgroundColor: "#1a3f95",
-        flex: 1
+        width: width / 7,
+        height: height / 6 - width / 50,
+        alignItems: 'center'
+    },
+    infoTextContainer: {
+        width: width / 5 * 2,
+        flexDirection: 'column'
+    },
+    infoText: {
+        color: 'white',
+        textAlign: 'center',
+        marginBottom: width / 35
+    },
+    trackButtonBox: {
+        width: width * 2 / 3,
+        height: height / 15,
+        backgroundColor: '#a8a9ad',
+        borderRadius: 25,
+        marginVertical: 10,
+        paddingVertical: 5,
+        justifyContent: 'center'
+    },
+    trackButtonText: {
+        fontSize: width / 25,
+        fontWeight: '500',
+        color: "#ffffff",
+        textAlign: 'center'
     }
 });

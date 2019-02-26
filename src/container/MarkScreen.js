@@ -4,7 +4,8 @@ import {
     StyleSheet,
     Dimensions,
     TouchableOpacity,
-    Text
+    Text,
+    AsyncStorage
 } from 'react-native';
 import MapView, { Marker, ProviderPropType } from 'react-native-maps';
 import Geocoder from 'react-native-geocoding';
@@ -90,8 +91,38 @@ export default class MarkScreen extends React.Component {
     };
 
 
+    /**
+     * Gets the list of available drivers from the local storage.
+     */
+    getListOfAvailableDrivers = async () => {
+        try {
+            // get the list of available drivers
+            let driverList = await AsyncStorage.getItem('cs3301Uber@drivers');
+
+            if (driverList) {
+                let drivers = JSON.parse(driverList);
+                this.setState({ drivers: drivers });
+            } else {
+                let { drivers } = this.state;
+
+                let driverListStr = JSON.stringify(drivers);
+
+                console.log('stringify: ', driverListStr);
+
+                // if the AsyncStorage does not have key 'drivers', then store the list of available drivers in the local storage
+                await AsyncStorage.setItem('cs3301Uber@drivers', driverListStr);
+
+                console.log('hi');
+            }
+
+        } catch {
+            console.log('error in MainScreen::getListOfAvailableDrivers()');
+        }
+    }
+
+
     componentDidMount = () => {
-        //TODO get drivers from local storage
+        this.getListOfAvailableDrivers();
     }
 
     /**
@@ -129,9 +160,11 @@ export default class MarkScreen extends React.Component {
         .then(json => {
             let destination = json.results[0].address_components[0];
 
+            console.log(destination.short_name);
+
             navigate('Request', {
                 pickUpLocation: pickUpLocation,
-                destination: destination,
+                destination: destination.short_name,
                 drivers: drivers,
                 destinationGeolocation: destinationGeolocation
             });

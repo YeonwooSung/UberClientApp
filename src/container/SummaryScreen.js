@@ -4,7 +4,8 @@ import {
     StyleSheet,
     Dimensions,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    AsyncStorage
 } from 'react-native';
 import { Rating } from 'react-native-elements';
 import { StackActions, NavigationActions } from 'react-navigation';
@@ -34,17 +35,50 @@ export default class SummaryScreen extends React.Component {
         this.setState({journey: journey});
     }
 
+
+    /**
+     * The aim of this method is updating the list of available drivers that is stored in the local storage.
+     */
+    makeDriverAvailable_Async = async () => {
+        let {journey, rating} = this.state;
+
+        if (journey) {
+            let driver = journey.driver;
+
+            driver.ratings.push(rating); //add the new rating to the driver
+
+            try {
+                let driverList = await AsyncStorage.getItem('cs3301Uber@drivers');
+
+                // add the driver to the list of drivers, and store the updated list to the local storage.
+                if (driverList) {
+                    let drivers = JSON.parse(driverList);
+
+                    drivers.push(driver);
+
+                    await AsyncStorage.setItem('cs3301Uber@drivers', JSON.stringify(drivers));
+                }
+
+            } catch {
+                alert('failed to store rating');
+            }
+        }
+    }
+
+
     /**
      * This method will be called only when the journey is finished, and client finish the payment.
      * It will update the journey list, and store the updated list in the local storage.
      * Then, the app screen will be navigated to the LinkScreen component.
      */
-    completeJourney = async () => { //TODO need to test this
+    completeJourney = async () => {
         let {journey} = this.state;
 
         let refresh = this.props.navigation.getParam('refresh');
 
         await refresh(journey);
+
+        await this.makeDriverAvailable_Async();
 
         const resetAction = StackActions.reset({
             index: 0,
@@ -74,9 +108,9 @@ export default class SummaryScreen extends React.Component {
                         />
                     </View>
                     <View>
-                        <Text>{'Total price: ' + fare}</Text>
-                        <TouchableOpacity onPress={this.completeJourney}>
-                            <Text>Pay Now</Text>
+                        <Text style={styles.fareText}>{'Total price: ' + fare}</Text>
+                        <TouchableOpacity onPress={this.completeJourney} style={styles.button}>
+                            <Text style={styles.buttonText}>Pay Now</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -84,7 +118,7 @@ export default class SummaryScreen extends React.Component {
         } else {
             return (
                 <View></View>
-            )
+            );
         }
 
     }
@@ -99,5 +133,26 @@ const styles = StyleSheet.create({
         height: height,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    button: {
+        width: width * 4 / 5,
+        height: height / 15,
+        backgroundColor: '#a8a9ad',
+        borderRadius: 25,
+        marginVertical: width / 15,
+        justifyContent: 'center'
+    },
+    buttonText: {
+        fontSize: width / 25,
+        fontWeight: '500',
+        color: "white",
+        textAlign: 'center'
+    },
+    fareText: {
+        fontSize: width / 25,
+        fontWeight: '500',
+        color: "black",
+        textAlign: 'center',
+        marginVertical: width / 30
     }
 });
