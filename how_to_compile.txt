@@ -23,7 +23,29 @@ Now, use the "expo build:android" command to build the app.
 
     3) expo build:android
 
-//TODO
+When you execute "expo build" command, the expo will check the dependencies.
+Then it will ask you to make a new account or log in with the existing account.
+
+As I mentioned above, you could use the account that I made.
+
+After logged in, it will ask you if you want to use your own keystore, or let expo to handle it.
+
+Both would be fine, however, the 'let expo handle the process!' option is much easier to use, so I would
+recommend you to use this option.
+
+
+After choose the option for keystore, the expo-cli will start building the apk file.
+
+In this stage, expo-cli will build the bundles for the app first, and then build the apk file.
+
+After it finish building the js bundles, it will give you a link that you could download the apk file.
+
+However, in general, the apk building process takes about 10 minutes.
+
+So, I recommend you to go to the link after 10 minutes.
+(You could monitor the building process if you go to the given url).
+
+When the expo finishes building the apk file, you could download the apk file from the expo website.
 
 
 To get more information about building stand alone app with expo, please go to the link below:
