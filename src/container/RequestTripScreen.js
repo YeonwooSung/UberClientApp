@@ -145,7 +145,7 @@ export default class RequestTripScreen extends React.Component {
                         <DriverInfo driver={d} selectDriver={this.selectDriver} key={uuidv1()} />
                     ))}
                 </ScrollView>
-                {selected &&
+                {selected && isDatePicked && 
                 <View style={styles.navigateButtonContainer}>
                     <TouchableOpacity
                         onPress={() => this.navigateToCheckRequest()}
