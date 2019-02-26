@@ -177,7 +177,7 @@ export default class MainScreen extends React.Component {
 
 
     componentDidMount() {
-        //TODO this.getPermissionForLocationAsync();
+        this.getPermissionForLocationAsync();
 
         this.getListOfAvailableDrivers();
     }
