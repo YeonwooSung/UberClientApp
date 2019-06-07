@@ -9,11 +9,13 @@
   "dependencies": {
     "@expo/vector-icons": "^9.0.0",
     "@mapbox/polyline": "^1.0.0",
+    "braces": "^3.0.2",
     "expo": "^32.0.5",
     "expo-firebase-app": "^2.0.0",
     "expo-firebase-database": "^2.0.0",
     "firebase": "^5.8.2",
     "google-distance-matrix": "^1.1.1",
+    "js-yaml": "^3.13.1",
     "prop-types": "^15.6.2",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
@@ -32,7 +34,8 @@
     "react-navigation": "^3.1.5",
     "react-redux": "^6.0.0",
     "redux": "^4.0.1",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "ws": "^7.0.0"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0"
