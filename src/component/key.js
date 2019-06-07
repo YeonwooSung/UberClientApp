@@ -1,3 +1,3 @@
 module.exports.GOOGLE_API_KEYS = {
-    Google_API_KEY: 'AIzaSyD8CEUO1jAFiFAD42WpwrFavJDRvF8ibw8'
+    Google_API_KEY: 'YOUR_GOOGLE_API_KEY'
 }
